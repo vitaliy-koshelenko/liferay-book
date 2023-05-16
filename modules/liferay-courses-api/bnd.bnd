@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Courses API
+Bundle-SymbolicName: com.liferaybook.courses
+Bundle-Version: 1.0.0
+Export-Package: com.liferaybook.courses.api

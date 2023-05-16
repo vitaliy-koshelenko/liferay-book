@@ -1,0 +1,4 @@
+dependencies {
+	compileOnly project(":modules:liferay-courses-api")
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
