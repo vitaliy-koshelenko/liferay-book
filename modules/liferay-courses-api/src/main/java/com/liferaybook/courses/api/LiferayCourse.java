@@ -2,14 +2,22 @@ package com.liferaybook.courses.api;
 
 public class LiferayCourse {
 
+    private Long courseId;
     private String name;
     private String description;
 
-    public LiferayCourse() {
-    }
-    public LiferayCourse(String name, String description) {
+    public LiferayCourse(Long courseId, String name, String description) {
+        this.courseId = courseId;
         this.name = name;
         this.description = description;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public String getName() {
@@ -27,5 +35,4 @@ public class LiferayCourse {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }
