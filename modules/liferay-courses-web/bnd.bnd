@@ -2,3 +2,7 @@ Bundle-Name: Liferay Courses Web
 Bundle-SymbolicName: com.liferaybook.courses.web
 Bundle-Version: 1.0.0
 Export-Package: com.liferaybook.courses.web.constants
+Provide-Capability:\
+	liferay.language.resources;\
+		resource.bundle.base.name="content.Language";\
+		service.ranking:Long="1"
