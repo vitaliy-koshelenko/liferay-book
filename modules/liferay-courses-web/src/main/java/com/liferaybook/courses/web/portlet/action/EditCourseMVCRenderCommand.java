@@ -19,6 +19,7 @@ import javax.portlet.RenderResponse;
 	service = MVCRenderCommand.class
 )
 public class EditCourseMVCRenderCommand implements MVCRenderCommand {
+
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse){
 		long courseId = ParamUtil.getLong(renderRequest, "courseId");

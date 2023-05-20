@@ -17,6 +17,7 @@ import javax.portlet.Portlet;
 		"javax.portlet.init-param.view-template=" + LiferayCoursesPortletKeys.VIEW_JSP,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user",
+		"javax.portlet.init-param.add-process-action-success-action=false",
 		"com.liferay.portlet.css-class-wrapper=liferay-courses-wrapper",
 		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"javax.portlet.version=3.0"

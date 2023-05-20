@@ -1,3 +1,5 @@
+<%@ page import="java.net.ConnectException" %>
+<%@ page import="com.liferay.portal.kernel.security.auth.PrincipalException" %>
 <%@ include file="init.jsp" %>
 
 <% LiferayCourse course = (LiferayCourse) request.getAttribute("course"); %>
@@ -9,6 +11,8 @@
     <clay:container-fluid>
         <clay:sheet>
             <clay:sheet-header>
+                <liferay-ui:error key="courseNameNotValid" message="course-name-not-valid" />
+                <liferay-ui:error exception="<%= Exception.class %>" message="courses-saving-exception" />
                 <h2 class="sheet-title">
                     <c:choose>
                         <c:when test="${course.courseId gt 0}">
