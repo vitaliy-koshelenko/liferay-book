@@ -25,8 +25,8 @@
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
                 <div class="btn-group">
                     <div class="btn-group-item">
-                        <clay:link href="${coursesListUrl}" type="button" displayType="secondary" label="back" />
                         <clay:button displayType="primary" label="Save" type="submit" />
+                        <clay:link href="${coursesListUrl}" type="button" displayType="secondary" label="back" />
                     </div>
                 </div>
             </clay:sheet-footer>

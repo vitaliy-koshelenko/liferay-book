@@ -51,7 +51,8 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 
 	@Override
 	public void saveCourse(String name, String description) {
-		Long courseId = courses.stream().max(Comparator.comparing(LiferayCourse::getCourseId)).get().getCourseId() + 1;
+		Long courseId = courses.stream()
+				.max(Comparator.comparing(LiferayCourse::getCourseId)).get().getCourseId() + 1;
 		LiferayCourse course = new LiferayCourse(courseId, name, description);
 		courses.add(course);
 	}
