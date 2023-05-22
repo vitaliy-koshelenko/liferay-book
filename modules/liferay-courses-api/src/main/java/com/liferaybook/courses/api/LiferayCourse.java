@@ -6,6 +6,9 @@ public class LiferayCourse {
     private String name;
     private String description;
 
+    public LiferayCourse() {
+    }
+
     public LiferayCourse(Long courseId, String name, String description) {
         this.courseId = courseId;
         this.name = name;
