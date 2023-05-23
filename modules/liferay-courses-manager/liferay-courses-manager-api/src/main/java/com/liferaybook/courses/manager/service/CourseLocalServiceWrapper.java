@@ -51,6 +51,14 @@ public class CourseLocalServiceWrapper
 		return _courseLocalService.addCourse(course);
 	}
 
+	@Override
+	public com.liferaybook.courses.manager.model.Course addCourse(
+			String name, String description)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _courseLocalService.addCourse(name, description);
+	}
+
 	/**
 	 * Creates a new course with the primary key. Does not add the course to the database.
 	 *
@@ -322,6 +330,14 @@ public class CourseLocalServiceWrapper
 		com.liferaybook.courses.manager.model.Course course) {
 
 		return _courseLocalService.updateCourse(course);
+	}
+
+	@Override
+	public com.liferaybook.courses.manager.model.Course updateCourse(
+			long courseId, String name, String description)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _courseLocalService.updateCourse(courseId, name, description);
 	}
 
 	@Override

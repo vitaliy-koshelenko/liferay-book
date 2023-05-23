@@ -60,6 +60,12 @@ public class CourseLocalServiceUtil {
 		return getService().addCourse(course);
 	}
 
+	public static Course addCourse(String name, String description)
+		throws PortalException {
+
+		return getService().addCourse(name, description);
+	}
+
 	/**
 	 * Creates a new course with the primary key. Does not add the course to the database.
 	 *
@@ -286,6 +292,13 @@ public class CourseLocalServiceUtil {
 	 */
 	public static Course updateCourse(Course course) {
 		return getService().updateCourse(course);
+	}
+
+	public static Course updateCourse(
+			long courseId, String name, String description)
+		throws PortalException {
+
+		return getService().updateCourse(courseId, name, description);
 	}
 
 	public static CourseLocalService getService() {

@@ -2,6 +2,7 @@ package com.liferaybook.courses.web.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
@@ -23,8 +24,13 @@ public class DeleteCourseMVCActionCommand extends BaseMVCActionCommand {
 
     @Override
     protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
-        long courseId = ParamUtil.getLong(actionRequest, "courseId");
-        liferayCoursesAPI.deleteCourse(courseId);
+        try {
+            long courseId = ParamUtil.getLong(actionRequest, "courseId");
+            liferayCoursesAPI.deleteCourse(courseId);
+        } catch (Exception e) {
+            SessionErrors.add(actionRequest, e.getClass());
+            hideDefaultErrorMessage(actionRequest);
+        }
     }
 
     @Reference

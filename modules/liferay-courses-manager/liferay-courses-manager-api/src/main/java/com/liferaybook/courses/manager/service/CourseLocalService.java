@@ -76,6 +76,9 @@ public interface CourseLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Course addCourse(Course course);
 
+	public Course addCourse(String name, String description)
+		throws PortalException;
+
 	/**
 	 * Creates a new course with the primary key. Does not add the course to the database.
 	 *
@@ -265,5 +268,8 @@ public interface CourseLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public Course updateCourse(Course course);
+
+	public Course updateCourse(long courseId, String name, String description)
+		throws PortalException;
 
 }

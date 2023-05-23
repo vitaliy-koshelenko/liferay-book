@@ -15,17 +15,33 @@
 package com.liferaybook.courses.manager.service.impl;
 
 import com.liferay.portal.aop.AopService;
-
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.base.CourseLocalServiceBaseImpl;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Vitaliy Koshelenko
  */
 @Component(
-	property = "model.class.name=com.liferaybook.courses.manager.model.Course",
-	service = AopService.class
+		property = "model.class.name=com.liferaybook.courses.manager.model.Course",
+		service = AopService.class
 )
 public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
+
+	public Course addCourse(String name, String description) throws PortalException {
+		long courseId = counterLocalService.increment();
+		Course course = coursePersistence.create(courseId);
+		course.setName(name);
+		course.setDescription(description);
+		return courseLocalService.updateCourse(course);
+	}
+
+	public Course updateCourse(long courseId, String name, String description) throws PortalException {
+		Course course = coursePersistence.findByPrimaryKey(courseId);
+		course.setName(name);
+		course.setDescription(description);
+		return courseLocalService.updateCourse(course);
+	}
+
 }
