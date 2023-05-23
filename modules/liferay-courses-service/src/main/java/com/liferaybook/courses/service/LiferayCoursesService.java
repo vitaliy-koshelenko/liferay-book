@@ -34,13 +34,13 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
-	public void saveCourse(long groupId, String name, String description) throws PortalException {
-		courseLocalService.addCourse(groupId, name, description);
+	public void saveCourse(long userId, long groupId, String name, String description) throws PortalException {
+		courseLocalService.addCourse(userId, groupId, name, description);
 	}
 
 	@Override
-	public void updateCourse(Long courseId, String name, String description) throws PortalException {
-		courseLocalService.updateCourse(courseId, name, description);
+	public void updateCourse(long userId, Long courseId, String name, String description) throws PortalException {
+		courseLocalService.updateCourse(userId, courseId, name, description);
 	}
 
 	@Override

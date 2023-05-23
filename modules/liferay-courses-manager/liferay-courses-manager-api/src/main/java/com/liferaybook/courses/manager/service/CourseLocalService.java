@@ -76,7 +76,8 @@ public interface CourseLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Course addCourse(Course course);
 
-	public Course addCourse(long groupId, String name, String description)
+	public Course addCourse(
+			long userId, long groupId, String name, String description)
 		throws PortalException;
 
 	/**
@@ -275,7 +276,8 @@ public interface CourseLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Course updateCourse(Course course);
 
-	public Course updateCourse(long courseId, String name, String description)
+	public Course updateCourse(
+			long userId, long courseId, String name, String description)
 		throws PortalException;
 
 }

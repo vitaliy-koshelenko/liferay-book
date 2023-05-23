@@ -61,10 +61,10 @@ public class CourseLocalServiceUtil {
 	}
 
 	public static Course addCourse(
-			long groupId, String name, String description)
+			long userId, long groupId, String name, String description)
 		throws PortalException {
 
-		return getService().addCourse(groupId, name, description);
+		return getService().addCourse(userId, groupId, name, description);
 	}
 
 	/**
@@ -306,10 +306,10 @@ public class CourseLocalServiceUtil {
 	}
 
 	public static Course updateCourse(
-			long courseId, String name, String description)
+			long userId, long courseId, String name, String description)
 		throws PortalException {
 
-		return getService().updateCourse(courseId, name, description);
+		return getService().updateCourse(userId, courseId, name, description);
 	}
 
 	public static CourseLocalService getService() {

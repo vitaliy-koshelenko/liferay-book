@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -48,6 +50,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1537,6 +1540,29 @@ public class CoursePersistenceImpl
 		}
 
 		CourseModelImpl courseModelImpl = (CourseModelImpl)course;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (isNew && (course.getCreateDate() == null)) {
+			if (serviceContext == null) {
+				course.setCreateDate(date);
+			}
+			else {
+				course.setCreateDate(serviceContext.getCreateDate(date));
+			}
+		}
+
+		if (!courseModelImpl.hasSetModifiedDate()) {
+			if (serviceContext == null) {
+				course.setModifiedDate(date);
+			}
+			else {
+				course.setModifiedDate(serviceContext.getModifiedDate(date));
+			}
+		}
 
 		Session session = null;
 

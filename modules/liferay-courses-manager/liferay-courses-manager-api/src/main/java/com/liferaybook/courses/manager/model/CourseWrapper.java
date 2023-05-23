@@ -17,6 +17,7 @@ package com.liferaybook.courses.manager.model;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,10 @@ public class CourseWrapper
 		attributes.put("courseId", getCourseId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("groupId", getGroupId());
+		attributes.put("userId", getUserId());
+		attributes.put("userName", getUserName());
+		attributes.put("createDate", getCreateDate());
+		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 
@@ -67,6 +72,30 @@ public class CourseWrapper
 
 		if (groupId != null) {
 			setGroupId(groupId);
+		}
+
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
+		String userName = (String)attributes.get("userName");
+
+		if (userName != null) {
+			setUserName(userName);
+		}
+
+		Date createDate = (Date)attributes.get("createDate");
+
+		if (createDate != null) {
+			setCreateDate(createDate);
+		}
+
+		Date modifiedDate = (Date)attributes.get("modifiedDate");
+
+		if (modifiedDate != null) {
+			setModifiedDate(modifiedDate);
 		}
 
 		String name = (String)attributes.get("name");
@@ -108,6 +137,16 @@ public class CourseWrapper
 	}
 
 	/**
+	 * Returns the create date of this course.
+	 *
+	 * @return the create date of this course
+	 */
+	@Override
+	public Date getCreateDate() {
+		return model.getCreateDate();
+	}
+
+	/**
 	 * Returns the description of this course.
 	 *
 	 * @return the description of this course
@@ -128,6 +167,16 @@ public class CourseWrapper
 	}
 
 	/**
+	 * Returns the modified date of this course.
+	 *
+	 * @return the modified date of this course
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return model.getModifiedDate();
+	}
+
+	/**
 	 * Returns the name of this course.
 	 *
 	 * @return the name of this course
@@ -145,6 +194,36 @@ public class CourseWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the user ID of this course.
+	 *
+	 * @return the user ID of this course
+	 */
+	@Override
+	public long getUserId() {
+		return model.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this course.
+	 *
+	 * @return the user name of this course
+	 */
+	@Override
+	public String getUserName() {
+		return model.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this course.
+	 *
+	 * @return the user uuid of this course
+	 */
+	@Override
+	public String getUserUuid() {
+		return model.getUserUuid();
 	}
 
 	@Override
@@ -173,6 +252,16 @@ public class CourseWrapper
 	}
 
 	/**
+	 * Sets the create date of this course.
+	 *
+	 * @param createDate the create date of this course
+	 */
+	@Override
+	public void setCreateDate(Date createDate) {
+		model.setCreateDate(createDate);
+	}
+
+	/**
 	 * Sets the description of this course.
 	 *
 	 * @param description the description of this course
@@ -193,6 +282,16 @@ public class CourseWrapper
 	}
 
 	/**
+	 * Sets the modified date of this course.
+	 *
+	 * @param modifiedDate the modified date of this course
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		model.setModifiedDate(modifiedDate);
+	}
+
+	/**
 	 * Sets the name of this course.
 	 *
 	 * @param name the name of this course
@@ -210,6 +309,36 @@ public class CourseWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the user ID of this course.
+	 *
+	 * @param userId the user ID of this course
+	 */
+	@Override
+	public void setUserId(long userId) {
+		model.setUserId(userId);
+	}
+
+	/**
+	 * Sets the user name of this course.
+	 *
+	 * @param userName the user name of this course
+	 */
+	@Override
+	public void setUserName(String userName) {
+		model.setUserName(userName);
+	}
+
+	/**
+	 * Sets the user uuid of this course.
+	 *
+	 * @param userUuid the user uuid of this course
+	 */
+	@Override
+	public void setUserUuid(String userUuid) {
+		model.setUserUuid(userUuid);
 	}
 
 	@Override

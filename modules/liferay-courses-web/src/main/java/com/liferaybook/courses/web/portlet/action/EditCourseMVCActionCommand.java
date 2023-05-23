@@ -37,12 +37,13 @@ public class EditCourseMVCActionCommand extends BaseMVCActionCommand {
                 return;
             }
 
+            long userId = portal.getUserId(actionRequest);
             String description = ParamUtil.getString(actionRequest, "description");
             if (courseId > 0) {
-                liferayCoursesAPI.updateCourse(courseId, name, description);
+                liferayCoursesAPI.updateCourse(userId, courseId, name, description);
             } else {
                 long groupId = portal.getScopeGroupId(actionRequest);
-                liferayCoursesAPI.saveCourse(groupId, name, description);
+                liferayCoursesAPI.saveCourse(userId, groupId, name, description);
             }
 
         } catch (Exception e) {

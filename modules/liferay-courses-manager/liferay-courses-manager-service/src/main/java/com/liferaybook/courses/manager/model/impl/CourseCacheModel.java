@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing Course in entity cache.
  *
@@ -59,7 +61,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{courseId=");
 		sb.append(courseId);
@@ -67,6 +69,14 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		sb.append(companyId);
 		sb.append(", groupId=");
 		sb.append(groupId);
+		sb.append(", userId=");
+		sb.append(userId);
+		sb.append(", userName=");
+		sb.append(userName);
+		sb.append(", createDate=");
+		sb.append(createDate);
+		sb.append(", modifiedDate=");
+		sb.append(modifiedDate);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", description=");
@@ -83,6 +93,28 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		courseImpl.setCourseId(courseId);
 		courseImpl.setCompanyId(companyId);
 		courseImpl.setGroupId(groupId);
+		courseImpl.setUserId(userId);
+
+		if (userName == null) {
+			courseImpl.setUserName("");
+		}
+		else {
+			courseImpl.setUserName(userName);
+		}
+
+		if (createDate == Long.MIN_VALUE) {
+			courseImpl.setCreateDate(null);
+		}
+		else {
+			courseImpl.setCreateDate(new Date(createDate));
+		}
+
+		if (modifiedDate == Long.MIN_VALUE) {
+			courseImpl.setModifiedDate(null);
+		}
+		else {
+			courseImpl.setModifiedDate(new Date(modifiedDate));
+		}
 
 		if (name == null) {
 			courseImpl.setName("");
@@ -110,6 +142,11 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		companyId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
+
+		userId = objectInput.readLong();
+		userName = objectInput.readUTF();
+		createDate = objectInput.readLong();
+		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 	}
@@ -121,6 +158,18 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(groupId);
+
+		objectOutput.writeLong(userId);
+
+		if (userName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(userName);
+		}
+
+		objectOutput.writeLong(createDate);
+		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
 			objectOutput.writeUTF("");
@@ -140,6 +189,10 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 	public long courseId;
 	public long companyId;
 	public long groupId;
+	public long userId;
+	public String userName;
+	public long createDate;
+	public long modifiedDate;
 	public String name;
 	public String description;
 

@@ -19,6 +19,8 @@ import com.liferay.petra.sql.dsl.base.BaseTable;
 
 import java.sql.Types;
 
+import java.util.Date;
+
 /**
  * The table class for the &quot;lb_Course&quot; database table.
  *
@@ -36,6 +38,14 @@ public class CourseTable extends BaseTable<CourseTable> {
 		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, Long> groupId = createColumn(
 		"groupId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, Long> userId = createColumn(
+		"userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, String> userName = createColumn(
+		"userName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, Date> createDate = createColumn(
+		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, Date> modifiedDate = createColumn(
+		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, String> description = createColumn(

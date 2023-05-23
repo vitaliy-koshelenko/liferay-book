@@ -6,13 +6,19 @@
 	<namespace>lb</namespace>
 
 	<entity name="Course" local-service="true" remote-service="false">
-		<!-- PK fields -->
 
+		<!-- PK fields -->
 		<column name="courseId" primary="true" type="long" />
 
 		<!-- Company ID / Group ID Fields -->
 		<column name="companyId" type="long" />
 		<column name="groupId" type="long" />
+
+		<!-- Audit Fields -->
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
 
 		<!-- Other fields -->
 		<column name="name" type="String" />

@@ -16,7 +16,10 @@ package com.liferaybook.courses.manager.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
+
+import java.util.Date;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -32,7 +35,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface CourseModel extends BaseModel<Course>, ShardedModel {
+public interface CourseModel
+	extends BaseModel<Course>, GroupedModel, ShardedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -89,6 +93,7 @@ public interface CourseModel extends BaseModel<Course>, ShardedModel {
 	 *
 	 * @return the group ID of this course
 	 */
+	@Override
 	public long getGroupId();
 
 	/**
@@ -96,7 +101,89 @@ public interface CourseModel extends BaseModel<Course>, ShardedModel {
 	 *
 	 * @param groupId the group ID of this course
 	 */
+	@Override
 	public void setGroupId(long groupId);
+
+	/**
+	 * Returns the user ID of this course.
+	 *
+	 * @return the user ID of this course
+	 */
+	@Override
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this course.
+	 *
+	 * @param userId the user ID of this course
+	 */
+	@Override
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this course.
+	 *
+	 * @return the user uuid of this course
+	 */
+	@Override
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this course.
+	 *
+	 * @param userUuid the user uuid of this course
+	 */
+	@Override
+	public void setUserUuid(String userUuid);
+
+	/**
+	 * Returns the user name of this course.
+	 *
+	 * @return the user name of this course
+	 */
+	@AutoEscape
+	@Override
+	public String getUserName();
+
+	/**
+	 * Sets the user name of this course.
+	 *
+	 * @param userName the user name of this course
+	 */
+	@Override
+	public void setUserName(String userName);
+
+	/**
+	 * Returns the create date of this course.
+	 *
+	 * @return the create date of this course
+	 */
+	@Override
+	public Date getCreateDate();
+
+	/**
+	 * Sets the create date of this course.
+	 *
+	 * @param createDate the create date of this course
+	 */
+	@Override
+	public void setCreateDate(Date createDate);
+
+	/**
+	 * Returns the modified date of this course.
+	 *
+	 * @return the modified date of this course
+	 */
+	@Override
+	public Date getModifiedDate();
+
+	/**
+	 * Sets the modified date of this course.
+	 *
+	 * @param modifiedDate the modified date of this course
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate);
 
 	/**
 	 * Returns the name of this course.

@@ -18,10 +18,13 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -68,7 +71,9 @@ public class CourseModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"courseId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"groupId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"groupId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"name", Types.VARCHAR},
 		{"description", Types.VARCHAR}
 	};
 
@@ -79,12 +84,16 @@ public class CourseModelImpl
 		TABLE_COLUMNS_MAP.put("courseId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Course (courseId LONG not null primary key,companyId LONG,groupId LONG,name VARCHAR(100) null,description VARCHAR(1000) null)";
+		"create table lb_Course (courseId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(100) null,description VARCHAR(1000) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Course";
 
@@ -223,6 +232,11 @@ public class CourseModelImpl
 			attributeGetterFunctions.put("courseId", Course::getCourseId);
 			attributeGetterFunctions.put("companyId", Course::getCompanyId);
 			attributeGetterFunctions.put("groupId", Course::getGroupId);
+			attributeGetterFunctions.put("userId", Course::getUserId);
+			attributeGetterFunctions.put("userName", Course::getUserName);
+			attributeGetterFunctions.put("createDate", Course::getCreateDate);
+			attributeGetterFunctions.put(
+				"modifiedDate", Course::getModifiedDate);
 			attributeGetterFunctions.put("name", Course::getName);
 			attributeGetterFunctions.put("description", Course::getDescription);
 
@@ -247,6 +261,15 @@ public class CourseModelImpl
 				"companyId", (BiConsumer<Course, Long>)Course::setCompanyId);
 			attributeSetterBiConsumers.put(
 				"groupId", (BiConsumer<Course, Long>)Course::setGroupId);
+			attributeSetterBiConsumers.put(
+				"userId", (BiConsumer<Course, Long>)Course::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName", (BiConsumer<Course, String>)Course::setUserName);
+			attributeSetterBiConsumers.put(
+				"createDate", (BiConsumer<Course, Date>)Course::setCreateDate);
+			attributeSetterBiConsumers.put(
+				"modifiedDate",
+				(BiConsumer<Course, Date>)Course::setModifiedDate);
 			attributeSetterBiConsumers.put(
 				"name", (BiConsumer<Course, String>)Course::setName);
 			attributeSetterBiConsumers.put(
@@ -318,6 +341,89 @@ public class CourseModelImpl
 	@Deprecated
 	public long getOriginalGroupId() {
 		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
+	}
+
+	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userId = userId;
+	}
+
+	@Override
+	public String getUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+	}
+
+	@Override
+	public String getUserName() {
+		if (_userName == null) {
+			return "";
+		}
+		else {
+			return _userName;
+		}
+	}
+
+	@Override
+	public void setUserName(String userName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userName = userName;
+	}
+
+	@Override
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	@Override
+	public void setCreateDate(Date createDate) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_createDate = createDate;
+	}
+
+	@Override
+	public Date getModifiedDate() {
+		return _modifiedDate;
+	}
+
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_modifiedDate = modifiedDate;
 	}
 
 	@Override
@@ -426,6 +532,10 @@ public class CourseModelImpl
 		courseImpl.setCourseId(getCourseId());
 		courseImpl.setCompanyId(getCompanyId());
 		courseImpl.setGroupId(getGroupId());
+		courseImpl.setUserId(getUserId());
+		courseImpl.setUserName(getUserName());
+		courseImpl.setCreateDate(getCreateDate());
+		courseImpl.setModifiedDate(getModifiedDate());
 		courseImpl.setName(getName());
 		courseImpl.setDescription(getDescription());
 
@@ -441,6 +551,12 @@ public class CourseModelImpl
 		courseImpl.setCourseId(this.<Long>getColumnOriginalValue("courseId"));
 		courseImpl.setCompanyId(this.<Long>getColumnOriginalValue("companyId"));
 		courseImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
+		courseImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
+		courseImpl.setUserName(this.<String>getColumnOriginalValue("userName"));
+		courseImpl.setCreateDate(
+			this.<Date>getColumnOriginalValue("createDate"));
+		courseImpl.setModifiedDate(
+			this.<Date>getColumnOriginalValue("modifiedDate"));
 		courseImpl.setName(this.<String>getColumnOriginalValue("name"));
 		courseImpl.setDescription(
 			this.<String>getColumnOriginalValue("description"));
@@ -510,6 +626,8 @@ public class CourseModelImpl
 	public void resetOriginalValues() {
 		_columnOriginalValues = Collections.emptyMap();
 
+		_setModifiedDate = false;
+
 		_columnBitmask = 0;
 	}
 
@@ -522,6 +640,34 @@ public class CourseModelImpl
 		courseCacheModel.companyId = getCompanyId();
 
 		courseCacheModel.groupId = getGroupId();
+
+		courseCacheModel.userId = getUserId();
+
+		courseCacheModel.userName = getUserName();
+
+		String userName = courseCacheModel.userName;
+
+		if ((userName != null) && (userName.length() == 0)) {
+			courseCacheModel.userName = null;
+		}
+
+		Date createDate = getCreateDate();
+
+		if (createDate != null) {
+			courseCacheModel.createDate = createDate.getTime();
+		}
+		else {
+			courseCacheModel.createDate = Long.MIN_VALUE;
+		}
+
+		Date modifiedDate = getModifiedDate();
+
+		if (modifiedDate != null) {
+			courseCacheModel.modifiedDate = modifiedDate.getTime();
+		}
+		else {
+			courseCacheModel.modifiedDate = Long.MIN_VALUE;
+		}
 
 		courseCacheModel.name = getName();
 
@@ -602,6 +748,11 @@ public class CourseModelImpl
 	private long _courseId;
 	private long _companyId;
 	private long _groupId;
+	private long _userId;
+	private String _userName;
+	private Date _createDate;
+	private Date _modifiedDate;
+	private boolean _setModifiedDate;
 	private String _name;
 	private String _description;
 
@@ -636,6 +787,10 @@ public class CourseModelImpl
 		_columnOriginalValues.put("courseId", _courseId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put("userName", _userName);
+		_columnOriginalValues.put("createDate", _createDate);
+		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("description", _description);
 	}
@@ -657,9 +812,17 @@ public class CourseModelImpl
 
 		columnBitmasks.put("groupId", 4L);
 
-		columnBitmasks.put("name", 8L);
+		columnBitmasks.put("userId", 8L);
 
-		columnBitmasks.put("description", 16L);
+		columnBitmasks.put("userName", 16L);
+
+		columnBitmasks.put("createDate", 32L);
+
+		columnBitmasks.put("modifiedDate", 64L);
+
+		columnBitmasks.put("name", 128L);
+
+		columnBitmasks.put("description", 256L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

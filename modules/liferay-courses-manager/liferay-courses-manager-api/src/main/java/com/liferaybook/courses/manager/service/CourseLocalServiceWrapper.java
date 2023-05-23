@@ -53,10 +53,11 @@ public class CourseLocalServiceWrapper
 
 	@Override
 	public com.liferaybook.courses.manager.model.Course addCourse(
-			long groupId, String name, String description)
+			long userId, long groupId, String name, String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _courseLocalService.addCourse(groupId, name, description);
+		return _courseLocalService.addCourse(
+			userId, groupId, name, description);
 	}
 
 	/**
@@ -346,10 +347,11 @@ public class CourseLocalServiceWrapper
 
 	@Override
 	public com.liferaybook.courses.manager.model.Course updateCourse(
-			long courseId, String name, String description)
+			long userId, long courseId, String name, String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _courseLocalService.updateCourse(courseId, name, description);
+		return _courseLocalService.updateCourse(
+			userId, courseId, name, description);
 	}
 
 	@Override

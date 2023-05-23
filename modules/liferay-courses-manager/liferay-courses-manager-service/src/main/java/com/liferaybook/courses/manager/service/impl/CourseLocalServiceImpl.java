@@ -16,7 +16,7 @@ package com.liferaybook.courses.manager.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.base.CourseLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
@@ -32,20 +32,23 @@ import java.util.List;
 )
 public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
-	public Course addCourse(long groupId, String name, String description) throws PortalException {
-		Group group = groupLocalService.fetchGroup(groupId);
-		long companyId = group.getCompanyId();
+	public Course addCourse(long userId, long groupId, String name, String description) throws PortalException {
+		User user = userLocalService.fetchUser(userId);
+		long companyId = user.getCompanyId();
 		long courseId = counterLocalService.increment();
 		Course course = coursePersistence.create(courseId);
 		course.setCompanyId(companyId);
 		course.setGroupId(groupId);
+		course.setUserId(userId);
+		course.setUserName(user.getFullName());
 		course.setName(name);
 		course.setDescription(description);
 		return courseLocalService.updateCourse(course);
 	}
 
-	public Course updateCourse(long courseId, String name, String description) throws PortalException {
+	public Course updateCourse(long userId, long courseId, String name, String description) throws PortalException {
 		Course course = coursePersistence.findByPrimaryKey(courseId);
+		course.setUserId(userId);
 		course.setName(name);
 		course.setDescription(description);
 		return courseLocalService.updateCourse(course);
