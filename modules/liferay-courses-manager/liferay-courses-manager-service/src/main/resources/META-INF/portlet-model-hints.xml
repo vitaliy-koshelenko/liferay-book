@@ -3,7 +3,11 @@
 <model-hints>
 	<model name="com.liferaybook.courses.manager.model.Course">
 		<field name="courseId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">100</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
 	</model>
 </model-hints>

@@ -80,7 +80,7 @@ public class CourseModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Course (courseId LONG not null primary key,name VARCHAR(75) null,description VARCHAR(75) null)";
+		"create table lb_Course (courseId LONG not null primary key,name VARCHAR(100) null,description VARCHAR(1000) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Course";
 
