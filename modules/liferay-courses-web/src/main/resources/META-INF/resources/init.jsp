@@ -5,6 +5,7 @@
 <%@ taglib prefix="liferay-theme" uri="http://liferay.com/tld/theme" %>
 <%@ taglib prefix="liferay-ui" uri="http://liferay.com/tld/ui" %>
 <%@ taglib prefix="clay" uri="http://liferay.com/tld/clay" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@ page import="com.liferaybook.courses.api.LiferayCourse" %>
 <%@ page import="com.liferaybook.courses.api.LiferayCoursesAPI" %>

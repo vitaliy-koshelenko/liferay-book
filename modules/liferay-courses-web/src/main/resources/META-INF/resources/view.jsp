@@ -17,6 +17,16 @@
 					<liferay-ui:search-container-column-text name="courses-course-id" value="${course.courseId}" />
 					<liferay-ui:search-container-column-text name="courses-name" value="${course.name}" />
 					<liferay-ui:search-container-column-text name="courses-description" value="${course.description}" />
+					<liferay-ui:search-container-column-text name="courses-user"
+															 value="${course.userName}" />
+					<liferay-ui:search-container-column-text name="courses-create-date">
+						<fmt:formatDate var="courseCreateDate" value="${course.createDate}" pattern="dd-MM-yyyy HH:mm" />
+						${courseCreateDate}
+					</liferay-ui:search-container-column-text>
+					<liferay-ui:search-container-column-text name="courses-modified-date">
+						<fmt:formatDate var="courseModifiedDate" value="${course.modifiedDate}" pattern="dd-MM-yyyy HH:mm" />
+						${courseModifiedDate}
+					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text>
 						<liferay-ui:icon-menu direction="left-side" icon="" markupView="lexicon" message="actions" showWhenSingleIcon="<%= true %>">
 							<%-- Course Details --%>
