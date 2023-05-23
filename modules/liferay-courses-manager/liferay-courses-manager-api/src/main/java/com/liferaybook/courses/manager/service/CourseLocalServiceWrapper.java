@@ -53,10 +53,10 @@ public class CourseLocalServiceWrapper
 
 	@Override
 	public com.liferaybook.courses.manager.model.Course addCourse(
-			String name, String description)
+			long groupId, String name, String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _courseLocalService.addCourse(name, description);
+		return _courseLocalService.addCourse(groupId, name, description);
 	}
 
 	/**
@@ -285,6 +285,18 @@ public class CourseLocalServiceWrapper
 	@Override
 	public int getCoursesCount() {
 		return _courseLocalService.getCoursesCount();
+	}
+
+	@Override
+	public java.util.List<com.liferaybook.courses.manager.model.Course>
+		getGroupCourses(long groupId, int start, int end) {
+
+		return _courseLocalService.getGroupCourses(groupId, start, end);
+	}
+
+	@Override
+	public int getGroupCoursesCount(long groupId) {
+		return _courseLocalService.getGroupCoursesCount(groupId);
 	}
 
 	@Override

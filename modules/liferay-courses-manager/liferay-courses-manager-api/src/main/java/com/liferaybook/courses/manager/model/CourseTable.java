@@ -32,6 +32,10 @@ public class CourseTable extends BaseTable<CourseTable> {
 
 	public final Column<CourseTable, Long> courseId = createColumn(
 		"courseId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
+	public final Column<CourseTable, Long> companyId = createColumn(
+		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, Long> groupId = createColumn(
+		"groupId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, String> description = createColumn(

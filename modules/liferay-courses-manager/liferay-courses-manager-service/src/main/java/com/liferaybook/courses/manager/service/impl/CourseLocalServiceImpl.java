@@ -16,9 +16,12 @@ package com.liferaybook.courses.manager.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.base.CourseLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
+
+import java.util.List;
 
 /**
  * @author Vitaliy Koshelenko
@@ -29,9 +32,13 @@ import org.osgi.service.component.annotations.Component;
 )
 public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
-	public Course addCourse(String name, String description) throws PortalException {
+	public Course addCourse(long groupId, String name, String description) throws PortalException {
+		Group group = groupLocalService.fetchGroup(groupId);
+		long companyId = group.getCompanyId();
 		long courseId = counterLocalService.increment();
 		Course course = coursePersistence.create(courseId);
+		course.setCompanyId(companyId);
+		course.setGroupId(groupId);
 		course.setName(name);
 		course.setDescription(description);
 		return courseLocalService.updateCourse(course);
@@ -42,6 +49,14 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		course.setName(name);
 		course.setDescription(description);
 		return courseLocalService.updateCourse(course);
+	}
+
+	public int getGroupCoursesCount(long groupId) {
+		return coursePersistence.countByGroupId(groupId);
+	}
+
+	public List<Course> getGroupCourses(long groupId, int start, int end) {
+		return coursePersistence.findByGroupId(groupId, start, end);
 	}
 
 }

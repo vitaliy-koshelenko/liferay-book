@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface LiferayCoursesAPI {
 
-    int getCoursesCount();
+    int getCoursesCount(long groupId);
 
-    List<LiferayCourse> getCourses(int start, int end);
+    List<LiferayCourse> getCourses(long groupId, int start, int end);
 
     LiferayCourse getCourse(Long courseId);
 
-    void saveCourse(String name, String description) throws PortalException;
+    void saveCourse(long groupId, String name, String description) throws PortalException;
 
     void updateCourse(Long courseId, String name, String description) throws PortalException;
 

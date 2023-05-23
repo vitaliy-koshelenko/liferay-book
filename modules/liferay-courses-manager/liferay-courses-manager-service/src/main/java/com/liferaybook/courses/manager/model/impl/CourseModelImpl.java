@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -66,7 +67,8 @@ public class CourseModelImpl
 	public static final String TABLE_NAME = "lb_Course";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"courseId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"courseId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"name", Types.VARCHAR},
 		{"description", Types.VARCHAR}
 	};
 
@@ -75,12 +77,14 @@ public class CourseModelImpl
 
 	static {
 		TABLE_COLUMNS_MAP.put("courseId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Course (courseId LONG not null primary key,name VARCHAR(100) null,description VARCHAR(1000) null)";
+		"create table lb_Course (courseId LONG not null primary key,companyId LONG,groupId LONG,name VARCHAR(100) null,description VARCHAR(1000) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Course";
 
@@ -98,7 +102,19 @@ public class CourseModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long NAME_COLUMN_BITMASK = 1L;
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long NAME_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -205,6 +221,8 @@ public class CourseModelImpl
 				new LinkedHashMap<String, Function<Course, Object>>();
 
 			attributeGetterFunctions.put("courseId", Course::getCourseId);
+			attributeGetterFunctions.put("companyId", Course::getCompanyId);
+			attributeGetterFunctions.put("groupId", Course::getGroupId);
 			attributeGetterFunctions.put("name", Course::getName);
 			attributeGetterFunctions.put("description", Course::getDescription);
 
@@ -225,6 +243,10 @@ public class CourseModelImpl
 
 			attributeSetterBiConsumers.put(
 				"courseId", (BiConsumer<Course, Long>)Course::setCourseId);
+			attributeSetterBiConsumers.put(
+				"companyId", (BiConsumer<Course, Long>)Course::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"groupId", (BiConsumer<Course, Long>)Course::setGroupId);
 			attributeSetterBiConsumers.put(
 				"name", (BiConsumer<Course, String>)Course::setName);
 			attributeSetterBiConsumers.put(
@@ -249,6 +271,53 @@ public class CourseModelImpl
 		}
 
 		_courseId = courseId;
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_companyId = companyId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalCompanyId() {
+		return GetterUtil.getLong(
+			this.<Long>getColumnOriginalValue("companyId"));
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_groupId = groupId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalGroupId() {
+		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -325,7 +394,7 @@ public class CourseModelImpl
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, Course.class.getName(), getPrimaryKey());
+			getCompanyId(), Course.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -355,6 +424,8 @@ public class CourseModelImpl
 		CourseImpl courseImpl = new CourseImpl();
 
 		courseImpl.setCourseId(getCourseId());
+		courseImpl.setCompanyId(getCompanyId());
+		courseImpl.setGroupId(getGroupId());
 		courseImpl.setName(getName());
 		courseImpl.setDescription(getDescription());
 
@@ -368,6 +439,8 @@ public class CourseModelImpl
 		CourseImpl courseImpl = new CourseImpl();
 
 		courseImpl.setCourseId(this.<Long>getColumnOriginalValue("courseId"));
+		courseImpl.setCompanyId(this.<Long>getColumnOriginalValue("companyId"));
+		courseImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
 		courseImpl.setName(this.<String>getColumnOriginalValue("name"));
 		courseImpl.setDescription(
 			this.<String>getColumnOriginalValue("description"));
@@ -446,6 +519,10 @@ public class CourseModelImpl
 
 		courseCacheModel.courseId = getCourseId();
 
+		courseCacheModel.companyId = getCompanyId();
+
+		courseCacheModel.groupId = getGroupId();
+
 		courseCacheModel.name = getName();
 
 		String name = courseCacheModel.name;
@@ -523,6 +600,8 @@ public class CourseModelImpl
 	}
 
 	private long _courseId;
+	private long _companyId;
+	private long _groupId;
 	private String _name;
 	private String _description;
 
@@ -555,6 +634,8 @@ public class CourseModelImpl
 		_columnOriginalValues = new HashMap<String, Object>();
 
 		_columnOriginalValues.put("courseId", _courseId);
+		_columnOriginalValues.put("companyId", _companyId);
+		_columnOriginalValues.put("groupId", _groupId);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("description", _description);
 	}
@@ -572,9 +653,13 @@ public class CourseModelImpl
 
 		columnBitmasks.put("courseId", 1L);
 
-		columnBitmasks.put("name", 2L);
+		columnBitmasks.put("companyId", 2L);
 
-		columnBitmasks.put("description", 4L);
+		columnBitmasks.put("groupId", 4L);
+
+		columnBitmasks.put("name", 8L);
+
+		columnBitmasks.put("description", 16L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

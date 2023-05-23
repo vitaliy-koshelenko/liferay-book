@@ -16,13 +16,14 @@ import java.util.stream.Collectors;
 public class LiferayCoursesService implements LiferayCoursesAPI {
 
 	@Override
-	public int getCoursesCount() {
-		return courseLocalService.getCoursesCount();
+	public int getCoursesCount(long groupId) {
+		return courseLocalService.getGroupCoursesCount(groupId);
 	}
 
 	@Override
-	public List<LiferayCourse> getCourses(int start, int end) {
-		List<Course> courses = courseLocalService.getCourses(start, end);
+	public List<LiferayCourse> getCourses(long groupId, int start, int end) {
+		List<Course> courses = courseLocalService
+				.getGroupCourses(groupId, start, end);
 		return convertToLiferayCourses(courses);
 	}
 
@@ -33,8 +34,8 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
-	public void saveCourse(String name, String description) throws PortalException {
-		courseLocalService.addCourse(name, description);
+	public void saveCourse(long groupId, String name, String description) throws PortalException {
+		courseLocalService.addCourse(groupId, name, description);
 	}
 
 	@Override
