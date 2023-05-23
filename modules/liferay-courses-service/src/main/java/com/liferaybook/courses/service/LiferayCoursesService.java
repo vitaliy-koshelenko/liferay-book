@@ -39,7 +39,6 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	public void saveCourse(String name, String description) {
 		long courseId = counterLocalService.increment();
 		Course course = courseLocalService.createCourse(courseId);
-		course.setCourseId(courseId);
 		course.setName(name);
 		course.setDescription(description);
 		courseLocalService.updateCourse(course);
@@ -74,7 +73,8 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	private List<LiferayCourse> convertToLiferayCourses(List<Course> courses) {
-		return courses.stream().map(this::convertToLiferayCourse).collect(Collectors.toList());
+		return courses.stream().map(this::convertToLiferayCourse)
+				.collect(Collectors.toList());
 	}
 
 	@Reference
@@ -82,6 +82,6 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	@Reference
 	private CounterLocalService counterLocalService;
 
-	private static final Log _log = LogFactoryUtil.getLog(LiferayCoursesService.class);
-
+	private static final Log _log = LogFactoryUtil
+			.getLog(LiferayCoursesService.class);
 }
