@@ -16,8 +16,13 @@ package com.liferaybook.courses.manager.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferaybook.courses.manager.exception.CourseDescriptionLengthException;
+import com.liferaybook.courses.manager.exception.CourseNameLengthException;
+import com.liferaybook.courses.manager.exception.DuplicateCourseNameException;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.base.CourseLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
@@ -34,8 +39,9 @@ import java.util.List;
 public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
 	public Course addCourse(long userId, long groupId, String name, String description, ServiceContext serviceContext) throws PortalException {
-		User user = userLocalService.fetchUser(userId);
 		long courseId = counterLocalService.increment();
+		validate(courseId, groupId, name, description);
+		User user = userLocalService.fetchUser(userId);
 		Course course = coursePersistence.create(courseId);
 		course.setCompanyId(serviceContext.getCompanyId());
 		course.setGroupId(groupId);
@@ -48,10 +54,29 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
 	public Course updateCourse(long userId, long courseId, String name, String description, ServiceContext serviceContext) throws PortalException {
 		Course course = coursePersistence.findByPrimaryKey(courseId);
+		validate(courseId, course.getGroupId(), name, description);
 		course.setUserId(userId);
 		course.setName(name);
 		course.setDescription(description);
 		return courseLocalService.updateCourse(course);
+	}
+
+	private void validate(long courseId, long groupId, String name, String description) throws PortalException {
+		int nameMinLength = 5;
+		int nameMaxLength = ModelHintsUtil.getMaxLength(Course.class.getName(), "name");
+		if (Validator.isNull(name) || name.length() < nameMinLength || name.length() > nameMaxLength) {
+			throw new CourseNameLengthException(String.format("Course name should have from %d to %d characters.", nameMinLength, nameMaxLength));
+		}
+		if (Validator.isNotNull(description)) {
+			int descriptionMaxLength = ModelHintsUtil.getMaxLength(Course.class.getName(), "description");
+			if (description.length() > descriptionMaxLength) {
+				throw new CourseDescriptionLengthException(String.format("Course description has more than %d characters.", descriptionMaxLength));
+			}
+		}
+		Course course = coursePersistence.fetchByGroupIdAndName(groupId, name);
+		if (course != null && course.getCourseId() != courseId) {
+			throw new DuplicateCourseNameException(String.format("Course name '%s' is already in use.", name));
+		}
 	}
 
 	public int getGroupCoursesCount(long groupId) {

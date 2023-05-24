@@ -9,6 +9,9 @@
 
 <%@ page import="com.liferaybook.courses.api.LiferayCourse" %>
 <%@ page import="com.liferaybook.courses.api.LiferayCoursesAPI" %>
+<%@ page import="com.liferaybook.courses.manager.exception.CourseNameLengthException" %>
+<%@ page import="com.liferaybook.courses.manager.exception.CourseDescriptionLengthException" %>
+<%@ page import="com.liferaybook.courses.manager.exception.DuplicateCourseNameException" %>
 
 <liferay-theme:defineObjects />
 

@@ -43,6 +43,11 @@
 		<reference entity="Group" package-path="com.liferay.portal" />
 	</entity>
 
+	<exceptions>
+		<exception>DuplicateCourseName</exception>
+		<exception>CourseNameLength</exception>
+		<exception>CourseDescriptionLength</exception>
+	</exceptions>
 
 
 </service-builder>

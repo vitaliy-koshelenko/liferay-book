@@ -1,5 +1,3 @@
-<%@ page import="java.net.ConnectException" %>
-<%@ page import="com.liferay.portal.kernel.security.auth.PrincipalException" %>
 <%@ include file="init.jsp" %>
 
 <% LiferayCourse course = (LiferayCourse) request.getAttribute("course"); %>
@@ -11,8 +9,9 @@
     <clay:container-fluid>
         <clay:sheet>
             <clay:sheet-header>
-                <liferay-ui:error key="courseNameNotValid" message="course-name-not-valid" />
-                <liferay-ui:error exception="<%= Exception.class %>" message="courses-saving-exception" />
+                <liferay-ui:error exception="<%= DuplicateCourseNameException.class %>" message="${errorMsg}" />
+                <liferay-ui:error exception="<%= CourseNameLengthException.class %>" message="${errorMsg}" />
+                <liferay-ui:error exception="<%= CourseDescriptionLengthException.class %>" message="${errorMsg}" />
                 <h2 class="sheet-title">
                     <c:choose>
                         <c:when test="${course.courseId gt 0}">
@@ -26,7 +25,7 @@
             </clay:sheet-header>
             <clay:sheet-section>
                 <aui:input name="name" label="courses-name" value="${course.name}" />
-                <aui:input name="description" label="courses-description" value="${course.description}" />
+                <aui:input type="textarea" name="description" label="courses-description" value="${course.description}" />
             </clay:sheet-section>
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
                 <div class="btn-group">
