@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedAuditedModel;
 
 import java.util.Date;
 
@@ -36,7 +37,7 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface CourseModel
-	extends BaseModel<Course>, GroupedModel, ShardedModel {
+	extends BaseModel<Course>, GroupedModel, ShardedModel, StagedAuditedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -57,6 +58,23 @@ public interface CourseModel
 	 * @param primaryKey the primary key of this course
 	 */
 	public void setPrimaryKey(long primaryKey);
+
+	/**
+	 * Returns the uuid of this course.
+	 *
+	 * @return the uuid of this course
+	 */
+	@AutoEscape
+	@Override
+	public String getUuid();
+
+	/**
+	 * Sets the uuid of this course.
+	 *
+	 * @param uuid the uuid of this course
+	 */
+	@Override
+	public void setUuid(String uuid);
 
 	/**
 	 * Returns the course ID of this course.

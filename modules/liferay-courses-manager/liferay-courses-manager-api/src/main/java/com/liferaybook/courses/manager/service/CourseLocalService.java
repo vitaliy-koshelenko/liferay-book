@@ -14,9 +14,11 @@
 
 package com.liferaybook.courses.manager.service;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -206,6 +208,16 @@ public interface CourseLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Course fetchCourse(long courseId);
 
+	/**
+	 * Returns the course matching the UUID and group.
+	 *
+	 * @param uuid the course's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching course, or <code>null</code> if a matching course could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Course fetchCourseByUuidAndGroupId(String uuid, long groupId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -218,6 +230,18 @@ public interface CourseLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Course getCourse(long courseId) throws PortalException;
+
+	/**
+	 * Returns the course matching the UUID and group.
+	 *
+	 * @param uuid the course's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching course
+	 * @throws PortalException if a matching course could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Course getCourseByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	/**
 	 * Returns a range of all the courses.
@@ -234,12 +258,42 @@ public interface CourseLocalService
 	public List<Course> getCourses(int start, int end);
 
 	/**
+	 * Returns all the courses matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the courses
+	 * @param companyId the primary key of the company
+	 * @return the matching courses, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Course> getCoursesByUuidAndCompanyId(
+		String uuid, long companyId);
+
+	/**
+	 * Returns a range of courses matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the courses
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of courses
+	 * @param end the upper bound of the range of courses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching courses, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Course> getCoursesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Course> orderByComparator);
+
+	/**
 	 * Returns the number of courses.
 	 *
 	 * @return the number of courses
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCoursesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Course> getGroupCourses(long groupId, int start, int end);

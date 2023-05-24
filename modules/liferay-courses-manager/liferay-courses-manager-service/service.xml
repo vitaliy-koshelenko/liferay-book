@@ -5,8 +5,7 @@
 	<author>Vitaliy Koshelenko</author>
 	<namespace>lb</namespace>
 
-	<entity name="Course" local-service="true" remote-service="false">
-
+	<entity name="Course" local-service="true" remote-service="false" uuid="true">
 		<!-- PK fields -->
 		<column name="courseId" primary="true" type="long" />
 

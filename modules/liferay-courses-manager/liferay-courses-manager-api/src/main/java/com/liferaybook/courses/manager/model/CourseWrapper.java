@@ -14,6 +14,7 @@
 
 package com.liferaybook.courses.manager.model;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
@@ -41,6 +42,7 @@ public class CourseWrapper
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("courseId", getCourseId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("groupId", getGroupId());
@@ -56,6 +58,12 @@ public class CourseWrapper
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long courseId = (Long)attributes.get("courseId");
 
 		if (courseId != null) {
@@ -226,6 +234,16 @@ public class CourseWrapper
 		return model.getUserUuid();
 	}
 
+	/**
+	 * Returns the uuid of this course.
+	 *
+	 * @return the uuid of this course
+	 */
+	@Override
+	public String getUuid() {
+		return model.getUuid();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
@@ -341,9 +359,24 @@ public class CourseWrapper
 		model.setUserUuid(userUuid);
 	}
 
+	/**
+	 * Sets the uuid of this course.
+	 *
+	 * @param uuid the uuid of this course
+	 */
+	@Override
+	public void setUuid(String uuid) {
+		model.setUuid(uuid);
+	}
+
 	@Override
 	public String toXmlString() {
 		return model.toXmlString();
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return model.getStagedModelType();
 	}
 
 	@Override

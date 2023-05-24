@@ -61,9 +61,11 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
-		sb.append("{courseId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", courseId=");
 		sb.append(courseId);
 		sb.append(", companyId=");
 		sb.append(companyId);
@@ -89,6 +91,13 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 	@Override
 	public Course toEntityModel() {
 		CourseImpl courseImpl = new CourseImpl();
+
+		if (uuid == null) {
+			courseImpl.setUuid("");
+		}
+		else {
+			courseImpl.setUuid(uuid);
+		}
 
 		courseImpl.setCourseId(courseId);
 		courseImpl.setCompanyId(companyId);
@@ -137,6 +146,8 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		courseId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -153,6 +164,13 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(courseId);
 
 		objectOutput.writeLong(companyId);
@@ -186,6 +204,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		}
 	}
 
+	public String uuid;
 	public long courseId;
 	public long companyId;
 	public long groupId;

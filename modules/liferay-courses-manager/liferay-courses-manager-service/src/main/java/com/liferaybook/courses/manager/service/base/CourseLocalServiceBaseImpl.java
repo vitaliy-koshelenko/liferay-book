@@ -14,6 +14,11 @@
 
 package com.liferaybook.courses.manager.service.base;
 
+import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -24,6 +29,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -245,6 +251,18 @@ public abstract class CourseLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the course matching the UUID and group.
+	 *
+	 * @param uuid the course's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching course, or <code>null</code> if a matching course could not be found
+	 */
+	@Override
+	public Course fetchCourseByUuidAndGroupId(String uuid, long groupId) {
+		return coursePersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
 	 * Returns the course with the primary key.
 	 *
 	 * @param courseId the primary key of the course
@@ -296,6 +314,72 @@ public abstract class CourseLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("courseId");
 	}
 
+	@Override
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		final PortletDataContext portletDataContext) {
+
+		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+			new ExportActionableDynamicQuery() {
+
+				@Override
+				public long performCount() throws PortalException {
+					ManifestSummary manifestSummary =
+						portletDataContext.getManifestSummary();
+
+					StagedModelType stagedModelType = getStagedModelType();
+
+					long modelAdditionCount = super.performCount();
+
+					manifestSummary.addModelAdditionCount(
+						stagedModelType, modelAdditionCount);
+
+					long modelDeletionCount =
+						ExportImportHelperUtil.getModelDeletionCount(
+							portletDataContext, stagedModelType);
+
+					manifestSummary.addModelDeletionCount(
+						stagedModelType, modelDeletionCount);
+
+					return modelAdditionCount;
+				}
+
+			};
+
+		initActionableDynamicQuery(exportActionableDynamicQuery);
+
+		exportActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					portletDataContext.addDateRangeCriteria(
+						dynamicQuery, "modifiedDate");
+				}
+
+			});
+
+		exportActionableDynamicQuery.setCompanyId(
+			portletDataContext.getCompanyId());
+
+		exportActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Course>() {
+
+				@Override
+				public void performAction(Course course)
+					throws PortalException {
+
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, course);
+				}
+
+			});
+		exportActionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
+				PortalUtil.getClassNameId(Course.class.getName())));
+
+		return exportActionableDynamicQuery;
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -334,6 +418,54 @@ public abstract class CourseLocalServiceBaseImpl
 		throws PortalException {
 
 		return coursePersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns all the courses matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the courses
+	 * @param companyId the primary key of the company
+	 * @return the matching courses, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Course> getCoursesByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return coursePersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of courses matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the courses
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of courses
+	 * @param end the upper bound of the range of courses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching courses, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Course> getCoursesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Course> orderByComparator) {
+
+		return coursePersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the course matching the UUID and group.
+	 *
+	 * @param uuid the course's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching course
+	 * @throws PortalException if a matching course could not be found
+	 */
+	@Override
+	public Course getCourseByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return coursePersistence.findByUUID_G(uuid, groupId);
 	}
 
 	/**

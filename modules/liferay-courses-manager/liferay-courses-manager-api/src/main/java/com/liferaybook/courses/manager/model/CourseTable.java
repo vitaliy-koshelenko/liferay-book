@@ -32,6 +32,8 @@ public class CourseTable extends BaseTable<CourseTable> {
 
 	public static final CourseTable INSTANCE = new CourseTable();
 
+	public final Column<CourseTable, String> uuid = createColumn(
+		"uuid_", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, Long> courseId = createColumn(
 		"courseId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
 	public final Column<CourseTable, Long> companyId = createColumn(

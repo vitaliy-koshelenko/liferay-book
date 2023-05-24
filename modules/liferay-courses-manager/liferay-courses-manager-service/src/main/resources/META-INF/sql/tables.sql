@@ -1,4 +1,5 @@
 create table lb_Course (
+	uuid_ VARCHAR(75) null,
 	courseId LONG not null primary key,
 	companyId LONG,
 	groupId LONG,

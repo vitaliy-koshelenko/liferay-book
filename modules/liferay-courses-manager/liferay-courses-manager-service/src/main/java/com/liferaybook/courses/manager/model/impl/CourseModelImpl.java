@@ -16,6 +16,7 @@ package com.liferaybook.courses.manager.model.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -70,17 +72,18 @@ public class CourseModelImpl
 	public static final String TABLE_NAME = "lb_Course";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"courseId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"groupId", Types.BIGINT}, {"userId", Types.BIGINT},
-		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"name", Types.VARCHAR},
-		{"description", Types.VARCHAR}
+		{"uuid_", Types.VARCHAR}, {"courseId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"name", Types.VARCHAR}, {"description", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("courseId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
@@ -93,7 +96,7 @@ public class CourseModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Course (courseId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(100) null,description VARCHAR(1000) null)";
+		"create table lb_Course (uuid_ VARCHAR(75) null,courseId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(100) null,description VARCHAR(1000) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Course";
 
@@ -124,6 +127,12 @@ public class CourseModelImpl
 	 */
 	@Deprecated
 	public static final long NAME_COLUMN_BITMASK = 4L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -229,6 +238,7 @@ public class CourseModelImpl
 			Map<String, Function<Course, Object>> attributeGetterFunctions =
 				new LinkedHashMap<String, Function<Course, Object>>();
 
+			attributeGetterFunctions.put("uuid", Course::getUuid);
 			attributeGetterFunctions.put("courseId", Course::getCourseId);
 			attributeGetterFunctions.put("companyId", Course::getCompanyId);
 			attributeGetterFunctions.put("groupId", Course::getGroupId);
@@ -256,6 +266,8 @@ public class CourseModelImpl
 				new LinkedHashMap<String, BiConsumer<Course, ?>>();
 
 			attributeSetterBiConsumers.put(
+				"uuid", (BiConsumer<Course, String>)Course::setUuid);
+			attributeSetterBiConsumers.put(
 				"courseId", (BiConsumer<Course, Long>)Course::setCourseId);
 			attributeSetterBiConsumers.put(
 				"companyId", (BiConsumer<Course, Long>)Course::setCompanyId);
@@ -280,6 +292,34 @@ public class CourseModelImpl
 				(Map)attributeSetterBiConsumers);
 		}
 
+	}
+
+	@Override
+	public String getUuid() {
+		if (_uuid == null) {
+			return "";
+		}
+		else {
+			return _uuid;
+		}
+	}
+
+	@Override
+	public void setUuid(String uuid) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_uuid = uuid;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalUuid() {
+		return getColumnOriginalValue("uuid_");
 	}
 
 	@Override
@@ -473,6 +513,12 @@ public class CourseModelImpl
 		_description = description;
 	}
 
+	@Override
+	public StagedModelType getStagedModelType() {
+		return new StagedModelType(
+			PortalUtil.getClassNameId(Course.class.getName()));
+	}
+
 	public long getColumnBitmask() {
 		if (_columnBitmask > 0) {
 			return _columnBitmask;
@@ -529,6 +575,7 @@ public class CourseModelImpl
 	public Object clone() {
 		CourseImpl courseImpl = new CourseImpl();
 
+		courseImpl.setUuid(getUuid());
 		courseImpl.setCourseId(getCourseId());
 		courseImpl.setCompanyId(getCompanyId());
 		courseImpl.setGroupId(getGroupId());
@@ -548,6 +595,7 @@ public class CourseModelImpl
 	public Course cloneWithOriginalValues() {
 		CourseImpl courseImpl = new CourseImpl();
 
+		courseImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		courseImpl.setCourseId(this.<Long>getColumnOriginalValue("courseId"));
 		courseImpl.setCompanyId(this.<Long>getColumnOriginalValue("companyId"));
 		courseImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
@@ -634,6 +682,14 @@ public class CourseModelImpl
 	@Override
 	public CacheModel<Course> toCacheModel() {
 		CourseCacheModel courseCacheModel = new CourseCacheModel();
+
+		courseCacheModel.uuid = getUuid();
+
+		String uuid = courseCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			courseCacheModel.uuid = null;
+		}
 
 		courseCacheModel.courseId = getCourseId();
 
@@ -745,6 +801,7 @@ public class CourseModelImpl
 
 	}
 
+	private String _uuid;
 	private long _courseId;
 	private long _companyId;
 	private long _groupId;
@@ -757,6 +814,8 @@ public class CourseModelImpl
 	private String _description;
 
 	public <T> T getColumnValue(String columnName) {
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
+
 		Function<Course, Object> function =
 			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
 				columnName);
@@ -784,6 +843,7 @@ public class CourseModelImpl
 	private void _setColumnOriginalValues() {
 		_columnOriginalValues = new HashMap<String, Object>();
 
+		_columnOriginalValues.put("uuid_", _uuid);
 		_columnOriginalValues.put("courseId", _courseId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("groupId", _groupId);
@@ -793,6 +853,16 @@ public class CourseModelImpl
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("description", _description);
+	}
+
+	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new HashMap<>();
+
+		attributeNames.put("uuid_", "uuid");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
 	private transient Map<String, Object> _columnOriginalValues;
@@ -806,23 +876,25 @@ public class CourseModelImpl
 	static {
 		Map<String, Long> columnBitmasks = new HashMap<>();
 
-		columnBitmasks.put("courseId", 1L);
+		columnBitmasks.put("uuid_", 1L);
 
-		columnBitmasks.put("companyId", 2L);
+		columnBitmasks.put("courseId", 2L);
 
-		columnBitmasks.put("groupId", 4L);
+		columnBitmasks.put("companyId", 4L);
 
-		columnBitmasks.put("userId", 8L);
+		columnBitmasks.put("groupId", 8L);
 
-		columnBitmasks.put("userName", 16L);
+		columnBitmasks.put("userId", 16L);
 
-		columnBitmasks.put("createDate", 32L);
+		columnBitmasks.put("userName", 32L);
 
-		columnBitmasks.put("modifiedDate", 64L);
+		columnBitmasks.put("createDate", 64L);
 
-		columnBitmasks.put("name", 128L);
+		columnBitmasks.put("modifiedDate", 128L);
 
-		columnBitmasks.put("description", 256L);
+		columnBitmasks.put("name", 256L);
+
+		columnBitmasks.put("description", 512L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

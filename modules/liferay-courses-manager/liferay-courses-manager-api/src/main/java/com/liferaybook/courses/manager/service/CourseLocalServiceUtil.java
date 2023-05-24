@@ -217,6 +217,19 @@ public class CourseLocalServiceUtil {
 		return getService().fetchCourse(courseId);
 	}
 
+	/**
+	 * Returns the course matching the UUID and group.
+	 *
+	 * @param uuid the course's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching course, or <code>null</code> if a matching course could not be found
+	 */
+	public static Course fetchCourseByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return getService().fetchCourseByUuidAndGroupId(uuid, groupId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -235,6 +248,20 @@ public class CourseLocalServiceUtil {
 	}
 
 	/**
+	 * Returns the course matching the UUID and group.
+	 *
+	 * @param uuid the course's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching course
+	 * @throws PortalException if a matching course could not be found
+	 */
+	public static Course getCourseByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return getService().getCourseByUuidAndGroupId(uuid, groupId);
+	}
+
+	/**
 	 * Returns a range of all the courses.
 	 *
 	 * <p>
@@ -250,12 +277,51 @@ public class CourseLocalServiceUtil {
 	}
 
 	/**
+	 * Returns all the courses matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the courses
+	 * @param companyId the primary key of the company
+	 * @return the matching courses, or an empty list if no matches were found
+	 */
+	public static List<Course> getCoursesByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return getService().getCoursesByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of courses matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the courses
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of courses
+	 * @param end the upper bound of the range of courses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching courses, or an empty list if no matches were found
+	 */
+	public static List<Course> getCoursesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Course> orderByComparator) {
+
+		return getService().getCoursesByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of courses.
 	 *
 	 * @return the number of courses
 	 */
 	public static int getCoursesCount() {
 		return getService().getCoursesCount();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static List<Course> getGroupCourses(
