@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -77,7 +78,8 @@ public interface CourseLocalService
 	public Course addCourse(Course course);
 
 	public Course addCourse(
-			long userId, long groupId, String name, String description)
+			long userId, long groupId, String name, String description,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -277,7 +279,8 @@ public interface CourseLocalService
 	public Course updateCourse(Course course);
 
 	public Course updateCourse(
-			long userId, long courseId, String name, String description)
+			long userId, long courseId, String name, String description,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 }

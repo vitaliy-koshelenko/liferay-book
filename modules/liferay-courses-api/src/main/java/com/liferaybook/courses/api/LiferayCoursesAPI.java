@@ -1,6 +1,7 @@
 package com.liferaybook.courses.api;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface LiferayCoursesAPI {
 
     LiferayCourse getCourse(Long courseId);
 
-    void saveCourse(long userId, long groupId, String name, String description) throws PortalException;
+    void saveCourse(long userId, long groupId, String name, String description, ServiceContext serviceContext) throws PortalException;
 
-    void updateCourse(long userId, Long courseId, String name, String description) throws PortalException;
+    void updateCourse(long userId, Long courseId, String name, String description, ServiceContext serviceContext) throws PortalException;
 
     void deleteCourse(Long courseId) throws PortalException;
 

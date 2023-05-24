@@ -2,6 +2,8 @@ package com.liferaybook.courses.web.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -39,11 +41,12 @@ public class EditCourseMVCActionCommand extends BaseMVCActionCommand {
 
             long userId = portal.getUserId(actionRequest);
             String description = ParamUtil.getString(actionRequest, "description");
+            ServiceContext serviceContext = ServiceContextFactory.getInstance("com.liferaybook.courses.manager.model.Course", actionRequest);
             if (courseId > 0) {
-                liferayCoursesAPI.updateCourse(userId, courseId, name, description);
+                liferayCoursesAPI.updateCourse(userId, courseId, name, description, serviceContext);
             } else {
                 long groupId = portal.getScopeGroupId(actionRequest);
-                liferayCoursesAPI.saveCourse(userId, groupId, name, description);
+                liferayCoursesAPI.saveCourse(userId, groupId, name, description, serviceContext);
             }
 
         } catch (Exception e) {
