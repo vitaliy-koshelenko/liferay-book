@@ -43,6 +43,14 @@
 		<reference entity="Group" package-path="com.liferay.portal" />
 	</entity>
 
+	<entity name="CourseSubscription" local-service="true" remote-service="false">
+		<!-- PK fields -->
+		<column name="courseSubscriptionId" primary="true" type="long" />
+		<!-- Other fields -->
+		<column name="courseId" type="long" />
+		<column name="userId" type="long" />
+	</entity>
+
 	<entity name="Lecture" local-service="true" remote-service="false" uuid="true">
 		<!-- PK fields -->
 		<column name="lectureId" primary="true" type="long" />
@@ -60,7 +68,6 @@
 		<column name="description" type="String" />
 		<column name="videoLink" type="String" />
 	</entity>
-
 
 	<exceptions>
 		<exception>DuplicateCourseName</exception>
