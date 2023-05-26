@@ -1,4 +1,4 @@
-package com.liferaybook.courses.internal.upgrade.v_2_0_0;
+package com.liferaybook.courses.internal.upgrade.v2_0_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;

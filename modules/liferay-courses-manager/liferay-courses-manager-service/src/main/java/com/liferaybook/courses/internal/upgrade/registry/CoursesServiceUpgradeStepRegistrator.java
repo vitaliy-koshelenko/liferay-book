@@ -1,7 +1,7 @@
 package com.liferaybook.courses.internal.upgrade.registry;
 
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferaybook.courses.internal.upgrade.v_2_0_0.CoursesLectureUpgradeProcess;
+import com.liferaybook.courses.internal.upgrade.v2_0_0.CoursesLectureUpgradeProcess;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service = UpgradeStepRegistrator.class)
