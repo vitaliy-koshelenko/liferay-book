@@ -11,22 +11,28 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+package com.liferaybook.courses.manager.exception;
 
-package com.liferaybook.courses.manager.model.impl;
-
-import com.liferaybook.courses.manager.model.Lecture;
-import com.liferaybook.courses.manager.service.LectureLocalServiceUtil;
-
-import java.util.List;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Vitaliy Koshelenko
  */
-public class CourseImpl extends CourseBaseImpl {
+public class NoSuchCourseSubscriptionException extends NoSuchModelException {
 
-    public List<Lecture> getLectures() {
-        long courseId = getCourseId();
-        return LectureLocalServiceUtil.getCourseLectures(courseId);
-    }
+	public NoSuchCourseSubscriptionException() {
+	}
+
+	public NoSuchCourseSubscriptionException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchCourseSubscriptionException(String msg, Throwable throwable) {
+		super(msg, throwable);
+	}
+
+	public NoSuchCourseSubscriptionException(Throwable throwable) {
+		super(throwable);
+	}
 
 }

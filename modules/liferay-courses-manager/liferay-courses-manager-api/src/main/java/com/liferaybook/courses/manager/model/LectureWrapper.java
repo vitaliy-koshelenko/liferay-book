@@ -24,18 +24,19 @@ import java.util.Map;
 
 /**
  * <p>
- * This class is a wrapper for {@link Course}.
+ * This class is a wrapper for {@link Lecture}.
  * </p>
  *
  * @author Vitaliy Koshelenko
- * @see Course
+ * @see Lecture
  * @generated
  */
-public class CourseWrapper
-	extends BaseModelWrapper<Course> implements Course, ModelWrapper<Course> {
+public class LectureWrapper
+	extends BaseModelWrapper<Lecture>
+	implements Lecture, ModelWrapper<Lecture> {
 
-	public CourseWrapper(Course course) {
-		super(course);
+	public LectureWrapper(Lecture lecture) {
+		super(lecture);
 	}
 
 	@Override
@@ -43,15 +44,17 @@ public class CourseWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("uuid", getUuid());
-		attributes.put("courseId", getCourseId());
+		attributes.put("lectureId", getLectureId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("courseId", getCourseId());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("videoLink", getVideoLink());
 
 		return attributes;
 	}
@@ -64,10 +67,10 @@ public class CourseWrapper
 			setUuid(uuid);
 		}
 
-		Long courseId = (Long)attributes.get("courseId");
+		Long lectureId = (Long)attributes.get("lectureId");
 
-		if (courseId != null) {
-			setCourseId(courseId);
+		if (lectureId != null) {
+			setLectureId(lectureId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -106,6 +109,12 @@ public class CourseWrapper
 			setModifiedDate(modifiedDate);
 		}
 
+		Long courseId = (Long)attributes.get("courseId");
+
+		if (courseId != null) {
+			setCourseId(courseId);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -117,17 +126,23 @@ public class CourseWrapper
 		if (description != null) {
 			setDescription(description);
 		}
+
+		String videoLink = (String)attributes.get("videoLink");
+
+		if (videoLink != null) {
+			setVideoLink(videoLink);
+		}
 	}
 
 	@Override
-	public Course cloneWithOriginalValues() {
+	public Lecture cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
 	}
 
 	/**
-	 * Returns the company ID of this course.
+	 * Returns the company ID of this lecture.
 	 *
-	 * @return the company ID of this course
+	 * @return the company ID of this lecture
 	 */
 	@Override
 	public long getCompanyId() {
@@ -135,9 +150,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the course ID of this course.
+	 * Returns the course ID of this lecture.
 	 *
-	 * @return the course ID of this course
+	 * @return the course ID of this lecture
 	 */
 	@Override
 	public long getCourseId() {
@@ -145,9 +160,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the create date of this course.
+	 * Returns the create date of this lecture.
 	 *
-	 * @return the create date of this course
+	 * @return the create date of this lecture
 	 */
 	@Override
 	public Date getCreateDate() {
@@ -155,9 +170,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the description of this course.
+	 * Returns the description of this lecture.
 	 *
-	 * @return the description of this course
+	 * @return the description of this lecture
 	 */
 	@Override
 	public String getDescription() {
@@ -165,24 +180,29 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the group ID of this course.
+	 * Returns the group ID of this lecture.
 	 *
-	 * @return the group ID of this course
+	 * @return the group ID of this lecture
 	 */
 	@Override
 	public long getGroupId() {
 		return model.getGroupId();
 	}
 
+	/**
+	 * Returns the lecture ID of this lecture.
+	 *
+	 * @return the lecture ID of this lecture
+	 */
 	@Override
-	public java.util.List<Lecture> getLectures() {
-		return model.getLectures();
+	public long getLectureId() {
+		return model.getLectureId();
 	}
 
 	/**
-	 * Returns the modified date of this course.
+	 * Returns the modified date of this lecture.
 	 *
-	 * @return the modified date of this course
+	 * @return the modified date of this lecture
 	 */
 	@Override
 	public Date getModifiedDate() {
@@ -190,9 +210,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the name of this course.
+	 * Returns the name of this lecture.
 	 *
-	 * @return the name of this course
+	 * @return the name of this lecture
 	 */
 	@Override
 	public String getName() {
@@ -200,9 +220,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the primary key of this course.
+	 * Returns the primary key of this lecture.
 	 *
-	 * @return the primary key of this course
+	 * @return the primary key of this lecture
 	 */
 	@Override
 	public long getPrimaryKey() {
@@ -210,9 +230,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the user ID of this course.
+	 * Returns the user ID of this lecture.
 	 *
-	 * @return the user ID of this course
+	 * @return the user ID of this lecture
 	 */
 	@Override
 	public long getUserId() {
@@ -220,9 +240,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the user name of this course.
+	 * Returns the user name of this lecture.
 	 *
-	 * @return the user name of this course
+	 * @return the user name of this lecture
 	 */
 	@Override
 	public String getUserName() {
@@ -230,9 +250,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the user uuid of this course.
+	 * Returns the user uuid of this lecture.
 	 *
-	 * @return the user uuid of this course
+	 * @return the user uuid of this lecture
 	 */
 	@Override
 	public String getUserUuid() {
@@ -240,13 +260,23 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Returns the uuid of this course.
+	 * Returns the uuid of this lecture.
 	 *
-	 * @return the uuid of this course
+	 * @return the uuid of this lecture
 	 */
 	@Override
 	public String getUuid() {
 		return model.getUuid();
+	}
+
+	/**
+	 * Returns the video link of this lecture.
+	 *
+	 * @return the video link of this lecture
+	 */
+	@Override
+	public String getVideoLink() {
+		return model.getVideoLink();
 	}
 
 	@Override
@@ -255,9 +285,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the company ID of this course.
+	 * Sets the company ID of this lecture.
 	 *
-	 * @param companyId the company ID of this course
+	 * @param companyId the company ID of this lecture
 	 */
 	@Override
 	public void setCompanyId(long companyId) {
@@ -265,9 +295,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the course ID of this course.
+	 * Sets the course ID of this lecture.
 	 *
-	 * @param courseId the course ID of this course
+	 * @param courseId the course ID of this lecture
 	 */
 	@Override
 	public void setCourseId(long courseId) {
@@ -275,9 +305,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the create date of this course.
+	 * Sets the create date of this lecture.
 	 *
-	 * @param createDate the create date of this course
+	 * @param createDate the create date of this lecture
 	 */
 	@Override
 	public void setCreateDate(Date createDate) {
@@ -285,9 +315,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the description of this course.
+	 * Sets the description of this lecture.
 	 *
-	 * @param description the description of this course
+	 * @param description the description of this lecture
 	 */
 	@Override
 	public void setDescription(String description) {
@@ -295,9 +325,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the group ID of this course.
+	 * Sets the group ID of this lecture.
 	 *
-	 * @param groupId the group ID of this course
+	 * @param groupId the group ID of this lecture
 	 */
 	@Override
 	public void setGroupId(long groupId) {
@@ -305,9 +335,19 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the modified date of this course.
+	 * Sets the lecture ID of this lecture.
 	 *
-	 * @param modifiedDate the modified date of this course
+	 * @param lectureId the lecture ID of this lecture
+	 */
+	@Override
+	public void setLectureId(long lectureId) {
+		model.setLectureId(lectureId);
+	}
+
+	/**
+	 * Sets the modified date of this lecture.
+	 *
+	 * @param modifiedDate the modified date of this lecture
 	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
@@ -315,9 +355,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the name of this course.
+	 * Sets the name of this lecture.
 	 *
-	 * @param name the name of this course
+	 * @param name the name of this lecture
 	 */
 	@Override
 	public void setName(String name) {
@@ -325,9 +365,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the primary key of this course.
+	 * Sets the primary key of this lecture.
 	 *
-	 * @param primaryKey the primary key of this course
+	 * @param primaryKey the primary key of this lecture
 	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
@@ -335,9 +375,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the user ID of this course.
+	 * Sets the user ID of this lecture.
 	 *
-	 * @param userId the user ID of this course
+	 * @param userId the user ID of this lecture
 	 */
 	@Override
 	public void setUserId(long userId) {
@@ -345,9 +385,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the user name of this course.
+	 * Sets the user name of this lecture.
 	 *
-	 * @param userName the user name of this course
+	 * @param userName the user name of this lecture
 	 */
 	@Override
 	public void setUserName(String userName) {
@@ -355,9 +395,9 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the user uuid of this course.
+	 * Sets the user uuid of this lecture.
 	 *
-	 * @param userUuid the user uuid of this course
+	 * @param userUuid the user uuid of this lecture
 	 */
 	@Override
 	public void setUserUuid(String userUuid) {
@@ -365,13 +405,23 @@ public class CourseWrapper
 	}
 
 	/**
-	 * Sets the uuid of this course.
+	 * Sets the uuid of this lecture.
 	 *
-	 * @param uuid the uuid of this course
+	 * @param uuid the uuid of this lecture
 	 */
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	/**
+	 * Sets the video link of this lecture.
+	 *
+	 * @param videoLink the video link of this lecture
+	 */
+	@Override
+	public void setVideoLink(String videoLink) {
+		model.setVideoLink(videoLink);
 	}
 
 	@Override
@@ -385,8 +435,8 @@ public class CourseWrapper
 	}
 
 	@Override
-	protected CourseWrapper wrap(Course course) {
-		return new CourseWrapper(course);
+	protected LectureWrapper wrap(Lecture lecture) {
+		return new LectureWrapper(lecture);
 	}
 
 }

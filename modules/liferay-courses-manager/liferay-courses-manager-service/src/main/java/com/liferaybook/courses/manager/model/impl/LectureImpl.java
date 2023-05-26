@@ -14,8 +14,17 @@
 
 package com.liferaybook.courses.manager.model.impl;
 
+import com.liferaybook.courses.manager.model.Course;
+import com.liferaybook.courses.manager.service.CourseLocalServiceUtil;
+
 /**
  * @author Vitaliy Koshelenko
  */
 public class LectureImpl extends LectureBaseImpl {
+
+    public Course getCourse() {
+        long courseId = getCourseId();
+        return CourseLocalServiceUtil.fetchCourse(courseId);
+    }
+
 }

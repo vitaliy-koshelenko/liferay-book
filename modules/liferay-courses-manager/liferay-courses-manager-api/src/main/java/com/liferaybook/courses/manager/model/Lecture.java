@@ -21,29 +21,29 @@ import com.liferay.portal.kernel.util.Accessor;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * The extended model interface for the Course service. Represents a row in the &quot;lb_Course&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the Lecture service. Represents a row in the &quot;lb_Lecture&quot; database table, with each column mapped to a property of this class.
  *
  * @author Vitaliy Koshelenko
- * @see CourseModel
+ * @see LectureModel
  * @generated
  */
 @ImplementationClassName(
-	"com.liferaybook.courses.manager.model.impl.CourseImpl"
+	"com.liferaybook.courses.manager.model.impl.LectureImpl"
 )
 @ProviderType
-public interface Course extends CourseModel, PersistedModel {
+public interface Lecture extends LectureModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferaybook.courses.manager.model.impl.CourseImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferaybook.courses.manager.model.impl.LectureImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Course, Long> COURSE_ID_ACCESSOR =
-		new Accessor<Course, Long>() {
+	public static final Accessor<Lecture, Long> LECTURE_ID_ACCESSOR =
+		new Accessor<Lecture, Long>() {
 
 			@Override
-			public Long get(Course course) {
-				return course.getCourseId();
+			public Long get(Lecture lecture) {
+				return lecture.getLectureId();
 			}
 
 			@Override
@@ -52,12 +52,10 @@ public interface Course extends CourseModel, PersistedModel {
 			}
 
 			@Override
-			public Class<Course> getTypeClass() {
-				return Course.class;
+			public Class<Lecture> getTypeClass() {
+				return Lecture.class;
 			}
 
 		};
-
-	public java.util.List<Lecture> getLectures();
 
 }
