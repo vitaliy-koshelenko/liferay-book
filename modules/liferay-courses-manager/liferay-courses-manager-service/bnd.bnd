@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Courses Manager Service
 Bundle-SymbolicName: com.liferaybook.courses.manager.service
 Bundle-Version: 1.0.0
-Liferay-Require-SchemaVersion: 2.0.1
+Liferay-Require-SchemaVersion: 2.0.2
 Liferay-Service: true
 -dsannotations-options: inherit
