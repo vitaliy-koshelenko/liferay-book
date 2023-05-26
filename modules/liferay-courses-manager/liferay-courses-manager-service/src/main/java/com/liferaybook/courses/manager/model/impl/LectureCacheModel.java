@@ -59,9 +59,11 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(17);
 
-		sb.append("{lectureId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", lectureId=");
 		sb.append(lectureId);
 		sb.append(", companyId=");
 		sb.append(companyId);
@@ -83,6 +85,13 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 	@Override
 	public Lecture toEntityModel() {
 		LectureImpl lectureImpl = new LectureImpl();
+
+		if (uuid == null) {
+			lectureImpl.setUuid("");
+		}
+		else {
+			lectureImpl.setUuid(uuid);
+		}
 
 		lectureImpl.setLectureId(lectureId);
 		lectureImpl.setCompanyId(companyId);
@@ -117,6 +126,8 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		lectureId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -131,6 +142,13 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(lectureId);
 
 		objectOutput.writeLong(companyId);
@@ -161,6 +179,7 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 		}
 	}
 
+	public String uuid;
 	public long lectureId;
 	public long companyId;
 	public long groupId;

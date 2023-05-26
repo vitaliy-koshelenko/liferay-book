@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -66,16 +67,17 @@ public class LectureModelImpl
 	public static final String TABLE_NAME = "lb_Lecture";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"lectureId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"groupId", Types.BIGINT}, {"courseId", Types.BIGINT},
-		{"name", Types.VARCHAR}, {"description", Types.VARCHAR},
-		{"videoLink", Types.VARCHAR}
+		{"uuid_", Types.VARCHAR}, {"lectureId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"courseId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"description", Types.VARCHAR}, {"videoLink", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
 		new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lectureId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
@@ -86,7 +88,7 @@ public class LectureModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Lecture (lectureId LONG not null primary key,companyId LONG,groupId LONG,courseId LONG,name VARCHAR(75) null,description VARCHAR(75) null,videoLink VARCHAR(75) null)";
+		"create table lb_Lecture (uuid_ VARCHAR(75) null,lectureId LONG not null primary key,companyId LONG,groupId LONG,courseId LONG,name VARCHAR(75) null,description VARCHAR(75) null,videoLink VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Lecture";
 
@@ -103,11 +105,29 @@ public class LectureModelImpl
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 4L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long LECTUREID_COLUMN_BITMASK = 1L;
+	public static final long LECTUREID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -216,6 +236,7 @@ public class LectureModelImpl
 			Map<String, Function<Lecture, Object>> attributeGetterFunctions =
 				new LinkedHashMap<String, Function<Lecture, Object>>();
 
+			attributeGetterFunctions.put("uuid", Lecture::getUuid);
 			attributeGetterFunctions.put("lectureId", Lecture::getLectureId);
 			attributeGetterFunctions.put("companyId", Lecture::getCompanyId);
 			attributeGetterFunctions.put("groupId", Lecture::getGroupId);
@@ -241,6 +262,8 @@ public class LectureModelImpl
 				new LinkedHashMap<String, BiConsumer<Lecture, ?>>();
 
 			attributeSetterBiConsumers.put(
+				"uuid", (BiConsumer<Lecture, String>)Lecture::setUuid);
+			attributeSetterBiConsumers.put(
 				"lectureId", (BiConsumer<Lecture, Long>)Lecture::setLectureId);
 			attributeSetterBiConsumers.put(
 				"companyId", (BiConsumer<Lecture, Long>)Lecture::setCompanyId);
@@ -261,6 +284,34 @@ public class LectureModelImpl
 				(Map)attributeSetterBiConsumers);
 		}
 
+	}
+
+	@Override
+	public String getUuid() {
+		if (_uuid == null) {
+			return "";
+		}
+		else {
+			return _uuid;
+		}
+	}
+
+	@Override
+	public void setUuid(String uuid) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_uuid = uuid;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalUuid() {
+		return getColumnOriginalValue("uuid_");
 	}
 
 	@Override
@@ -291,6 +342,16 @@ public class LectureModelImpl
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalCompanyId() {
+		return GetterUtil.getLong(
+			this.<Long>getColumnOriginalValue("companyId"));
+	}
+
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -303,6 +364,15 @@ public class LectureModelImpl
 		}
 
 		_groupId = groupId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalGroupId() {
+		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
 	}
 
 	@Override
@@ -432,6 +502,7 @@ public class LectureModelImpl
 	public Object clone() {
 		LectureImpl lectureImpl = new LectureImpl();
 
+		lectureImpl.setUuid(getUuid());
 		lectureImpl.setLectureId(getLectureId());
 		lectureImpl.setCompanyId(getCompanyId());
 		lectureImpl.setGroupId(getGroupId());
@@ -449,6 +520,7 @@ public class LectureModelImpl
 	public Lecture cloneWithOriginalValues() {
 		LectureImpl lectureImpl = new LectureImpl();
 
+		lectureImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		lectureImpl.setLectureId(
 			this.<Long>getColumnOriginalValue("lectureId"));
 		lectureImpl.setCompanyId(
@@ -534,6 +606,14 @@ public class LectureModelImpl
 	@Override
 	public CacheModel<Lecture> toCacheModel() {
 		LectureCacheModel lectureCacheModel = new LectureCacheModel();
+
+		lectureCacheModel.uuid = getUuid();
+
+		String uuid = lectureCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			lectureCacheModel.uuid = null;
+		}
 
 		lectureCacheModel.lectureId = getLectureId();
 
@@ -628,6 +708,7 @@ public class LectureModelImpl
 
 	}
 
+	private String _uuid;
 	private long _lectureId;
 	private long _companyId;
 	private long _groupId;
@@ -637,6 +718,8 @@ public class LectureModelImpl
 	private String _videoLink;
 
 	public <T> T getColumnValue(String columnName) {
+		columnName = _attributeNames.getOrDefault(columnName, columnName);
+
 		Function<Lecture, Object> function =
 			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
 				columnName);
@@ -664,6 +747,7 @@ public class LectureModelImpl
 	private void _setColumnOriginalValues() {
 		_columnOriginalValues = new HashMap<String, Object>();
 
+		_columnOriginalValues.put("uuid_", _uuid);
 		_columnOriginalValues.put("lectureId", _lectureId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("groupId", _groupId);
@@ -671,6 +755,16 @@ public class LectureModelImpl
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("description", _description);
 		_columnOriginalValues.put("videoLink", _videoLink);
+	}
+
+	private static final Map<String, String> _attributeNames;
+
+	static {
+		Map<String, String> attributeNames = new HashMap<>();
+
+		attributeNames.put("uuid_", "uuid");
+
+		_attributeNames = Collections.unmodifiableMap(attributeNames);
 	}
 
 	private transient Map<String, Object> _columnOriginalValues;
@@ -684,19 +778,21 @@ public class LectureModelImpl
 	static {
 		Map<String, Long> columnBitmasks = new HashMap<>();
 
-		columnBitmasks.put("lectureId", 1L);
+		columnBitmasks.put("uuid_", 1L);
 
-		columnBitmasks.put("companyId", 2L);
+		columnBitmasks.put("lectureId", 2L);
 
-		columnBitmasks.put("groupId", 4L);
+		columnBitmasks.put("companyId", 4L);
 
-		columnBitmasks.put("courseId", 8L);
+		columnBitmasks.put("groupId", 8L);
 
-		columnBitmasks.put("name", 16L);
+		columnBitmasks.put("courseId", 16L);
 
-		columnBitmasks.put("description", 32L);
+		columnBitmasks.put("name", 32L);
 
-		columnBitmasks.put("videoLink", 64L);
+		columnBitmasks.put("description", 64L);
+
+		columnBitmasks.put("videoLink", 128L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

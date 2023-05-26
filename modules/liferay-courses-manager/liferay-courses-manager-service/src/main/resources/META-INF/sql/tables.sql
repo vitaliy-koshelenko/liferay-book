@@ -12,6 +12,7 @@ create table lb_Course (
 );
 
 create table lb_Lecture (
+	uuid_ VARCHAR(75) null,
 	lectureId LONG not null primary key,
 	companyId LONG,
 	groupId LONG,

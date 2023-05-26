@@ -43,7 +43,7 @@
 		<reference entity="Group" package-path="com.liferay.portal" />
 	</entity>
 
-	<entity name="Lecture" local-service="true" remote-service="false">
+	<entity name="Lecture" local-service="true" remote-service="false" uuid="true">
 		<!-- PK fields -->
 		<column name="lectureId" primary="true" type="long" />
 		<!-- Company ID / Group ID Fields -->

@@ -247,6 +247,18 @@ public abstract class LectureLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the lecture matching the UUID and group.
+	 *
+	 * @param uuid the lecture's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture fetchLectureByUuidAndGroupId(String uuid, long groupId) {
+		return lecturePersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
 	 * Returns the lecture with the primary key.
 	 *
 	 * @param lectureId the primary key of the lecture
@@ -337,6 +349,54 @@ public abstract class LectureLocalServiceBaseImpl
 		throws PortalException {
 
 		return lecturePersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns all the lectures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the lectures
+	 * @param companyId the primary key of the company
+	 * @return the matching lectures, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Lecture> getLecturesByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return lecturePersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of lectures matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the lectures
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of lectures
+	 * @param end the upper bound of the range of lectures (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching lectures, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Lecture> getLecturesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Lecture> orderByComparator) {
+
+		return lecturePersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the lecture matching the UUID and group.
+	 *
+	 * @param uuid the lecture's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching lecture
+	 * @throws PortalException if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture getLectureByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return lecturePersistence.findByUUID_G(uuid, groupId);
 	}
 
 	/**

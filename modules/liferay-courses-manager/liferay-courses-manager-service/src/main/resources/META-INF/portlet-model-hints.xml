@@ -18,6 +18,7 @@
 		</field>
 	</model>
 	<model name="com.liferaybook.courses.manager.model.Lecture">
+		<field name="uuid" type="String" />
 		<field name="lectureId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="groupId" type="long" />
