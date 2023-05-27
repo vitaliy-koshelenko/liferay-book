@@ -149,6 +149,11 @@ public class LectureWrapper
 		return model.getCompanyId();
 	}
 
+	@Override
+	public Course getCourse() {
+		return model.getCourse();
+	}
+
 	/**
 	 * Returns the course ID of this lecture.
 	 *

@@ -58,4 +58,6 @@ public interface Lecture extends LectureModel, PersistedModel {
 
 		};
 
+	public Course getCourse();
+
 }

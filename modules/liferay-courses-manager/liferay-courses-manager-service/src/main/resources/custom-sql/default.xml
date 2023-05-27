@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<custom-sql>
+	<sql id="com.liferaybook.courses.manager.service.persistence.CourseFinder.findSiteCoursesForUser">
+		<![CDATA[
+			SELECT
+				lb_Course.*
+			FROM
+				lb_Course
+					INNER JOIN lb_CourseSubscription
+							   ON lb_Course.courseId = lb_CourseSubscription.courseId
+					INNER JOIN lb_Lecture
+							   ON lb_Course.courseId = lb_Lecture.courseId
+			WHERE
+					lb_Course.groupId = ? AND
+					lb_CourseSubscription.userId = ?
+			ORDER BY
+				lb_Course.name
+		]]>
+	</sql>
+</custom-sql>

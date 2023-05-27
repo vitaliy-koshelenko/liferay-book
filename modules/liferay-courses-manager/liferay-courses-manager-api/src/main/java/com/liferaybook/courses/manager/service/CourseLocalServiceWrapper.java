@@ -406,6 +406,13 @@ public class CourseLocalServiceWrapper
 		return _courseLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public java.util.List<com.liferaybook.courses.manager.model.Course>
+		getUserCourses(long groupId, long userId) {
+
+		return _courseLocalService.getUserCourses(groupId, userId);
+	}
+
 	/**
 	 * Updates the course in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

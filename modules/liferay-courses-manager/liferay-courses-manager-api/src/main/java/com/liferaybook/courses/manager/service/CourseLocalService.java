@@ -319,6 +319,9 @@ public interface CourseLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Course> getUserCourses(long groupId, long userId);
+
 	/**
 	 * Updates the course in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

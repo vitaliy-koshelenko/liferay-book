@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.manager.service.CourseLocalServiceUtil;
+import com.liferaybook.courses.manager.service.persistence.CourseFinder;
 import com.liferaybook.courses.manager.service.persistence.CoursePersistence;
 import com.liferaybook.courses.manager.service.persistence.CourseSubscriptionPersistence;
 import com.liferaybook.courses.manager.service.persistence.LecturePersistence;
@@ -594,6 +595,9 @@ public abstract class CourseLocalServiceBaseImpl
 
 	@Reference
 	protected CoursePersistence coursePersistence;
+
+	@Reference
+	protected CourseFinder courseFinder;
 
 	@Reference
 	protected CourseSubscriptionPersistence courseSubscriptionPersistence;

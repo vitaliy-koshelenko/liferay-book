@@ -359,6 +359,10 @@ public class CourseLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static List<Course> getUserCourses(long groupId, long userId) {
+		return getService().getUserCourses(groupId, userId);
+	}
+
 	/**
 	 * Updates the course in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

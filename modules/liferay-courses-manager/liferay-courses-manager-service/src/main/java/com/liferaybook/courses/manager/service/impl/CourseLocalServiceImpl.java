@@ -38,6 +38,10 @@ import java.util.List;
 )
 public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
+	public List<Course> getUserCourses(long groupId, long userId) {
+		return courseFinder.findSiteCoursesForUser(groupId, userId);
+	}
+
 	public Course addCourse(long userId, long groupId, String name, String description, ServiceContext serviceContext) throws PortalException {
 		long courseId = counterLocalService.increment();
 		validate(courseId, groupId, name, description);
