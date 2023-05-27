@@ -53,7 +53,12 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 		LiferayCourse liferayCourse = null;
 		if (course != null) {
 			liferayCourse = new LiferayCourse();
-			BeanPropertiesUtil.copyProperties(course, liferayCourse);
+			liferayCourse.setCourseId(course.getCourseId());
+			liferayCourse.setName(course.getName());
+			liferayCourse.setDescription(course.getDescription());
+			liferayCourse.setUserName(course.getUserName());
+			liferayCourse.setCreateDate(course.getCreateDate());
+			liferayCourse.setModifiedDate(course.getModifiedDate());
 		}
 		return liferayCourse;
 	}
