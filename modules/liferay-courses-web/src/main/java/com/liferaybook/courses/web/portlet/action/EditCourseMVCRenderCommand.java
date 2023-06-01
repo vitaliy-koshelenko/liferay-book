@@ -4,7 +4,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferaybook.courses.api.LiferayCourse;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
-import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
+import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -13,7 +13,7 @@ import javax.portlet.RenderResponse;
 
 @Component(
 	property = {
-		"javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
+		"javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
 		"mvc.command.name=/courses/edit_course"
 	},
 	service = MVCRenderCommand.class
@@ -25,7 +25,7 @@ public class EditCourseMVCRenderCommand implements MVCRenderCommand {
 		long courseId = ParamUtil.getLong(renderRequest, "courseId");
 		LiferayCourse course = liferayCoursesAPI.getCourse(courseId);
 		renderRequest.setAttribute("course", course);
-		return LiferayCoursesPortletKeys.EDIT_COURSE_JSP;
+		return LiferayCoursesAdminPortletKeys.EDIT_COURSE_JSP;
 	}
 
 	@Reference

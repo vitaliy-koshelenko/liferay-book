@@ -1,17 +1,23 @@
 package com.liferaybook.courses.web.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.theme.PortletDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
+import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import java.util.Objects;
 
 @Component(
 	property = {
 		"javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
+		"javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
 		"mvc.command.name=/"
 	},
 	service = MVCRenderCommand.class
@@ -21,7 +27,14 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
 		renderRequest.setAttribute(LiferayCoursesAPI.class.getName(), liferayCoursesAPI);
-		return LiferayCoursesPortletKeys.VIEW_JSP;
+		return (Objects.equals(getPortletId(renderRequest), LiferayCoursesPortletKeys.PORTLET_ID)) ?
+				LiferayCoursesPortletKeys.VIEW_JSP : LiferayCoursesAdminPortletKeys.VIEW_JSP;
+	}
+
+	private String getPortletId(RenderRequest renderRequest) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+		return portletDisplay.getPortletName();
 	}
 
 	@Reference

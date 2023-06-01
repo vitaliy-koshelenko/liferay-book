@@ -35,17 +35,6 @@
 								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
 							</portlet:renderURL>
 							<liferay-ui:icon message="details" url="${viewCourseURL}" />
-							<%-- Edit Course --%>
-							<portlet:renderURL var="editCourseURL">
-								<portlet:param name="mvcRenderCommandName" value="/courses/edit_course" />
-								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
-							</portlet:renderURL>
-							<liferay-ui:icon message="edit" url="${editCourseURL}" />
-							<%-- Delete Course --%>
-							<portlet:actionURL name="/courses/delete_course" var="deleteCourseURL">
-								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
-							</portlet:actionURL>
-							<liferay-ui:icon-delete message="delete" confirmation="courses-delete-confirmation" url="${deleteCourseURL}" />
 						</liferay-ui:icon-menu>
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>

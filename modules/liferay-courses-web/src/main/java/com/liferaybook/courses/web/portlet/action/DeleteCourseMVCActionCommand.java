@@ -5,7 +5,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
-import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
+import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -15,7 +15,7 @@ import javax.portlet.ActionResponse;
 @Component(
     immediate = true,
     property = {
-        "javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
+        "javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
         "mvc.command.name=/courses/delete_course"
     },
     service = MVCActionCommand.class
