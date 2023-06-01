@@ -2,8 +2,8 @@ package com.liferaybook.courses.web.application.list;
 
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
-import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferaybook.courses.web.application.list.constants.LiferayBookPanelKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"panel.app.order:Integer=201",
-		"panel.category.key=" + PanelCategoryKeys.SITE_ADMINISTRATION_CONTENT
+		"panel.category.key=" + LiferayBookPanelKeys.LIFERAY_BOOK
 	},
 	service = PanelApp.class
 )
