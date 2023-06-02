@@ -3,8 +3,6 @@
 <%
     LiferayLecture lecture = (LiferayLecture) request.getAttribute("lecture");
     Long courseId = (Long) request.getAttribute("courseId");
-    System.out.println("lecture=" + lecture);
-    System.out.println("courseId=" + courseId);
 %>
 
 <portlet:actionURL name="/courses/edit_lecture" var="editLectureURL" />
