@@ -7,6 +7,8 @@
 <%@ taglib prefix="clay" uri="http://liferay.com/tld/clay" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%@ page import="javax.portlet.PortletURL" %>
+<%@ page import="com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder" %>
 <%@ page import="com.liferaybook.courses.api.*" %>
 <%@ page import="com.liferaybook.courses.manager.exception.*" %>
 

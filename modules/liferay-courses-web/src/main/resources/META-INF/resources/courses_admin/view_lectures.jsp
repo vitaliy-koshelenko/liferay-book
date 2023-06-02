@@ -4,6 +4,11 @@
 	LiferayCoursesAPI coursesAPI = (LiferayCoursesAPI) request.getAttribute(LiferayCoursesAPI.class.getName());
 	LiferayCourse course = (LiferayCourse) request.getAttribute("course");
 	Long courseId = course.getCourseId();
+
+	PortletURL iteratorURL = PortletURLBuilder.create(renderResponse.createRenderURL())
+			.setMVCRenderCommandName("/courses/view_lectures")
+			.setParameter("courseId", String.valueOf(course.getCourseId()))
+			.buildPortletURL();
 %>
 
 <clay:container-fluid>
@@ -21,7 +26,8 @@
 					<clay:link href="${addLectureURL}" label="+" type="button" displayType="primary" />
 				</div>
 			</clay:sheet-header>
-			<liferay-ui:search-container total="<%= coursesAPI.getLecturesCount(courseId) %>" delta="4" emptyResultsMessage="No Lectures Found">
+			<liferay-ui:search-container iteratorURL="<%= iteratorURL %>" total="<%= coursesAPI.getLecturesCount(courseId) %>"
+										 delta="4" emptyResultsMessage="No Lectures Found">
 				<liferay-ui:search-container-results results="<%= coursesAPI.getLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
 				<liferay-ui:search-container-row className="com.liferaybook.courses.api.LiferayLecture" modelVar="lecture" keyProperty="lectureId">
 					<liferay-ui:search-container-column-text name="lectures-lecture-id" value="${lecture.lectureId}" />
