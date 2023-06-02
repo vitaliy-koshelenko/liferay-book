@@ -1938,6 +1938,255 @@ public class LecturePersistenceImpl
 	private static final String _FINDER_COLUMN_COURSEID_COURSEID_2 =
 		"lecture.courseId = ?";
 
+	private FinderPath _finderPathFetchByCourseIdAndName;
+	private FinderPath _finderPathCountByCourseIdAndName;
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or throws a <code>NoSuchLectureException</code> if it could not be found.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the matching lecture
+	 * @throws NoSuchLectureException if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture findByCourseIdAndName(long courseId, String name)
+		throws NoSuchLectureException {
+
+		Lecture lecture = fetchByCourseIdAndName(courseId, name);
+
+		if (lecture == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("courseId=");
+			sb.append(courseId);
+
+			sb.append(", name=");
+			sb.append(name);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchLectureException(sb.toString());
+		}
+
+		return lecture;
+	}
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture fetchByCourseIdAndName(long courseId, String name) {
+		return fetchByCourseIdAndName(courseId, name, true);
+	}
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture fetchByCourseIdAndName(
+		long courseId, String name, boolean useFinderCache) {
+
+		name = Objects.toString(name, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {courseId, name};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCourseIdAndName, finderArgs, this);
+		}
+
+		if (result instanceof Lecture) {
+			Lecture lecture = (Lecture)result;
+
+			if ((courseId != lecture.getCourseId()) ||
+				!Objects.equals(name, lecture.getName())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_LECTURE_WHERE);
+
+			sb.append(_FINDER_COLUMN_COURSEIDANDNAME_COURSEID_2);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_COURSEIDANDNAME_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_COURSEIDANDNAME_NAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(courseId);
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				List<Lecture> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCourseIdAndName, finderArgs,
+							list);
+					}
+				}
+				else {
+					Lecture lecture = list.get(0);
+
+					result = lecture;
+
+					cacheResult(lecture);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (Lecture)result;
+		}
+	}
+
+	/**
+	 * Removes the lecture where courseId = &#63; and name = &#63; from the database.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the lecture that was removed
+	 */
+	@Override
+	public Lecture removeByCourseIdAndName(long courseId, String name)
+		throws NoSuchLectureException {
+
+		Lecture lecture = findByCourseIdAndName(courseId, name);
+
+		return remove(lecture);
+	}
+
+	/**
+	 * Returns the number of lectures where courseId = &#63; and name = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the number of matching lectures
+	 */
+	@Override
+	public int countByCourseIdAndName(long courseId, String name) {
+		name = Objects.toString(name, "");
+
+		FinderPath finderPath = _finderPathCountByCourseIdAndName;
+
+		Object[] finderArgs = new Object[] {courseId, name};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_LECTURE_WHERE);
+
+			sb.append(_FINDER_COLUMN_COURSEIDANDNAME_COURSEID_2);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_COURSEIDANDNAME_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_COURSEIDANDNAME_NAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(courseId);
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_COURSEIDANDNAME_COURSEID_2 =
+		"lecture.courseId = ? AND ";
+
+	private static final String _FINDER_COLUMN_COURSEIDANDNAME_NAME_2 =
+		"lecture.name = ?";
+
+	private static final String _FINDER_COLUMN_COURSEIDANDNAME_NAME_3 =
+		"(lecture.name IS NULL OR lecture.name = '')";
+
 	public LecturePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -1966,6 +2215,10 @@ public class LecturePersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
 			new Object[] {lecture.getUuid(), lecture.getGroupId()}, lecture);
+
+		finderCache.putResult(
+			_finderPathFetchByCourseIdAndName,
+			new Object[] {lecture.getCourseId(), lecture.getName()}, lecture);
 	}
 
 	private int _valueObjectFinderCacheListThreshold;
@@ -2042,6 +2295,15 @@ public class LecturePersistenceImpl
 
 		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
 		finderCache.putResult(_finderPathFetchByUUID_G, args, lectureModelImpl);
+
+		args = new Object[] {
+			lectureModelImpl.getCourseId(), lectureModelImpl.getName()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByCourseIdAndName, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByCourseIdAndName, args, lectureModelImpl);
 	}
 
 	/**
@@ -2570,6 +2832,16 @@ public class LecturePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCourseId",
 			new String[] {Long.class.getName()}, new String[] {"courseId"},
 			false);
+
+		_finderPathFetchByCourseIdAndName = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByCourseIdAndName",
+			new String[] {Long.class.getName(), String.class.getName()},
+			new String[] {"courseId", "name"}, true);
+
+		_finderPathCountByCourseIdAndName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCourseIdAndName",
+			new String[] {Long.class.getName(), String.class.getName()},
+			new String[] {"courseId", "name"}, false);
 
 		_setLectureUtilPersistence(this);
 	}

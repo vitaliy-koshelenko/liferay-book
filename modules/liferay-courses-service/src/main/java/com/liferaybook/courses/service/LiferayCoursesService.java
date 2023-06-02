@@ -1,12 +1,14 @@
 package com.liferaybook.courses.service;
 
-import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferaybook.courses.api.LiferayCourse;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
+import com.liferaybook.courses.api.LiferayLecture;
 import com.liferaybook.courses.manager.model.Course;
+import com.liferaybook.courses.manager.model.Lecture;
 import com.liferaybook.courses.manager.service.CourseLocalService;
+import com.liferaybook.courses.manager.service.LectureLocalService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -49,6 +51,38 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 		courseLocalService.deleteCourse(courseId);
 	}
 
+	@Override
+	public int getLecturesCount(long courseId) {
+		return lectureLocalService.getCourseLecturesCount(courseId);
+	}
+
+	@Override
+	public List<LiferayLecture> getLectures(long courseId, int start, int end) {
+		List<Lecture> lectures = lectureLocalService.getCourseLectures(courseId, start, end);
+		return convertToLiferayLectures(lectures);
+	}
+
+	@Override
+	public LiferayLecture getLecture(Long lectureId) {
+		Lecture lecture = lectureLocalService.fetchLecture(lectureId);
+		return convertToLiferayLecture(lecture);
+	}
+
+	@Override
+	public void saveLecture(long userId, long courseId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException {
+		lectureLocalService.addLecture(userId, courseId, name, description, videoLink, serviceContext);
+	}
+
+	@Override
+	public void updateLecture(long userId, long lectureId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException {
+		lectureLocalService.updateLecture(userId, lectureId, name, description, videoLink, serviceContext);
+	}
+
+	@Override
+	public void deleteLecture(Long lectureId) throws PortalException {
+		lectureLocalService.deleteLecture(lectureId);
+	}
+
 	private LiferayCourse convertToLiferayCourse(Course course) {
 		LiferayCourse liferayCourse = null;
 		if (course != null) {
@@ -68,7 +102,29 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 				.collect(Collectors.toList());
 	}
 
+	private LiferayLecture convertToLiferayLecture(Lecture lecture) {
+		LiferayLecture liferayLecture = null;
+		if (lecture != null) {
+			liferayLecture = new LiferayLecture();
+			liferayLecture.setLectureId(lecture.getLectureId());
+			liferayLecture.setName(lecture.getName());
+			liferayLecture.setDescription(lecture.getDescription());
+			liferayLecture.setVideoLink(lecture.getVideoLink());
+			liferayLecture.setUserName(lecture.getUserName());
+			liferayLecture.setCreateDate(lecture.getCreateDate());
+			liferayLecture.setModifiedDate(lecture.getModifiedDate());
+		}
+		return liferayLecture;
+	}
+
+	private List<LiferayLecture> convertToLiferayLectures(List<Lecture> lectures) {
+		return lectures.stream().map(this::convertToLiferayLecture)
+				.collect(Collectors.toList());
+	}
+
 	@Reference
 	private CourseLocalService courseLocalService;
+	@Reference
+	private LectureLocalService lectureLocalService;
 
 }

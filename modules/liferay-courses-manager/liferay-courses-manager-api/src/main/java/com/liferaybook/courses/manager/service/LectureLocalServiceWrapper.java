@@ -51,6 +51,17 @@ public class LectureLocalServiceWrapper
 		return _lectureLocalService.addLecture(lecture);
 	}
 
+	@Override
+	public com.liferaybook.courses.manager.model.Lecture addLecture(
+			long userId, long courseId, String name, String description,
+			String videoLink,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _lectureLocalService.addLecture(
+			userId, courseId, name, description, videoLink, serviceContext);
+	}
+
 	/**
 	 * Creates a new lecture with the primary key. Does not add the lecture to the database.
 	 *
@@ -259,6 +270,18 @@ public class LectureLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferaybook.courses.manager.model.Lecture>
+		getCourseLectures(long courseId, int start, int end) {
+
+		return _lectureLocalService.getCourseLectures(courseId, start, end);
+	}
+
+	@Override
+	public int getCourseLecturesCount(long courseId) {
+		return _lectureLocalService.getCourseLecturesCount(courseId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -407,6 +430,17 @@ public class LectureLocalServiceWrapper
 		com.liferaybook.courses.manager.model.Lecture lecture) {
 
 		return _lectureLocalService.updateLecture(lecture);
+	}
+
+	@Override
+	public com.liferaybook.courses.manager.model.Lecture updateLecture(
+			long userId, long lectureId, String name, String description,
+			String videoLink,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _lectureLocalService.updateLecture(
+			userId, lectureId, name, description, videoLink, serviceContext);
 	}
 
 	@Override

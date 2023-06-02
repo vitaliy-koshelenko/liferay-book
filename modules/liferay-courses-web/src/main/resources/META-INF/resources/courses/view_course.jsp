@@ -1,7 +1,7 @@
 <%@ include file="init.jsp" %>
 
 <clay:container-fluid>
-    <clay:sheet>
+    <clay:sheet size="full">
         <clay:sheet-header>
             <h2 class="sheet-title">
                 <liferay-ui:message key="course" /> #${course.courseId}: "${course.name}"

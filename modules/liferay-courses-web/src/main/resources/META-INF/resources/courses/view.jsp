@@ -3,7 +3,7 @@
 <% LiferayCoursesAPI coursesAPI = (LiferayCoursesAPI) request.getAttribute(LiferayCoursesAPI.class.getName()); %>
 
 <clay:container-fluid>
-	<clay:sheet>
+	<clay:sheet size="full">
 		<clay:sheet-section>
 			<div class="w-100 text-right">
 				<portlet:renderURL var="addCourseURL">

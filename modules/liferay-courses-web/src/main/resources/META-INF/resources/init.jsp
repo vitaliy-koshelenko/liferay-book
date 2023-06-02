@@ -7,11 +7,8 @@
 <%@ taglib prefix="clay" uri="http://liferay.com/tld/clay" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@ page import="com.liferaybook.courses.api.LiferayCourse" %>
-<%@ page import="com.liferaybook.courses.api.LiferayCoursesAPI" %>
-<%@ page import="com.liferaybook.courses.manager.exception.CourseNameLengthException" %>
-<%@ page import="com.liferaybook.courses.manager.exception.CourseDescriptionLengthException" %>
-<%@ page import="com.liferaybook.courses.manager.exception.DuplicateCourseNameException" %>
+<%@ page import="com.liferaybook.courses.api.*" %>
+<%@ page import="com.liferaybook.courses.manager.exception.*" %>
 
 <liferay-theme:defineObjects />
 

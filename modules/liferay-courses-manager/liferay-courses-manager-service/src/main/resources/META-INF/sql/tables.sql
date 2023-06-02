@@ -27,7 +27,7 @@ create table lb_Lecture (
 	createDate DATE null,
 	modifiedDate DATE null,
 	courseId LONG,
-	name VARCHAR(75) null,
-	description VARCHAR(75) null,
-	videoLink VARCHAR(75) null
+	name VARCHAR(100) null,
+	description VARCHAR(1000) null,
+	videoLink VARCHAR(100) null
 );

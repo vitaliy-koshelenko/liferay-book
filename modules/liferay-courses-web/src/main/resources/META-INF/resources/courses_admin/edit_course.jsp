@@ -7,7 +7,7 @@
 <aui:form action="${editCourseURL}" method="post" name="fm">
     <aui:input name="courseId" type="hidden" value="${course.courseId}" />
     <clay:container-fluid>
-        <clay:sheet>
+        <clay:sheet size="full">
             <clay:sheet-header>
                 <liferay-ui:error exception="<%= DuplicateCourseNameException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= CourseNameLengthException.class %>" message="${errorMsg}" />

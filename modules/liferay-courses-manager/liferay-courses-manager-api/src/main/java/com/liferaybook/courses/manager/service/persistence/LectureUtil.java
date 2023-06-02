@@ -707,6 +707,72 @@ public class LectureUtil {
 	}
 
 	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or throws a <code>NoSuchLectureException</code> if it could not be found.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the matching lecture
+	 * @throws NoSuchLectureException if a matching lecture could not be found
+	 */
+	public static Lecture findByCourseIdAndName(long courseId, String name)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchLectureException {
+
+		return getPersistence().findByCourseIdAndName(courseId, name);
+	}
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	public static Lecture fetchByCourseIdAndName(long courseId, String name) {
+		return getPersistence().fetchByCourseIdAndName(courseId, name);
+	}
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	public static Lecture fetchByCourseIdAndName(
+		long courseId, String name, boolean useFinderCache) {
+
+		return getPersistence().fetchByCourseIdAndName(
+			courseId, name, useFinderCache);
+	}
+
+	/**
+	 * Removes the lecture where courseId = &#63; and name = &#63; from the database.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the lecture that was removed
+	 */
+	public static Lecture removeByCourseIdAndName(long courseId, String name)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchLectureException {
+
+		return getPersistence().removeByCourseIdAndName(courseId, name);
+	}
+
+	/**
+	 * Returns the number of lectures where courseId = &#63; and name = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the number of matching lectures
+	 */
+	public static int countByCourseIdAndName(long courseId, String name) {
+		return getPersistence().countByCourseIdAndName(courseId, name);
+	}
+
+	/**
 	 * Caches the lecture in the entity cache if it is enabled.
 	 *
 	 * @param lecture the lecture

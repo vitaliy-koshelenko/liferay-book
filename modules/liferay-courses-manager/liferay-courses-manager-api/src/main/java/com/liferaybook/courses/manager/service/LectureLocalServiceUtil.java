@@ -60,6 +60,16 @@ public class LectureLocalServiceUtil {
 		return getService().addLecture(lecture);
 	}
 
+	public static Lecture addLecture(
+			long userId, long courseId, String name, String description,
+			String videoLink,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().addLecture(
+			userId, courseId, name, description, videoLink, serviceContext);
+	}
+
 	/**
 	 * Creates a new lecture with the primary key. Does not add the lecture to the database.
 	 *
@@ -231,6 +241,16 @@ public class LectureLocalServiceUtil {
 		return getService().getCourseLectures(courseId);
 	}
 
+	public static List<Lecture> getCourseLectures(
+		long courseId, int start, int end) {
+
+		return getService().getCourseLectures(courseId, start, end);
+	}
+
+	public static int getCourseLecturesCount(long courseId) {
+		return getService().getCourseLecturesCount(courseId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -356,6 +376,16 @@ public class LectureLocalServiceUtil {
 	 */
 	public static Lecture updateLecture(Lecture lecture) {
 		return getService().updateLecture(lecture);
+	}
+
+	public static Lecture updateLecture(
+			long userId, long lectureId, String name, String description,
+			String videoLink,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().updateLecture(
+			userId, lectureId, name, description, videoLink, serviceContext);
 	}
 
 	public static LectureLocalService getService() {

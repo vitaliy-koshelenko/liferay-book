@@ -531,6 +531,56 @@ public interface LecturePersistence extends BasePersistence<Lecture> {
 	public int countByCourseId(long courseId);
 
 	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or throws a <code>NoSuchLectureException</code> if it could not be found.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the matching lecture
+	 * @throws NoSuchLectureException if a matching lecture could not be found
+	 */
+	public Lecture findByCourseIdAndName(long courseId, String name)
+		throws NoSuchLectureException;
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	public Lecture fetchByCourseIdAndName(long courseId, String name);
+
+	/**
+	 * Returns the lecture where courseId = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	public Lecture fetchByCourseIdAndName(
+		long courseId, String name, boolean useFinderCache);
+
+	/**
+	 * Removes the lecture where courseId = &#63; and name = &#63; from the database.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the lecture that was removed
+	 */
+	public Lecture removeByCourseIdAndName(long courseId, String name)
+		throws NoSuchLectureException;
+
+	/**
+	 * Returns the number of lectures where courseId = &#63; and name = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param name the name
+	 * @return the number of matching lectures
+	 */
+	public int countByCourseIdAndName(long courseId, String name);
+
+	/**
 	 * Caches the lecture in the entity cache if it is enabled.
 	 *
 	 * @param lecture the lecture

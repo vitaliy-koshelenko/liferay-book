@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -77,6 +78,11 @@ public interface LectureLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public Lecture addLecture(Lecture lecture);
+
+	public Lecture addLecture(
+			long userId, long courseId, String name, String description,
+			String videoLink, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	 * Creates a new lecture with the primary key. Does not add the lecture to the database.
@@ -219,6 +225,12 @@ public interface LectureLocalService
 	public List<Lecture> getCourseLectures(long courseId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Lecture> getCourseLectures(long courseId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCourseLecturesCount(long courseId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
 		PortletDataContext portletDataContext);
 
@@ -322,5 +334,10 @@ public interface LectureLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public Lecture updateLecture(Lecture lecture);
+
+	public Lecture updateLecture(
+			long userId, long lectureId, String name, String description,
+			String videoLink, ServiceContext serviceContext)
+		throws PortalException;
 
 }

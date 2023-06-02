@@ -32,15 +32,10 @@
 		<finder name="GroupId" return-type="Collection">
 			<finder-column name="groupId" />
 		</finder>
-		<finder name="CompanyId" return-type="Collection">
-			<finder-column name="companyId" />
-		</finder>
 		<finder name="GroupIdAndName" return-type="Course" unique="true">
 			<finder-column name="groupId" />
 			<finder-column name="name" />
 		</finder>
-
-		<reference entity="Group" package-path="com.liferay.portal" />
 	</entity>
 
 	<entity name="CourseSubscription" local-service="true" remote-service="false">
@@ -71,12 +66,20 @@
 		<finder name="CourseId" return-type="Collection">
 			<finder-column name="courseId" />
 		</finder>
+		<finder name="CourseIdAndName" return-type="Course" unique="true">
+			<finder-column name="courseId" />
+			<finder-column name="name" />
+		</finder>
 	</entity>
 
 	<exceptions>
 		<exception>DuplicateCourseName</exception>
 		<exception>CourseNameLength</exception>
 		<exception>CourseDescriptionLength</exception>
+		<exception>DuplicateLectureName</exception>
+		<exception>LectureNameLength</exception>
+		<exception>LectureDescriptionLength</exception>
+		<exception>LectureVideoLink</exception>
 	</exceptions>
 
 

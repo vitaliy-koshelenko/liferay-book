@@ -19,4 +19,17 @@ public interface LiferayCoursesAPI {
 
     void deleteCourse(Long courseId) throws PortalException;
 
+
+    int getLecturesCount(long courseId);
+
+    List<LiferayLecture> getLectures(long courseId, int start, int end);
+
+    LiferayLecture getLecture(Long lectureId);
+
+    void saveLecture(long userId, long courseId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException;
+
+    void updateLecture(long userId, long lectureId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException;
+
+    void deleteLecture(Long lectureId) throws PortalException;
+
 }
