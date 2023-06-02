@@ -209,6 +209,11 @@ public class CourseWrapper
 		return model.getPrimaryKey();
 	}
 
+	@Override
+	public java.util.List<CourseSubscription> getSubscriptions() {
+		return model.getSubscriptions();
+	}
+
 	/**
 	 * Returns the user ID of this course.
 	 *
@@ -247,6 +252,11 @@ public class CourseWrapper
 	@Override
 	public String getUuid() {
 		return model.getUuid();
+	}
+
+	@Override
+	public boolean isUserSubscribed(long userId) {
+		return model.isUserSubscribed(userId);
 	}
 
 	@Override

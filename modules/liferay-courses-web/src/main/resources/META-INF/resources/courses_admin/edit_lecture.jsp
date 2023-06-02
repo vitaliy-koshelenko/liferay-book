@@ -1,7 +1,7 @@
 <%@ include file="init.jsp" %>
 
 <%
-    LiferayLecture lecture = (LiferayLecture) request.getAttribute("lecture");
+    Lecture lecture = (Lecture) request.getAttribute("lecture");
     Long courseId = (Long) request.getAttribute("courseId");
 %>
 

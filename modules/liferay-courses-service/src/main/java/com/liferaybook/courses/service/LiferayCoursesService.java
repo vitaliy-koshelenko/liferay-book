@@ -1,22 +1,25 @@
 package com.liferaybook.courses.service;
 
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferaybook.courses.api.LiferayCourse;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
-import com.liferaybook.courses.api.LiferayLecture;
-import com.liferaybook.courses.manager.model.Course;
-import com.liferaybook.courses.manager.model.Lecture;
+import com.liferaybook.courses.manager.model.*;
 import com.liferaybook.courses.manager.service.CourseLocalService;
+import com.liferaybook.courses.manager.service.CourseSubscriptionLocalService;
 import com.liferaybook.courses.manager.service.LectureLocalService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component(service = LiferayCoursesAPI.class)
 public class LiferayCoursesService implements LiferayCoursesAPI {
+
+	// =====================================  COURSES ==================================================================
 
 	@Override
 	public int getCoursesCount(long groupId) {
@@ -24,16 +27,13 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
-	public List<LiferayCourse> getCourses(long groupId, int start, int end) {
-		List<Course> courses = courseLocalService
-				.getGroupCourses(groupId, start, end);
-		return convertToLiferayCourses(courses);
+	public List<Course> getCourses(long groupId, int start, int end) {
+		return courseLocalService.getGroupCourses(groupId, start, end);
 	}
 
 	@Override
-	public LiferayCourse getCourse(Long courseId) {
-		Course course = courseLocalService.fetchCourse(courseId);
-		return convertToLiferayCourse(course);
+	public Course getCourse(Long courseId) {
+		return courseLocalService.fetchCourse(courseId);
 	}
 
 	@Override
@@ -48,8 +48,65 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 
 	@Override
 	public void deleteCourse(Long courseId) throws PortalException {
-		courseLocalService.deleteCourse(courseId);
+		Course course = courseLocalService.fetchCourse(courseId);
+		if (course != null) {
+			// Delete Course Lectures
+			List<Lecture> lectures = course.getLectures();
+			if (ListUtil.isNotEmpty(lectures)) {
+				for (Lecture lecture: lectures) {
+					lectureLocalService.deleteLecture(lecture);
+				}
+			}
+			// Delete Course Subscriptions
+			List<CourseSubscription> subscriptions = course.getSubscriptions();
+			if (ListUtil.isNotEmpty(subscriptions)) {
+				for (CourseSubscription subscription: subscriptions) {
+					courseSubscriptionLocalService.deleteCourseSubscription(subscription);
+				}
+			}
+			// Delete Course
+			courseLocalService.deleteCourse(course);
+		}
 	}
+
+	// =====================================  MY COURSES ===============================================================
+
+	@Override
+	public int getMyCoursesCount(long groupId, long userId) {
+		DSLQuery dslQuery = buildMyCoursesDSLQuery(groupId, userId);
+		List<Course> courses = courseLocalService.dslQuery(dslQuery);
+		return courses.size();
+	}
+	@Override
+	public List<Course> getMyCourses(long groupId, long userId, int start, int end) {
+		GroupByStep baseQuery = (GroupByStep) buildMyCoursesDSLQuery(groupId, userId);
+		DSLQuery dslQuery = baseQuery.limit(start, end);
+		return courseLocalService.dslQuery(dslQuery);
+	}
+
+	@Override
+	public void subscribe(long userId, long courseId) {
+		courseSubscriptionLocalService.addSubscription(userId, courseId);
+	}
+
+	@Override
+	public void unsubscribe(long userId, long courseId) {
+		courseSubscriptionLocalService.removeSubscription(userId, courseId);
+	}
+
+	private DSLQuery buildMyCoursesDSLQuery(long groupId, long userId) {
+		return DSLQueryFactoryUtil
+				.select(CourseTable.INSTANCE)
+				.from(CourseTable.INSTANCE)
+				.innerJoinON(CourseSubscriptionTable.INSTANCE, CourseSubscriptionTable.INSTANCE
+						.courseId.eq(CourseTable.INSTANCE.courseId))
+				.where(
+						CourseTable.INSTANCE.groupId.eq(groupId)
+								.and(CourseSubscriptionTable.INSTANCE.userId.eq(userId))
+				);
+	}
+
+	// =====================================  LECTURES =================================================================
 
 	@Override
 	public int getLecturesCount(long courseId) {
@@ -57,15 +114,13 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
-	public List<LiferayLecture> getLectures(long courseId, int start, int end) {
-		List<Lecture> lectures = lectureLocalService.getCourseLectures(courseId, start, end);
-		return convertToLiferayLectures(lectures);
+	public List<Lecture> getLectures(long courseId, int start, int end) {
+		return lectureLocalService.getCourseLectures(courseId, start, end);
 	}
 
 	@Override
-	public LiferayLecture getLecture(Long lectureId) {
-		Lecture lecture = lectureLocalService.fetchLecture(lectureId);
-		return convertToLiferayLecture(lecture);
+	public Lecture getLecture(Long lectureId) {
+		return lectureLocalService.fetchLecture(lectureId);
 	}
 
 	@Override
@@ -83,48 +138,11 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 		lectureLocalService.deleteLecture(lectureId);
 	}
 
-	private LiferayCourse convertToLiferayCourse(Course course) {
-		LiferayCourse liferayCourse = null;
-		if (course != null) {
-			liferayCourse = new LiferayCourse();
-			liferayCourse.setCourseId(course.getCourseId());
-			liferayCourse.setName(course.getName());
-			liferayCourse.setDescription(course.getDescription());
-			liferayCourse.setUserName(course.getUserName());
-			liferayCourse.setCreateDate(course.getCreateDate());
-			liferayCourse.setModifiedDate(course.getModifiedDate());
-		}
-		return liferayCourse;
-	}
-
-	private List<LiferayCourse> convertToLiferayCourses(List<Course> courses) {
-		return courses.stream().map(this::convertToLiferayCourse)
-				.collect(Collectors.toList());
-	}
-
-	private LiferayLecture convertToLiferayLecture(Lecture lecture) {
-		LiferayLecture liferayLecture = null;
-		if (lecture != null) {
-			liferayLecture = new LiferayLecture();
-			liferayLecture.setLectureId(lecture.getLectureId());
-			liferayLecture.setName(lecture.getName());
-			liferayLecture.setDescription(lecture.getDescription());
-			liferayLecture.setVideoLink(lecture.getVideoLink());
-			liferayLecture.setUserName(lecture.getUserName());
-			liferayLecture.setCreateDate(lecture.getCreateDate());
-			liferayLecture.setModifiedDate(lecture.getModifiedDate());
-		}
-		return liferayLecture;
-	}
-
-	private List<LiferayLecture> convertToLiferayLectures(List<Lecture> lectures) {
-		return lectures.stream().map(this::convertToLiferayLecture)
-				.collect(Collectors.toList());
-	}
-
 	@Reference
 	private CourseLocalService courseLocalService;
 	@Reference
 	private LectureLocalService lectureLocalService;
+	@Reference
+	private CourseSubscriptionLocalService courseSubscriptionLocalService;
 
 }

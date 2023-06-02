@@ -15,10 +15,11 @@
 package com.liferaybook.courses.manager.service.impl;
 
 import com.liferay.portal.aop.AopService;
-
+import com.liferaybook.courses.manager.model.CourseSubscription;
 import com.liferaybook.courses.manager.service.base.CourseSubscriptionLocalServiceBaseImpl;
-
 import org.osgi.service.component.annotations.Component;
+
+import java.util.List;
 
 /**
  * @author Vitaliy Koshelenko
@@ -27,6 +28,37 @@ import org.osgi.service.component.annotations.Component;
 	property = "model.class.name=com.liferaybook.courses.manager.model.CourseSubscription",
 	service = AopService.class
 )
-public class CourseSubscriptionLocalServiceImpl
-	extends CourseSubscriptionLocalServiceBaseImpl {
+public class CourseSubscriptionLocalServiceImpl extends CourseSubscriptionLocalServiceBaseImpl {
+
+	public List<CourseSubscription> getSubscriptionsForCourse(long courseId) {
+		return courseSubscriptionPersistence.findByCourseId(courseId);
+	}
+
+	public List<CourseSubscription> getSubscriptionsForUser(long userId) {
+		return courseSubscriptionPersistence.findByUserId(userId);
+	}
+
+	public boolean isSubscribed(long userId, long courseId) {
+		CourseSubscription subscription = courseSubscriptionPersistence.fetchByCourseIdAndUserId(courseId, userId);
+		return subscription != null;
+	}
+
+	public void addSubscription(long userId, long courseId) {
+		CourseSubscription subscription = courseSubscriptionPersistence.fetchByCourseIdAndUserId(courseId, userId);
+		if (subscription == null) {
+			long courseSubscriptionId = counterLocalService.increment();
+			subscription = courseSubscriptionPersistence.create(courseSubscriptionId);
+			subscription.setUserId(userId);
+			subscription.setCourseId(courseId);
+			courseSubscriptionLocalService.updateCourseSubscription(subscription);
+		}
+	}
+
+	public void removeSubscription(long userId, long courseId) {
+		CourseSubscription subscription = courseSubscriptionPersistence.fetchByCourseIdAndUserId(courseId, userId);
+		if (subscription != null) {
+			courseSubscriptionLocalService.deleteCourseSubscription(subscription);
+		}
+	}
+
 }

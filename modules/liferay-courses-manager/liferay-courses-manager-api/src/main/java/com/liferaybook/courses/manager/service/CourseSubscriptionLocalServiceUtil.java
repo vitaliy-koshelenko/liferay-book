@@ -62,6 +62,10 @@ public class CourseSubscriptionLocalServiceUtil {
 		return getService().addCourseSubscription(courseSubscription);
 	}
 
+	public static void addSubscription(long userId, long courseId) {
+		getService().addSubscription(userId, courseId);
+	}
+
 	/**
 	 * Creates a new course subscription with the primary key. Does not add the course subscription to the database.
 	 *
@@ -288,6 +292,26 @@ public class CourseSubscriptionLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static List<CourseSubscription> getSubscriptionsForCourse(
+		long courseId) {
+
+		return getService().getSubscriptionsForCourse(courseId);
+	}
+
+	public static List<CourseSubscription> getSubscriptionsForUser(
+		long userId) {
+
+		return getService().getSubscriptionsForUser(userId);
+	}
+
+	public static boolean isSubscribed(long userId, long courseId) {
+		return getService().isSubscribed(userId, courseId);
+	}
+
+	public static void removeSubscription(long userId, long courseId) {
+		getService().removeSubscription(userId, courseId);
 	}
 
 	/**

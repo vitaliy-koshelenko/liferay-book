@@ -16,6 +16,8 @@ import org.osgi.service.component.annotations.Reference;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
+
 @Component(
     immediate = true,
     property = {
@@ -29,11 +31,11 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
     @Override
     protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
         try {
-            long courseId = ParamUtil.getLong(actionRequest, "courseId");
-            long lectureId = ParamUtil.getLong(actionRequest, "lectureId");
-            String name = ParamUtil.getString(actionRequest, "name");
-            String videoLink = ParamUtil.getString(actionRequest, "videoLink");
-            String description = ParamUtil.getString(actionRequest, "description");
+            long courseId = ParamUtil.getLong(actionRequest, COURSE_ID);
+            long lectureId = ParamUtil.getLong(actionRequest, LECTURE_ID);
+            String name = ParamUtil.getString(actionRequest, NAME);
+            String videoLink = ParamUtil.getString(actionRequest, VIDEO_LINK);
+            String description = ParamUtil.getString(actionRequest, DESCRIPTION);
             long userId = portal.getUserId(actionRequest);
             ServiceContext serviceContext = ServiceContextFactory.getInstance(Lecture.class.getName(), actionRequest);
             if (lectureId > 0) {
@@ -44,7 +46,7 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
             actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/view_lectures");
         } catch (Exception e) {
             SessionErrors.add(actionRequest, e.getClass());
-            actionRequest.setAttribute("errorMsg", e.getMessage());
+            actionRequest.setAttribute(ERROR_MSG, e.getMessage());
             actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/edit_lecture");
             hideDefaultErrorMessage(actionRequest);
         }

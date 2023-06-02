@@ -1,6 +1,6 @@
 <%@ include file="init.jsp" %>
 
-<% LiferayCourse course = (LiferayCourse) request.getAttribute("course"); %>
+<% Course course = (Course) request.getAttribute("course"); %>
 
 <portlet:actionURL name="/courses/edit_course" var="editCourseURL" />
 

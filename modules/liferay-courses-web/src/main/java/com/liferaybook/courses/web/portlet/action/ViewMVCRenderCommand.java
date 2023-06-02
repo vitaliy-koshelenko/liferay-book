@@ -26,9 +26,13 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
+		boolean isAdminPortlet = Objects.equals(getPortletId(renderRequest), LiferayCoursesAdminPortletKeys.PORTLET_ID);
 		renderRequest.setAttribute(LiferayCoursesAPI.class.getName(), liferayCoursesAPI);
-		return (Objects.equals(getPortletId(renderRequest), LiferayCoursesPortletKeys.PORTLET_ID)) ?
-				LiferayCoursesPortletKeys.VIEW_JSP : LiferayCoursesAdminPortletKeys.VIEW_JSP;
+		if (isAdminPortlet) {
+			return LiferayCoursesAdminPortletKeys.VIEW_JSP;
+		} else {
+			return LiferayCoursesPortletKeys.VIEW_JSP;
+		}
 	}
 
 	private String getPortletId(RenderRequest renderRequest) {

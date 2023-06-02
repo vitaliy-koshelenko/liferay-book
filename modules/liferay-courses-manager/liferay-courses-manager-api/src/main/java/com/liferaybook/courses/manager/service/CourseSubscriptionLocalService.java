@@ -77,6 +77,8 @@ public interface CourseSubscriptionLocalService
 	public CourseSubscription addCourseSubscription(
 		CourseSubscription courseSubscription);
 
+	public void addSubscription(long userId, long courseId);
+
 	/**
 	 * Creates a new course subscription with the primary key. Does not add the course subscription to the database.
 	 *
@@ -259,6 +261,17 @@ public interface CourseSubscriptionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CourseSubscription> getSubscriptionsForCourse(long courseId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CourseSubscription> getSubscriptionsForUser(long userId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isSubscribed(long userId, long courseId);
+
+	public void removeSubscription(long userId, long courseId);
 
 	/**
 	 * Updates the course subscription in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

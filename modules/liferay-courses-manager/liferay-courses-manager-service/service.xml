@@ -5,7 +5,7 @@
 	<author>Vitaliy Koshelenko</author>
 	<namespace>lb</namespace>
 
-	<entity name="Course" local-service="true" remote-service="false" uuid="true">
+	<entity name="Course" local-service="true" remote-service="false" uuid="true" cache-enabled="false">
 		<!-- PK fields -->
 		<column name="courseId" primary="true" type="long" />
 
@@ -38,12 +38,23 @@
 		</finder>
 	</entity>
 
-	<entity name="CourseSubscription" local-service="true" remote-service="false">
+	<entity name="CourseSubscription" local-service="true" remote-service="false" cache-enabled="false">
 		<!-- PK fields -->
 		<column name="courseSubscriptionId" primary="true" type="long" />
 		<!-- Other fields -->
 		<column name="courseId" type="long" />
 		<column name="userId" type="long" />
+		<!-- Finder methods -->
+		<finder name="CourseIdAndUserId" return-type="CourseSubscription" unique="true">
+			<finder-column name="courseId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="CourseId" return-type="Collection">
+			<finder-column name="courseId" />
+		</finder>
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
 	</entity>
 
 	<entity name="Lecture" local-service="true" remote-service="false" uuid="true">

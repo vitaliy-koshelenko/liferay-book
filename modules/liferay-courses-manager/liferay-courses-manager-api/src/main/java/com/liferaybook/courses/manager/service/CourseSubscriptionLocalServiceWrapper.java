@@ -57,6 +57,11 @@ public class CourseSubscriptionLocalServiceWrapper
 			courseSubscription);
 	}
 
+	@Override
+	public void addSubscription(long userId, long courseId) {
+		_courseSubscriptionLocalService.addSubscription(userId, courseId);
+	}
+
 	/**
 	 * Creates a new course subscription with the primary key. Does not add the course subscription to the database.
 	 *
@@ -326,6 +331,33 @@ public class CourseSubscriptionLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _courseSubscriptionLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferaybook.courses.manager.model.CourseSubscription>
+			getSubscriptionsForCourse(long courseId) {
+
+		return _courseSubscriptionLocalService.getSubscriptionsForCourse(
+			courseId);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferaybook.courses.manager.model.CourseSubscription>
+			getSubscriptionsForUser(long userId) {
+
+		return _courseSubscriptionLocalService.getSubscriptionsForUser(userId);
+	}
+
+	@Override
+	public boolean isSubscribed(long userId, long courseId) {
+		return _courseSubscriptionLocalService.isSubscribed(userId, courseId);
+	}
+
+	@Override
+	public void removeSubscription(long userId, long courseId) {
+		_courseSubscriptionLocalService.removeSubscription(userId, courseId);
 	}
 
 	/**

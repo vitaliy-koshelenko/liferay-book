@@ -60,4 +60,8 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public java.util.List<Lecture> getLectures();
 
+	public java.util.List<CourseSubscription> getSubscriptions();
+
+	public boolean isUserSubscribed(long userId);
+
 }

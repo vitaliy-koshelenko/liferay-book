@@ -14,7 +14,7 @@
             </div>
             <liferay-ui:search-container total="<%= coursesAPI.getCoursesCount(scopeGroupId) %>" delta="4" emptyResultsMessage="No Courses Found">
                 <liferay-ui:search-container-results results="<%= coursesAPI.getCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
-                <liferay-ui:search-container-row className="com.liferaybook.courses.api.LiferayCourse" modelVar="course" keyProperty="courseId">
+                <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
                     <portlet:renderURL var="viewLecturesURL">
                         <portlet:param name="mvcRenderCommandName" value="/courses/view_lectures" />
                         <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />

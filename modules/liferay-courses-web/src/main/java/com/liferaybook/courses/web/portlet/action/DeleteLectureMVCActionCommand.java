@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
+import com.liferaybook.courses.web.constants.LiferayCoursesConstants;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -25,9 +26,9 @@ public class DeleteLectureMVCActionCommand extends BaseMVCActionCommand {
     @Override
     protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
         try {
-            long courseId = ParamUtil.getLong(actionRequest, "courseId");
-            long lectureId = ParamUtil.getLong(actionRequest, "lectureId");
-            actionRequest.setAttribute("courseId", courseId);
+            long courseId = ParamUtil.getLong(actionRequest, LiferayCoursesConstants.COURSE_ID);
+            long lectureId = ParamUtil.getLong(actionRequest, LiferayCoursesConstants.LECTURE_ID);
+            actionRequest.setAttribute(LiferayCoursesConstants.COURSE_ID, courseId);
             liferayCoursesAPI.deleteLecture(lectureId);
         } catch (Exception e) {
             SessionErrors.add(actionRequest, e.getClass());

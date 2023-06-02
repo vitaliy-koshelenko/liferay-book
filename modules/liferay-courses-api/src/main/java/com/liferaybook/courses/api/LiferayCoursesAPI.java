@@ -2,16 +2,20 @@ package com.liferaybook.courses.api;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferaybook.courses.manager.model.Course;
+import com.liferaybook.courses.manager.model.Lecture;
 
 import java.util.List;
 
 public interface LiferayCoursesAPI {
 
+    // =====================================  COURSES ==================================================================
+
     int getCoursesCount(long groupId);
 
-    List<LiferayCourse> getCourses(long groupId, int start, int end);
+    List<Course> getCourses(long groupId, int start, int end);
 
-    LiferayCourse getCourse(Long courseId);
+    Course getCourse(Long courseId);
 
     void saveCourse(long userId, long groupId, String name, String description, ServiceContext serviceContext) throws PortalException;
 
@@ -19,12 +23,23 @@ public interface LiferayCoursesAPI {
 
     void deleteCourse(Long courseId) throws PortalException;
 
+    // =====================================  MY COURSES ===============================================================
+
+    int getMyCoursesCount(long groupId, long userId);
+
+    List<Course> getMyCourses(long groupId, long userId, int start, int end);
+
+    void subscribe(long userId, long courseId);
+
+    void unsubscribe(long userId, long courseId);
+
+    // =====================================  LECTURES =================================================================
 
     int getLecturesCount(long courseId);
 
-    List<LiferayLecture> getLectures(long courseId, int start, int end);
+    List<Lecture> getLectures(long courseId, int start, int end);
 
-    LiferayLecture getLecture(Long lectureId);
+    Lecture getLecture(Long lectureId);
 
     void saveLecture(long userId, long courseId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException;
 

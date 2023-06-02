@@ -191,7 +191,7 @@ public class CoursePersistenceImpl
 		List<Course> list = null;
 
 		if (useFinderCache) {
-			list = (List<Course>)finderCache.getResult(
+			list = (List<Course>)dummyFinderCache.getResult(
 				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -258,7 +258,7 @@ public class CoursePersistenceImpl
 				cacheResult(list);
 
 				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					dummyFinderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 			catch (Exception exception) {
@@ -572,7 +572,8 @@ public class CoursePersistenceImpl
 
 		Object[] finderArgs = new Object[] {uuid};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)dummyFinderCache.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -607,7 +608,7 @@ public class CoursePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				dummyFinderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -700,7 +701,7 @@ public class CoursePersistenceImpl
 		Object result = null;
 
 		if (useFinderCache) {
-			result = finderCache.getResult(
+			result = dummyFinderCache.getResult(
 				_finderPathFetchByUUID_G, finderArgs, this);
 		}
 
@@ -753,7 +754,7 @@ public class CoursePersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
+						dummyFinderCache.putResult(
 							_finderPathFetchByUUID_G, finderArgs, list);
 					}
 				}
@@ -812,7 +813,8 @@ public class CoursePersistenceImpl
 
 		Object[] finderArgs = new Object[] {uuid, groupId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)dummyFinderCache.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -851,7 +853,7 @@ public class CoursePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				dummyFinderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -976,7 +978,7 @@ public class CoursePersistenceImpl
 		List<Course> list = null;
 
 		if (useFinderCache) {
-			list = (List<Course>)finderCache.getResult(
+			list = (List<Course>)dummyFinderCache.getResult(
 				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -1049,7 +1051,7 @@ public class CoursePersistenceImpl
 				cacheResult(list);
 
 				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					dummyFinderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 			catch (Exception exception) {
@@ -1387,7 +1389,8 @@ public class CoursePersistenceImpl
 
 		Object[] finderArgs = new Object[] {uuid, companyId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)dummyFinderCache.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -1426,7 +1429,7 @@ public class CoursePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				dummyFinderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -1540,7 +1543,7 @@ public class CoursePersistenceImpl
 		List<Course> list = null;
 
 		if (useFinderCache) {
-			list = (List<Course>)finderCache.getResult(
+			list = (List<Course>)dummyFinderCache.getResult(
 				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
@@ -1596,7 +1599,7 @@ public class CoursePersistenceImpl
 				cacheResult(list);
 
 				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					dummyFinderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 			catch (Exception exception) {
@@ -1896,7 +1899,8 @@ public class CoursePersistenceImpl
 
 		Object[] finderArgs = new Object[] {groupId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)dummyFinderCache.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1920,7 +1924,7 @@ public class CoursePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				dummyFinderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -2011,7 +2015,7 @@ public class CoursePersistenceImpl
 		Object result = null;
 
 		if (useFinderCache) {
-			result = finderCache.getResult(
+			result = dummyFinderCache.getResult(
 				_finderPathFetchByGroupIdAndName, finderArgs, this);
 		}
 
@@ -2064,7 +2068,7 @@ public class CoursePersistenceImpl
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
-						finderCache.putResult(
+						dummyFinderCache.putResult(
 							_finderPathFetchByGroupIdAndName, finderArgs, list);
 					}
 				}
@@ -2123,7 +2127,8 @@ public class CoursePersistenceImpl
 
 		Object[] finderArgs = new Object[] {groupId, name};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)dummyFinderCache.getResult(
+			finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -2162,7 +2167,7 @@ public class CoursePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				dummyFinderCache.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -2206,13 +2211,14 @@ public class CoursePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(Course course) {
-		entityCache.putResult(CourseImpl.class, course.getPrimaryKey(), course);
+		dummyEntityCache.putResult(
+			CourseImpl.class, course.getPrimaryKey(), course);
 
-		finderCache.putResult(
+		dummyFinderCache.putResult(
 			_finderPathFetchByUUID_G,
 			new Object[] {course.getUuid(), course.getGroupId()}, course);
 
-		finderCache.putResult(
+		dummyFinderCache.putResult(
 			_finderPathFetchByGroupIdAndName,
 			new Object[] {course.getGroupId(), course.getName()}, course);
 	}
@@ -2234,7 +2240,7 @@ public class CoursePersistenceImpl
 		}
 
 		for (Course course : courses) {
-			if (entityCache.getResult(
+			if (dummyEntityCache.getResult(
 					CourseImpl.class, course.getPrimaryKey()) == null) {
 
 				cacheResult(course);
@@ -2251,9 +2257,9 @@ public class CoursePersistenceImpl
 	 */
 	@Override
 	public void clearCache() {
-		entityCache.clearCache(CourseImpl.class);
+		dummyEntityCache.clearCache(CourseImpl.class);
 
-		finderCache.clearCache(CourseImpl.class);
+		dummyFinderCache.clearCache(CourseImpl.class);
 	}
 
 	/**
@@ -2265,22 +2271,22 @@ public class CoursePersistenceImpl
 	 */
 	@Override
 	public void clearCache(Course course) {
-		entityCache.removeResult(CourseImpl.class, course);
+		dummyEntityCache.removeResult(CourseImpl.class, course);
 	}
 
 	@Override
 	public void clearCache(List<Course> courses) {
 		for (Course course : courses) {
-			entityCache.removeResult(CourseImpl.class, course);
+			dummyEntityCache.removeResult(CourseImpl.class, course);
 		}
 	}
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CourseImpl.class);
+		dummyFinderCache.clearCache(CourseImpl.class);
 
 		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CourseImpl.class, primaryKey);
+			dummyEntityCache.removeResult(CourseImpl.class, primaryKey);
 		}
 	}
 
@@ -2289,16 +2295,18 @@ public class CoursePersistenceImpl
 			courseModelImpl.getUuid(), courseModelImpl.getGroupId()
 		};
 
-		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
-		finderCache.putResult(_finderPathFetchByUUID_G, args, courseModelImpl);
+		dummyFinderCache.putResult(
+			_finderPathCountByUUID_G, args, Long.valueOf(1));
+		dummyFinderCache.putResult(
+			_finderPathFetchByUUID_G, args, courseModelImpl);
 
 		args = new Object[] {
 			courseModelImpl.getGroupId(), courseModelImpl.getName()
 		};
 
-		finderCache.putResult(
+		dummyFinderCache.putResult(
 			_finderPathCountByGroupIdAndName, args, Long.valueOf(1));
-		finderCache.putResult(
+		dummyFinderCache.putResult(
 			_finderPathFetchByGroupIdAndName, args, courseModelImpl);
 	}
 
@@ -2474,7 +2482,8 @@ public class CoursePersistenceImpl
 			closeSession(session);
 		}
 
-		entityCache.putResult(CourseImpl.class, courseModelImpl, false, true);
+		dummyEntityCache.putResult(
+			CourseImpl.class, courseModelImpl, false, true);
 
 		cacheUniqueFindersCache(courseModelImpl);
 
@@ -2617,7 +2626,7 @@ public class CoursePersistenceImpl
 		List<Course> list = null;
 
 		if (useFinderCache) {
-			list = (List<Course>)finderCache.getResult(
+			list = (List<Course>)dummyFinderCache.getResult(
 				finderPath, finderArgs, this);
 		}
 
@@ -2655,7 +2664,7 @@ public class CoursePersistenceImpl
 				cacheResult(list);
 
 				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					dummyFinderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
 			catch (Exception exception) {
@@ -2687,7 +2696,7 @@ public class CoursePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
+		Long count = (Long)dummyFinderCache.getResult(
 			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
@@ -2700,7 +2709,7 @@ public class CoursePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
+				dummyFinderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception exception) {
@@ -2721,7 +2730,7 @@ public class CoursePersistenceImpl
 
 	@Override
 	protected EntityCache getEntityCache() {
-		return entityCache;
+		return dummyEntityCache;
 	}
 
 	@Override
@@ -2841,7 +2850,7 @@ public class CoursePersistenceImpl
 	public void deactivate() {
 		_setCourseUtilPersistence(null);
 
-		entityCache.removeCache(CourseImpl.class.getName());
+		dummyEntityCache.removeCache(CourseImpl.class.getName());
 	}
 
 	private void _setCourseUtilPersistence(
@@ -2885,12 +2894,6 @@ public class CoursePersistenceImpl
 		super.setSessionFactory(sessionFactory);
 	}
 
-	@Reference
-	protected EntityCache entityCache;
-
-	@Reference
-	protected FinderCache finderCache;
-
 	private static final String _SQL_SELECT_COURSE =
 		"SELECT course FROM Course course";
 
@@ -2919,7 +2922,7 @@ public class CoursePersistenceImpl
 
 	@Override
 	protected FinderCache getFinderCache() {
-		return finderCache;
+		return dummyFinderCache;
 	}
 
 	@Reference

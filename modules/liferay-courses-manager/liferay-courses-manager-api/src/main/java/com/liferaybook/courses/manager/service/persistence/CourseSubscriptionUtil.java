@@ -123,6 +123,422 @@ public class CourseSubscriptionUtil {
 	}
 
 	/**
+	 * Returns the course subscription where courseId = &#63; and userId = &#63; or throws a <code>NoSuchCourseSubscriptionException</code> if it could not be found.
+	 *
+	 * @param courseId the course ID
+	 * @param userId the user ID
+	 * @return the matching course subscription
+	 * @throws NoSuchCourseSubscriptionException if a matching course subscription could not be found
+	 */
+	public static CourseSubscription findByCourseIdAndUserId(
+			long courseId, long userId)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByCourseIdAndUserId(courseId, userId);
+	}
+
+	/**
+	 * Returns the course subscription where courseId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param userId the user ID
+	 * @return the matching course subscription, or <code>null</code> if a matching course subscription could not be found
+	 */
+	public static CourseSubscription fetchByCourseIdAndUserId(
+		long courseId, long userId) {
+
+		return getPersistence().fetchByCourseIdAndUserId(courseId, userId);
+	}
+
+	/**
+	 * Returns the course subscription where courseId = &#63; and userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param courseId the course ID
+	 * @param userId the user ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching course subscription, or <code>null</code> if a matching course subscription could not be found
+	 */
+	public static CourseSubscription fetchByCourseIdAndUserId(
+		long courseId, long userId, boolean useFinderCache) {
+
+		return getPersistence().fetchByCourseIdAndUserId(
+			courseId, userId, useFinderCache);
+	}
+
+	/**
+	 * Removes the course subscription where courseId = &#63; and userId = &#63; from the database.
+	 *
+	 * @param courseId the course ID
+	 * @param userId the user ID
+	 * @return the course subscription that was removed
+	 */
+	public static CourseSubscription removeByCourseIdAndUserId(
+			long courseId, long userId)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().removeByCourseIdAndUserId(courseId, userId);
+	}
+
+	/**
+	 * Returns the number of course subscriptions where courseId = &#63; and userId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param userId the user ID
+	 * @return the number of matching course subscriptions
+	 */
+	public static int countByCourseIdAndUserId(long courseId, long userId) {
+		return getPersistence().countByCourseIdAndUserId(courseId, userId);
+	}
+
+	/**
+	 * Returns all the course subscriptions where courseId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @return the matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByCourseId(long courseId) {
+		return getPersistence().findByCourseId(courseId);
+	}
+
+	/**
+	 * Returns a range of all the course subscriptions where courseId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseSubscriptionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param courseId the course ID
+	 * @param start the lower bound of the range of course subscriptions
+	 * @param end the upper bound of the range of course subscriptions (not inclusive)
+	 * @return the range of matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByCourseId(
+		long courseId, int start, int end) {
+
+		return getPersistence().findByCourseId(courseId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the course subscriptions where courseId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseSubscriptionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param courseId the course ID
+	 * @param start the lower bound of the range of course subscriptions
+	 * @param end the upper bound of the range of course subscriptions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByCourseId(
+		long courseId, int start, int end,
+		OrderByComparator<CourseSubscription> orderByComparator) {
+
+		return getPersistence().findByCourseId(
+			courseId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the course subscriptions where courseId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseSubscriptionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param courseId the course ID
+	 * @param start the lower bound of the range of course subscriptions
+	 * @param end the upper bound of the range of course subscriptions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByCourseId(
+		long courseId, int start, int end,
+		OrderByComparator<CourseSubscription> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByCourseId(
+			courseId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first course subscription in the ordered set where courseId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching course subscription
+	 * @throws NoSuchCourseSubscriptionException if a matching course subscription could not be found
+	 */
+	public static CourseSubscription findByCourseId_First(
+			long courseId,
+			OrderByComparator<CourseSubscription> orderByComparator)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByCourseId_First(
+			courseId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first course subscription in the ordered set where courseId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching course subscription, or <code>null</code> if a matching course subscription could not be found
+	 */
+	public static CourseSubscription fetchByCourseId_First(
+		long courseId,
+		OrderByComparator<CourseSubscription> orderByComparator) {
+
+		return getPersistence().fetchByCourseId_First(
+			courseId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last course subscription in the ordered set where courseId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching course subscription
+	 * @throws NoSuchCourseSubscriptionException if a matching course subscription could not be found
+	 */
+	public static CourseSubscription findByCourseId_Last(
+			long courseId,
+			OrderByComparator<CourseSubscription> orderByComparator)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByCourseId_Last(
+			courseId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last course subscription in the ordered set where courseId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching course subscription, or <code>null</code> if a matching course subscription could not be found
+	 */
+	public static CourseSubscription fetchByCourseId_Last(
+		long courseId,
+		OrderByComparator<CourseSubscription> orderByComparator) {
+
+		return getPersistence().fetchByCourseId_Last(
+			courseId, orderByComparator);
+	}
+
+	/**
+	 * Returns the course subscriptions before and after the current course subscription in the ordered set where courseId = &#63;.
+	 *
+	 * @param courseSubscriptionId the primary key of the current course subscription
+	 * @param courseId the course ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next course subscription
+	 * @throws NoSuchCourseSubscriptionException if a course subscription with the primary key could not be found
+	 */
+	public static CourseSubscription[] findByCourseId_PrevAndNext(
+			long courseSubscriptionId, long courseId,
+			OrderByComparator<CourseSubscription> orderByComparator)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByCourseId_PrevAndNext(
+			courseSubscriptionId, courseId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the course subscriptions where courseId = &#63; from the database.
+	 *
+	 * @param courseId the course ID
+	 */
+	public static void removeByCourseId(long courseId) {
+		getPersistence().removeByCourseId(courseId);
+	}
+
+	/**
+	 * Returns the number of course subscriptions where courseId = &#63;.
+	 *
+	 * @param courseId the course ID
+	 * @return the number of matching course subscriptions
+	 */
+	public static int countByCourseId(long courseId) {
+		return getPersistence().countByCourseId(courseId);
+	}
+
+	/**
+	 * Returns all the course subscriptions where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @return the matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByUserId(long userId) {
+		return getPersistence().findByUserId(userId);
+	}
+
+	/**
+	 * Returns a range of all the course subscriptions where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseSubscriptionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of course subscriptions
+	 * @param end the upper bound of the range of course subscriptions (not inclusive)
+	 * @return the range of matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByUserId(
+		long userId, int start, int end) {
+
+		return getPersistence().findByUserId(userId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the course subscriptions where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseSubscriptionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of course subscriptions
+	 * @param end the upper bound of the range of course subscriptions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<CourseSubscription> orderByComparator) {
+
+		return getPersistence().findByUserId(
+			userId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the course subscriptions where userId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseSubscriptionModelImpl</code>.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param start the lower bound of the range of course subscriptions
+	 * @param end the upper bound of the range of course subscriptions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching course subscriptions
+	 */
+	public static List<CourseSubscription> findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<CourseSubscription> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByUserId(
+			userId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first course subscription in the ordered set where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching course subscription
+	 * @throws NoSuchCourseSubscriptionException if a matching course subscription could not be found
+	 */
+	public static CourseSubscription findByUserId_First(
+			long userId,
+			OrderByComparator<CourseSubscription> orderByComparator)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByUserId_First(userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first course subscription in the ordered set where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching course subscription, or <code>null</code> if a matching course subscription could not be found
+	 */
+	public static CourseSubscription fetchByUserId_First(
+		long userId, OrderByComparator<CourseSubscription> orderByComparator) {
+
+		return getPersistence().fetchByUserId_First(userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last course subscription in the ordered set where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching course subscription
+	 * @throws NoSuchCourseSubscriptionException if a matching course subscription could not be found
+	 */
+	public static CourseSubscription findByUserId_Last(
+			long userId,
+			OrderByComparator<CourseSubscription> orderByComparator)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByUserId_Last(userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last course subscription in the ordered set where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching course subscription, or <code>null</code> if a matching course subscription could not be found
+	 */
+	public static CourseSubscription fetchByUserId_Last(
+		long userId, OrderByComparator<CourseSubscription> orderByComparator) {
+
+		return getPersistence().fetchByUserId_Last(userId, orderByComparator);
+	}
+
+	/**
+	 * Returns the course subscriptions before and after the current course subscription in the ordered set where userId = &#63;.
+	 *
+	 * @param courseSubscriptionId the primary key of the current course subscription
+	 * @param userId the user ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next course subscription
+	 * @throws NoSuchCourseSubscriptionException if a course subscription with the primary key could not be found
+	 */
+	public static CourseSubscription[] findByUserId_PrevAndNext(
+			long courseSubscriptionId, long userId,
+			OrderByComparator<CourseSubscription> orderByComparator)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchCourseSubscriptionException {
+
+		return getPersistence().findByUserId_PrevAndNext(
+			courseSubscriptionId, userId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the course subscriptions where userId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 */
+	public static void removeByUserId(long userId) {
+		getPersistence().removeByUserId(userId);
+	}
+
+	/**
+	 * Returns the number of course subscriptions where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @return the number of matching course subscriptions
+	 */
+	public static int countByUserId(long userId) {
+		return getPersistence().countByUserId(userId);
+	}
+
+	/**
 	 * Caches the course subscription in the entity cache if it is enabled.
 	 *
 	 * @param courseSubscription the course subscription
