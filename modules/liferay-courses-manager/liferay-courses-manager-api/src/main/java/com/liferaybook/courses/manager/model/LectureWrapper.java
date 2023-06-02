@@ -184,6 +184,11 @@ public class LectureWrapper
 		return model.getDescription();
 	}
 
+	@Override
+	public String getEmbedVideoLink() {
+		return model.getEmbedVideoLink();
+	}
+
 	/**
 	 * Returns the group ID of this lecture.
 	 *

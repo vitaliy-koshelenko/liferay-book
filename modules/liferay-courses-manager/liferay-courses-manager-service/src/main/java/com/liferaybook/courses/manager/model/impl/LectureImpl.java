@@ -14,6 +14,8 @@
 
 package com.liferaybook.courses.manager.model.impl;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalServiceUtil;
 
@@ -26,5 +28,15 @@ public class LectureImpl extends LectureBaseImpl {
         long courseId = getCourseId();
         return CourseLocalServiceUtil.fetchCourse(courseId);
     }
+
+    public String getEmbedVideoLink() {
+        String embedLink = StringPool.BLANK;
+        String videoLink = getVideoLink();
+        if (Validator.isNotNull(videoLink)) {
+            embedLink = videoLink.replace("/watch?v=", "/embed/");
+        }
+        return embedLink;
+    }
+
 
 }

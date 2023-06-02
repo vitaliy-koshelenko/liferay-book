@@ -6,7 +6,9 @@ public class LiferayCoursesPortletKeys {
 	public static final String DISPLAY_NAME = "Liferay Courses";
 	public static final String VIEW_JSP = "/courses/view.jsp";
 	public static final String VIEW_COURSE_JSP = "/courses/view_course.jsp";
-	public static final String EDIT_COURSE_JSP = "/courses/edit_course.jsp";
+	public static final String VIEW_LECTURE_JSP = "/courses/view_lecture.jsp";
+	public static final String VIEW_LECTURES_JSP = "/courses/view_lectures.jsp";
+
 	public static final String PORTLET_ID = "com_liferaybook_courses_web_LiferayCoursesPortlet";
 
 }
