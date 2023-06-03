@@ -15,10 +15,11 @@
 	<clay:sheet size="full">
 		<clay:sheet-section>
 			<clay:sheet-header>
-				<h2 class="sheet-title">
-					<liferay-ui:message key="lectures-list" arguments="<%= new Object[]{course.getCourseId(), course.getName()} %>"  />
-				</h2>
+				<%@ include file="tabs/tabs-navigaton.jsp" %>
 			</clay:sheet-header>
+			<h2 class="sheet-title">
+				<liferay-ui:message key="lectures-list" arguments="<%= new Object[]{course.getCourseId(), course.getName()} %>"  />
+			</h2>
 			<liferay-ui:search-container iteratorURL="<%= iteratorURL %>" total="<%= coursesAPI.getLecturesCount(courseId) %>"
 										 delta="4" emptyResultsMessage="No Lectures Found">
 				<liferay-ui:search-container-results results="<%= coursesAPI.getLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
@@ -46,7 +47,7 @@
 						${courseModifiedDate}
 					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text>
-						<clay:link href="${lectureDetailsURL}" label="details" />
+						<clay:link href="${lectureDetailsURL}" label="details" small="true" type="button" displayType="secondary" />
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 				<liferay-ui:search-iterator markupView="lexicon" />

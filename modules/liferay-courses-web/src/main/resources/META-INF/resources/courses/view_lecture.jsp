@@ -1,13 +1,14 @@
 <%@ include file="init.jsp" %>
 
 <clay:container-fluid>
-    <clay:sheet>
+    <clay:sheet size="full">
         <clay:sheet-header>
+            <%@ include file="tabs/tabs-navigaton.jsp" %>
+        </clay:sheet-header>
+        <clay:sheet-section>
             <h2 class="sheet-title">
                 ${lecture.name}
             </h2>
-        </clay:sheet-header>
-        <clay:sheet-section>
             <p>
                 <b><liferay-ui:message key="lectures-user" /> :</b> ${lecture.userName}
             </p>

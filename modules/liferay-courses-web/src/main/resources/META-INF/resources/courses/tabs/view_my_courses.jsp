@@ -1,5 +1,3 @@
-<%@ include file="init.jsp" %>
-
 <%
     long userId = user.getUserId();
     LiferayCoursesAPI coursesAPI = (LiferayCoursesAPI) request.getAttribute(LiferayCoursesAPI.class.getName());
@@ -39,7 +37,7 @@
                     <portlet:param name="mvcRenderCommandName" value="/courses/view_course" />
                     <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
                 </portlet:renderURL>
-                <liferay-ui:icon message="details" url="${courseDetailsURL}" />
+                <liferay-ui:icon message="details" url="${courseDetailsURL}"  />
 
                 <liferay-ui:icon message="Lectures" url="${courseLecturesURL}" />
                 <portlet:actionURL name="/courses/subscribe" var="unsubscribeURL">

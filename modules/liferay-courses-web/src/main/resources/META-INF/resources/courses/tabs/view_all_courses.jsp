@@ -1,7 +1,4 @@
-<%@ include file="init.jsp" %>
-
 <%
-    long userId = user.getUserId();
     LiferayCoursesAPI coursesAPI = (LiferayCoursesAPI) request.getAttribute(LiferayCoursesAPI.class.getName());
     PortletURL iteratorURL = PortletURLBuilder.create(renderResponse.createRenderURL())
             .setMVCRenderCommandName("/")
@@ -34,7 +31,8 @@
                         <portlet:param name="subscribe" value="false" />
                         <portlet:param name="tab" value="all" />
                     </portlet:actionURL>
-                    <clay:link href="${unsubscribeURL}" label="unsubscribe" />
+                    <clay:link href="${unsubscribeURL}" label="unsubscribe"
+                               small="true" type="button" displayType="danger"/>
                 </c:when>
                 <c:otherwise>
                     <portlet:actionURL name="/courses/subscribe" var="subscribeURL">
@@ -42,7 +40,8 @@
                         <portlet:param name="subscribe" value="true" />
                         <portlet:param name="tab" value="all" />
                     </portlet:actionURL>
-                    <clay:link href="${subscribeURL}" label="subscribe" />
+                    <clay:link href="${subscribeURL}" label="subscribe"
+                               small="true" type="button" displayType="info"/>
                 </c:otherwise>
             </c:choose>
         </liferay-ui:search-container-column-text>
