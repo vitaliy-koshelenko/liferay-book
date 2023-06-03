@@ -6,6 +6,7 @@
 <%@ taglib prefix="liferay-ui" uri="http://liferay.com/tld/ui" %>
 <%@ taglib prefix="clay" uri="http://liferay.com/tld/clay" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="liferay-frontend" uri="http://liferay.com/tld/frontend" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 <%@ page import="com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder" %>
@@ -15,6 +16,7 @@
 <%@ page import="com.liferaybook.courses.manager.exception.*" %>
 <%@ page import="com.liferaybook.courses.manager.model.Course" %>
 <%@ page import="com.liferaybook.courses.manager.model.Lecture" %>
+<%@ page import="com.liferaybook.courses.web.screen.navigation.CoursesScreenNavigationEntryConstants" %>
 
 <liferay-theme:defineObjects />
 

@@ -1,5 +1,5 @@
 <%@ include file="init.jsp" %>
-
+<%@ include file="screens/init.jsp" %>
 <%
 	LiferayCoursesAPI coursesAPI = (LiferayCoursesAPI) request.getAttribute(LiferayCoursesAPI.class.getName());
 	Course course = (Course) request.getAttribute("course");
@@ -8,6 +8,7 @@
 	PortletURL iteratorURL = PortletURLBuilder.create(renderResponse.createRenderURL())
 			.setMVCRenderCommandName("/courses/view_lectures")
 			.setParameter("courseId", String.valueOf(course.getCourseId()))
+			.setParameter("screenNavigationCategoryKey", "lectures")
 			.buildPortletURL();
 %>
 
@@ -21,6 +22,7 @@
 				<div class="w-100 text-right">
 					<portlet:renderURL var="addLectureURL">
 						<portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
+						<portlet:param name="screenNavigationCategoryKey" value="lectures" />
 						<portlet:param name="courseId" value="<%= String.valueOf(courseId) %>" />
 					</portlet:renderURL>
 					<clay:link href="${addLectureURL}" label="+" type="button" displayType="primary" />
@@ -52,11 +54,13 @@
 								<portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
 								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
 								<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
+								<portlet:param name="screenNavigationCategoryKey" value="lectures" />
 							</portlet:renderURL>
 							<liferay-ui:icon message="edit" url="${editLectureURL}" />
 							<portlet:actionURL name="/courses/delete_lecture" var="deleteLectureURL">
 								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
 								<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
+								<portlet:param name="screenNavigationCategoryKey" value="lectures" />
 							</portlet:actionURL>
 							<liferay-ui:icon-delete message="delete" confirmation="lecture-delete-confirmation" url="${deleteLectureURL}" />
 						</liferay-ui:icon-menu>

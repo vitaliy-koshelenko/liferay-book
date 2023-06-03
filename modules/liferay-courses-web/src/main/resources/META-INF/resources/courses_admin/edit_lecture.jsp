@@ -1,4 +1,5 @@
 <%@ include file="init.jsp" %>
+<%@ include file="screens/init.jsp" %>
 
 <%
     Lecture lecture = (Lecture) request.getAttribute("lecture");
@@ -41,6 +42,7 @@
                         <portlet:renderURL var="viewLecturesURL">
                             <portlet:param name="mvcRenderCommandName" value="/courses/view_lectures" />
                             <portlet:param name="courseId" value="<%= String.valueOf(courseId) %>" />
+                            <portlet:param name="screenNavigationCategoryKey" value="lectures" />
                         </portlet:renderURL>
                         <clay:link href="${viewLecturesURL}" type="button" displayType="secondary" label="back" />
                     </div>

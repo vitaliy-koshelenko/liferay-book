@@ -49,6 +49,8 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
             actionRequest.setAttribute(ERROR_MSG, e.getMessage());
             actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/edit_lecture");
             hideDefaultErrorMessage(actionRequest);
+        } finally {
+            actionResponse.getRenderParameters().setValue("screenNavigationCategoryKey", "lectures");
         }
     }
 

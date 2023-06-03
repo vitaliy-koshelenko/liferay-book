@@ -35,6 +35,7 @@ public class DeleteLectureMVCActionCommand extends BaseMVCActionCommand {
             hideDefaultErrorMessage(actionRequest);
         } finally {
             actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/view_lectures");
+            actionResponse.getRenderParameters().setValue("screenNavigationCategoryKey", "lectures");
         }
     }
 
