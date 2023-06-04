@@ -21,7 +21,7 @@
 				<liferay-ui:message key="lectures-list" arguments="<%= new Object[]{course.getCourseId(), course.getName()} %>"  />
 			</h2>
 			<liferay-ui:search-container iteratorURL="<%= iteratorURL %>" total="<%= coursesAPI.getLecturesCount(courseId) %>"
-										 delta="4" emptyResultsMessage="No Lectures Found">
+										 delta="4" emptyResultsMessage="lectures-empty-list">
 				<liferay-ui:search-container-results results="<%= coursesAPI.getLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
 				<liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Lecture" modelVar="lecture" keyProperty="lectureId">
 					<portlet:renderURL var="lectureDetailsURL">

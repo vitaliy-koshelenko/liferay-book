@@ -7,7 +7,7 @@
 %>
 
 <liferay-ui:search-container total="<%= coursesAPI.getCoursesCount(scopeGroupId) %>" iteratorURL="<%= iteratorURL %>"
-                             delta="4" emptyResultsMessage="No Courses Found">
+                             delta="4" emptyResultsMessage="courses-empty-list">
     <liferay-ui:search-container-results results="<%= coursesAPI.getCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
     <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
         <liferay-ui:search-container-column-text name="courses-course-id" value="${course.courseId}" />

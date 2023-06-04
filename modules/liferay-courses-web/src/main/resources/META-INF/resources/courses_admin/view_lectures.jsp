@@ -29,7 +29,7 @@
 				</div>
 			</clay:sheet-header>
 			<liferay-ui:search-container iteratorURL="<%= iteratorURL %>" total="<%= coursesAPI.getLecturesCount(courseId) %>"
-										 delta="4" emptyResultsMessage="No Lectures Found">
+										 delta="4" emptyResultsMessage="lectures-empty-list">
 				<liferay-ui:search-container-results results="<%= coursesAPI.getLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
 				<liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Lecture" modelVar="lecture" keyProperty="lectureId">
 					<liferay-ui:search-container-column-text name="lectures-lecture-id" value="${lecture.lectureId}" />

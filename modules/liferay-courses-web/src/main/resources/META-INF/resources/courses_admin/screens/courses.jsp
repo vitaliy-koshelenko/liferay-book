@@ -11,7 +11,7 @@
                 </portlet:renderURL>
                 <clay:link href="${addCourseURL}" label="+" type="button" displayType="primary" />
             </div>
-            <liferay-ui:search-container total="<%= coursesAPI.getCoursesCount(scopeGroupId) %>" delta="4" emptyResultsMessage="No Courses Found">
+            <liferay-ui:search-container total="<%= coursesAPI.getCoursesCount(scopeGroupId) %>" delta="4" emptyResultsMessage="courses-empty-list">
                 <liferay-ui:search-container-results results="<%= coursesAPI.getCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
                 <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
                     <portlet:renderURL var="viewLecturesURL">
