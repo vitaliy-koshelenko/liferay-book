@@ -10,7 +10,7 @@ import javax.portlet.Portlet;
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=" + LiferayCoursesListPortletKeys.CATEGORY_NAME,
-		"com.liferay.portlet.instanceable=true",
+		"com.liferay.portlet.instanceable=false",
 		"javax.portlet.name=" + LiferayCoursesListPortletKeys.PORTLET_ID,
 		"javax.portlet.display-name=" + LiferayCoursesListPortletKeys.DISPLAY_NAME,
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
