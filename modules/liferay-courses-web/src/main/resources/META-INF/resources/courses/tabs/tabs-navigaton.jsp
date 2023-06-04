@@ -4,7 +4,7 @@
             add(
                 navigationItem -> {
                     navigationItem.setActive("my".equals(tab));
-                    navigationItem.setHref(renderResponse.createRenderURL());
+                    navigationItem.setHref(renderResponse.createRenderURL(), "tab", "my");
                     navigationItem.setLabel(LanguageUtil.get(httpServletRequest, "tab-my-courses"));
                 });
             add(
