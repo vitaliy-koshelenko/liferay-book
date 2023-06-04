@@ -1,5 +1,5 @@
 <%@ include file="init.jsp" %>
-<%@ include file="screens/init.jsp" %>
+<%@ include file="screens/screen-navigation.jsp" %>
 
 <%
     Lecture lecture = (Lecture) request.getAttribute("lecture");
