@@ -17,6 +17,7 @@
 <%@ page import="com.liferaybook.courses.manager.exception.*" %>
 <%@ page import="com.liferaybook.courses.manager.model.Course" %>
 <%@ page import="com.liferaybook.courses.manager.model.Lecture" %>
+<%@ page import="com.liferaybook.courses.web.display.context.CoursesDisplayContext" %>
 <%@ page import="com.liferaybook.courses.web.screen.navigation.CoursesScreenNavigationEntryConstants" %>
 
 <liferay-theme:defineObjects />
