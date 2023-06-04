@@ -12,6 +12,7 @@
 <%@ page import="com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder" %>
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
+<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
 <%@ page import="com.liferaybook.courses.api.LiferayCoursesAPI" %>
 <%@ page import="com.liferaybook.courses.manager.exception.*" %>
 <%@ page import="com.liferaybook.courses.manager.model.Course" %>
