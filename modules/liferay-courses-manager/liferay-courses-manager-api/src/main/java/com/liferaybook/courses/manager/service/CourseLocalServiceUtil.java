@@ -62,11 +62,12 @@ public class CourseLocalServiceUtil {
 
 	public static Course addCourse(
 			long userId, long groupId, String name, String description,
+			String urlTitle,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().addCourse(
-			userId, groupId, name, description, serviceContext);
+			userId, groupId, name, description, urlTitle, serviceContext);
 	}
 
 	/**
@@ -379,11 +380,12 @@ public class CourseLocalServiceUtil {
 
 	public static Course updateCourse(
 			long userId, long courseId, String name, String description,
+			String urlTitle,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().updateCourse(
-			userId, courseId, name, description, serviceContext);
+			userId, courseId, name, description, urlTitle, serviceContext);
 	}
 
 	public static CourseLocalService getService() {

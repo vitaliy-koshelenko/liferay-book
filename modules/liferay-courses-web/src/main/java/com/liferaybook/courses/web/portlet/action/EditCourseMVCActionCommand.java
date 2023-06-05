@@ -34,13 +34,14 @@ public class EditCourseMVCActionCommand extends BaseMVCActionCommand {
             long courseId = ParamUtil.getLong(actionRequest, COURSE_ID);
             String name = ParamUtil.getString(actionRequest, NAME);
             String description = ParamUtil.getString(actionRequest, DESCRIPTION);
+            String urlTitle = ParamUtil.getString(actionRequest, URL_TITLE);
             long userId = portal.getUserId(actionRequest);
             ServiceContext serviceContext = ServiceContextFactory.getInstance(Course.class.getName(), actionRequest);
             if (courseId > 0) {
-                liferayCoursesAPI.updateCourse(userId, courseId, name, description, serviceContext);
+                liferayCoursesAPI.updateCourse(userId, courseId, name, description, urlTitle, serviceContext);
             } else {
                 long groupId = portal.getScopeGroupId(actionRequest);
-                liferayCoursesAPI.saveCourse(userId, groupId, name, description, serviceContext);
+                liferayCoursesAPI.saveCourse(userId, groupId, name, description, urlTitle, serviceContext);
             }
         } catch (Exception e) {
             SessionErrors.add(actionRequest, e.getClass());

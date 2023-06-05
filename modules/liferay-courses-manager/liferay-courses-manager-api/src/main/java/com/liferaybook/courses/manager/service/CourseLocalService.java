@@ -81,7 +81,7 @@ public interface CourseLocalService
 
 	public Course addCourse(
 			long userId, long groupId, String name, String description,
-			ServiceContext serviceContext)
+			String urlTitle, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -337,7 +337,7 @@ public interface CourseLocalService
 
 	public Course updateCourse(
 			long userId, long courseId, String name, String description,
-			ServiceContext serviceContext)
+			String urlTitle, ServiceContext serviceContext)
 		throws PortalException;
 
 }

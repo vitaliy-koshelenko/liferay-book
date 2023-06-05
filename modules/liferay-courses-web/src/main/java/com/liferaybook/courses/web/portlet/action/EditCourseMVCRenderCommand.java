@@ -27,6 +27,7 @@ public class EditCourseMVCRenderCommand implements MVCRenderCommand {
 		long courseId = ParamUtil.getLong(renderRequest, COURSE_ID);
 		Course course = liferayCoursesAPI.getCourse(courseId);
 		renderRequest.setAttribute(COURSE, course);
+		renderRequest.setAttribute(LiferayCoursesAPI.class.getName(), liferayCoursesAPI);
 		return LiferayCoursesAdminPortletKeys.EDIT_COURSE_JSP;
 	}
 

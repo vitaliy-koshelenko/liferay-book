@@ -1,5 +1,4 @@
 <%@ include file="init.jsp" %>
-<%@ include file="screens/screen-navigation.jsp" %>
 
 <% Course course = (Course) request.getAttribute("course"); %>
 
@@ -10,6 +9,7 @@
     <clay:container-fluid>
         <clay:sheet size="full">
             <clay:sheet-header>
+                <liferay-ui:error exception="<%= DuplicateUrlTitleException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= DuplicateCourseNameException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= CourseNameLengthException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= CourseDescriptionLengthException.class %>" message="${errorMsg}" />
@@ -25,8 +25,9 @@
                 </h2>
             </clay:sheet-header>
             <clay:sheet-section>
-                <aui:input name="name" label="courses-name" value="${course.name}" />
+                <aui:input name="name" required="true" label="courses-name" value="${course.name}" onChange='<%= liferayPortletResponse.getNamespace() + "changeUrlTitle(this);" %>' />
                 <aui:input type="textarea" name="description" label="courses-description" value="${course.description}" />
+                <aui:input name="urlTitle" required="true" label="courses-url-title" value="${course.urlTitle}" />
             </clay:sheet-section>
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
                 <div class="btn-group">
@@ -39,3 +40,14 @@
         </clay:sheet>
     </clay:container-fluid>
 </aui:form>
+
+<aui:script>
+    function <portlet:namespace />changeUrlTitle(courseNameInput) {
+        const urlTitleInput = document.getElementById('<portlet:namespace />urlTitle');
+        urlTitleInput.value = courseNameInput.value
+                    .replace(/[^a-z0-9_-]/gi, '-')
+                    .replace(/^-+/, '')
+                    .replace(/--+/, '-')
+                    .toLowerCase();
+    }
+</aui:script>

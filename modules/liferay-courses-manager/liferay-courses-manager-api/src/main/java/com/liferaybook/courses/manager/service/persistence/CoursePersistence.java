@@ -531,6 +531,56 @@ public interface CoursePersistence extends BasePersistence<Course> {
 	public int countByGroupId(long groupId);
 
 	/**
+	 * Returns the course where groupId = &#63; and urlTitle = &#63; or throws a <code>NoSuchCourseException</code> if it could not be found.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the matching course
+	 * @throws NoSuchCourseException if a matching course could not be found
+	 */
+	public Course findByGroupIdAndUrlTitle(long groupId, String urlTitle)
+		throws NoSuchCourseException;
+
+	/**
+	 * Returns the course where groupId = &#63; and urlTitle = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the matching course, or <code>null</code> if a matching course could not be found
+	 */
+	public Course fetchByGroupIdAndUrlTitle(long groupId, String urlTitle);
+
+	/**
+	 * Returns the course where groupId = &#63; and urlTitle = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching course, or <code>null</code> if a matching course could not be found
+	 */
+	public Course fetchByGroupIdAndUrlTitle(
+		long groupId, String urlTitle, boolean useFinderCache);
+
+	/**
+	 * Removes the course where groupId = &#63; and urlTitle = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the course that was removed
+	 */
+	public Course removeByGroupIdAndUrlTitle(long groupId, String urlTitle)
+		throws NoSuchCourseException;
+
+	/**
+	 * Returns the number of courses where groupId = &#63; and urlTitle = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the number of matching courses
+	 */
+	public int countByGroupIdAndUrlTitle(long groupId, String urlTitle);
+
+	/**
 	 * Returns the course where groupId = &#63; and name = &#63; or throws a <code>NoSuchCourseException</code> if it could not be found.
 	 *
 	 * @param groupId the group ID

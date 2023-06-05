@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferaybook.courses.manager.exception.CourseDescriptionLengthException;
 import com.liferaybook.courses.manager.exception.CourseNameLengthException;
 import com.liferaybook.courses.manager.exception.DuplicateCourseNameException;
+import com.liferaybook.courses.manager.exception.DuplicateUrlTitleException;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.base.CourseLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
@@ -42,9 +43,9 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		return courseFinder.findSiteCoursesForUser(groupId, userId);
 	}
 
-	public Course addCourse(long userId, long groupId, String name, String description, ServiceContext serviceContext) throws PortalException {
+	public Course addCourse(long userId, long groupId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException {
 		long courseId = counterLocalService.increment();
-		validate(courseId, groupId, name, description);
+		validate(courseId, groupId, name, description, urlTitle);
 		User user = userLocalService.fetchUser(userId);
 		Course course = coursePersistence.create(courseId);
 		course.setCompanyId(serviceContext.getCompanyId());
@@ -53,19 +54,21 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		course.setUserName(user.getFullName());
 		course.setName(name);
 		course.setDescription(description);
+		course.setUrlTitle(urlTitle);
 		return courseLocalService.updateCourse(course);
 	}
 
-	public Course updateCourse(long userId, long courseId, String name, String description, ServiceContext serviceContext) throws PortalException {
+	public Course updateCourse(long userId, long courseId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException {
 		Course course = coursePersistence.findByPrimaryKey(courseId);
-		validate(courseId, course.getGroupId(), name, description);
+		validate(courseId, course.getGroupId(), name, description, urlTitle);
 		course.setUserId(userId);
 		course.setName(name);
 		course.setDescription(description);
+		course.setUrlTitle(urlTitle);
 		return courseLocalService.updateCourse(course);
 	}
 
-	private void validate(long courseId, long groupId, String name, String description) throws PortalException {
+	private void validate(long courseId, long groupId, String name, String description, String urlTitle) throws PortalException {
 		int nameMinLength = 5;
 		int nameMaxLength = ModelHintsUtil.getMaxLength(Course.class.getName(), "name");
 		if (Validator.isNull(name) || name.length() < nameMinLength || name.length() > nameMaxLength) {
@@ -80,6 +83,10 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		Course course = coursePersistence.fetchByGroupIdAndName(groupId, name);
 		if (course != null && course.getCourseId() != courseId) {
 			throw new DuplicateCourseNameException(String.format("Course name '%s' is already in use.", name));
+		}
+		course = coursePersistence.fetchByGroupIdAndUrlTitle(groupId, urlTitle);
+		if (course != null && course.getCourseId() != courseId) {
+			throw new DuplicateUrlTitleException(String.format("Course with urlTitle='%s' already exists.", urlTitle));
 		}
 	}
 

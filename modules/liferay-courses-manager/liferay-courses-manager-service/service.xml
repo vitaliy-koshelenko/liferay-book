@@ -33,10 +33,15 @@
 		<finder name="GroupId" return-type="Collection">
 			<finder-column name="groupId" />
 		</finder>
+		<finder name="GroupIdAndUrlTitle" return-type="Course" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="urlTitle" />
+		</finder>
 		<finder name="GroupIdAndName" return-type="Course" unique="true">
 			<finder-column name="groupId" />
 			<finder-column name="name" />
 		</finder>
+
 	</entity>
 
 	<entity name="CourseSubscription" local-service="true" remote-service="false" cache-enabled="false">
@@ -87,6 +92,7 @@
 
 	<exceptions>
 		<exception>DuplicateCourseName</exception>
+		<exception>DuplicateUrlTitle</exception>
 		<exception>CourseNameLength</exception>
 		<exception>CourseDescriptionLength</exception>
 		<exception>DuplicateLectureName</exception>

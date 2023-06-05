@@ -17,9 +17,9 @@ public interface LiferayCoursesAPI {
 
     Course getCourse(Long courseId);
 
-    void saveCourse(long userId, long groupId, String name, String description, ServiceContext serviceContext) throws PortalException;
+    void saveCourse(long userId, long groupId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException;
 
-    void updateCourse(long userId, Long courseId, String name, String description, ServiceContext serviceContext) throws PortalException;
+    void updateCourse(long userId, Long courseId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException;
 
     void deleteCourse(Long courseId) throws PortalException;
 
