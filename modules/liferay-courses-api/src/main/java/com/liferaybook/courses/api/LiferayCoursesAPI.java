@@ -17,6 +17,8 @@ public interface LiferayCoursesAPI {
 
     Course getCourse(Long courseId);
 
+    Course getCourse(long groupId, String urlTitle);
+
     void saveCourse(long userId, long groupId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException;
 
     void updateCourse(long userId, Long courseId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException;
@@ -41,9 +43,11 @@ public interface LiferayCoursesAPI {
 
     Lecture getLecture(Long lectureId);
 
-    void saveLecture(long userId, long courseId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException;
+    void saveLecture(long userId, long courseId, String name, String description, String videoLink,
+                     String urlTitle, ServiceContext serviceContext) throws PortalException;
 
-    void updateLecture(long userId, long lectureId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException;
+    void updateLecture(long userId, long lectureId, String name, String description, String videoLink,
+                       String urlTitle, ServiceContext serviceContext) throws PortalException;
 
     void deleteLecture(Long lectureId) throws PortalException;
 

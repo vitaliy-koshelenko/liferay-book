@@ -84,6 +84,10 @@
 		<finder name="CourseId" return-type="Collection">
 			<finder-column name="courseId" />
 		</finder>
+		<finder name="GroupIdAndUrlTitle" return-type="Course" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="urlTitle" />
+		</finder>
 		<finder name="CourseIdAndName" return-type="Course" unique="true">
 			<finder-column name="courseId" />
 			<finder-column name="name" />

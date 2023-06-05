@@ -37,6 +37,11 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
+	public Course getCourse(long groupId, String urlTitle) {
+		return courseLocalService.getCourseByUrlTitle(groupId, urlTitle);
+	}
+
+	@Override
 	public void saveCourse(long userId, long groupId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException {
 		courseLocalService.addCourse(userId, groupId, name, description, urlTitle, serviceContext);
 	}
@@ -124,13 +129,15 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
-	public void saveLecture(long userId, long courseId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException {
-		lectureLocalService.addLecture(userId, courseId, name, description, videoLink, serviceContext);
+	public void saveLecture(long userId, long courseId, String name, String description, String videoLink,
+							String urlTitle, ServiceContext serviceContext) throws PortalException {
+		lectureLocalService.addLecture(userId, courseId, name, description, videoLink, urlTitle, serviceContext);
 	}
 
 	@Override
-	public void updateLecture(long userId, long lectureId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException {
-		lectureLocalService.updateLecture(userId, lectureId, name, description, videoLink, serviceContext);
+	public void updateLecture(long userId, long lectureId, String name, String description, String videoLink,
+							  String urlTitle, ServiceContext serviceContext) throws PortalException {
+		lectureLocalService.updateLecture(userId, lectureId, name, description, videoLink, urlTitle, serviceContext);
 	}
 
 	@Override

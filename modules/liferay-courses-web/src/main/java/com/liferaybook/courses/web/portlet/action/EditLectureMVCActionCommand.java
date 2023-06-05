@@ -35,13 +35,14 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
             long lectureId = ParamUtil.getLong(actionRequest, LECTURE_ID);
             String name = ParamUtil.getString(actionRequest, NAME);
             String videoLink = ParamUtil.getString(actionRequest, VIDEO_LINK);
+            String urlTitle = ParamUtil.getString(actionRequest, URL_TITLE);
             String description = ParamUtil.getString(actionRequest, DESCRIPTION);
             long userId = portal.getUserId(actionRequest);
             ServiceContext serviceContext = ServiceContextFactory.getInstance(Lecture.class.getName(), actionRequest);
             if (lectureId > 0) {
-                liferayCoursesAPI.updateLecture(userId, lectureId, name, description, videoLink, serviceContext);
+                liferayCoursesAPI.updateLecture(userId, lectureId, name, description, videoLink, urlTitle, serviceContext);
             } else {
-                liferayCoursesAPI.saveLecture(userId, courseId, name, description, videoLink, serviceContext);
+                liferayCoursesAPI.saveLecture(userId, courseId, name, description, videoLink, urlTitle, serviceContext);
             }
             actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/view_lectures");
         } catch (Exception e) {

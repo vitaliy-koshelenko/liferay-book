@@ -707,6 +707,76 @@ public class LectureUtil {
 	}
 
 	/**
+	 * Returns the lecture where groupId = &#63; and urlTitle = &#63; or throws a <code>NoSuchLectureException</code> if it could not be found.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the matching lecture
+	 * @throws NoSuchLectureException if a matching lecture could not be found
+	 */
+	public static Lecture findByGroupIdAndUrlTitle(
+			long groupId, String urlTitle)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchLectureException {
+
+		return getPersistence().findByGroupIdAndUrlTitle(groupId, urlTitle);
+	}
+
+	/**
+	 * Returns the lecture where groupId = &#63; and urlTitle = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	public static Lecture fetchByGroupIdAndUrlTitle(
+		long groupId, String urlTitle) {
+
+		return getPersistence().fetchByGroupIdAndUrlTitle(groupId, urlTitle);
+	}
+
+	/**
+	 * Returns the lecture where groupId = &#63; and urlTitle = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	public static Lecture fetchByGroupIdAndUrlTitle(
+		long groupId, String urlTitle, boolean useFinderCache) {
+
+		return getPersistence().fetchByGroupIdAndUrlTitle(
+			groupId, urlTitle, useFinderCache);
+	}
+
+	/**
+	 * Removes the lecture where groupId = &#63; and urlTitle = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the lecture that was removed
+	 */
+	public static Lecture removeByGroupIdAndUrlTitle(
+			long groupId, String urlTitle)
+		throws com.liferaybook.courses.manager.exception.
+			NoSuchLectureException {
+
+		return getPersistence().removeByGroupIdAndUrlTitle(groupId, urlTitle);
+	}
+
+	/**
+	 * Returns the number of lectures where groupId = &#63; and urlTitle = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the number of matching lectures
+	 */
+	public static int countByGroupIdAndUrlTitle(long groupId, String urlTitle) {
+		return getPersistence().countByGroupIdAndUrlTitle(groupId, urlTitle);
+	}
+
+	/**
 	 * Returns the lecture where courseId = &#63; and name = &#63; or throws a <code>NoSuchLectureException</code> if it could not be found.
 	 *
 	 * @param courseId the course ID

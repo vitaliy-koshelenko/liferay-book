@@ -54,12 +54,13 @@ public class LectureLocalServiceWrapper
 	@Override
 	public com.liferaybook.courses.manager.model.Lecture addLecture(
 			long userId, long courseId, String name, String description,
-			String videoLink,
+			String videoLink, String urlTitle,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _lectureLocalService.addLecture(
-			userId, courseId, name, description, videoLink, serviceContext);
+			userId, courseId, name, description, videoLink, urlTitle,
+			serviceContext);
 	}
 
 	/**
@@ -435,12 +436,13 @@ public class LectureLocalServiceWrapper
 	@Override
 	public com.liferaybook.courses.manager.model.Lecture updateLecture(
 			long userId, long lectureId, String name, String description,
-			String videoLink,
+			String videoLink, String urlTitle,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _lectureLocalService.updateLecture(
-			userId, lectureId, name, description, videoLink, serviceContext);
+			userId, lectureId, name, description, videoLink, urlTitle,
+			serviceContext);
 	}
 
 	@Override

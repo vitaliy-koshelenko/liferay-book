@@ -276,6 +276,13 @@ public class CourseLocalServiceWrapper
 		return _courseLocalService.getCourse(courseId);
 	}
 
+	@Override
+	public com.liferaybook.courses.manager.model.Course getCourseByUrlTitle(
+		long groupId, String urlTitle) {
+
+		return _courseLocalService.getCourseByUrlTitle(groupId, urlTitle);
+	}
+
 	/**
 	 * Returns the course matching the UUID and group.
 	 *

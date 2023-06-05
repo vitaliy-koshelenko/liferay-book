@@ -10,7 +10,7 @@
                 <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
                     <portlet:renderURL var="courseDetailsURL">
                         <portlet:param name="mvcRenderCommandName" value="/courses/view_course" />
-                        <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+                        <portlet:param name="urlTitle" value="${course.urlTitle}" />
                     </portlet:renderURL>
                     <liferay-ui:search-container-column-text name="courses-course-id">
                         <a href="${courseDetailsURL}">${course.courseId}</a>

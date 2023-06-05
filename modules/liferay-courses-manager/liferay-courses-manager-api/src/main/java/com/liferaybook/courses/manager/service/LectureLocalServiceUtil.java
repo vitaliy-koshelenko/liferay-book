@@ -62,12 +62,13 @@ public class LectureLocalServiceUtil {
 
 	public static Lecture addLecture(
 			long userId, long courseId, String name, String description,
-			String videoLink,
+			String videoLink, String urlTitle,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().addLecture(
-			userId, courseId, name, description, videoLink, serviceContext);
+			userId, courseId, name, description, videoLink, urlTitle,
+			serviceContext);
 	}
 
 	/**
@@ -380,12 +381,13 @@ public class LectureLocalServiceUtil {
 
 	public static Lecture updateLecture(
 			long userId, long lectureId, String name, String description,
-			String videoLink,
+			String videoLink, String urlTitle,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().updateLecture(
-			userId, lectureId, name, description, videoLink, serviceContext);
+			userId, lectureId, name, description, videoLink, urlTitle,
+			serviceContext);
 	}
 
 	public static LectureLocalService getService() {

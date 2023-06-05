@@ -231,6 +231,9 @@ public interface CourseLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Course getCourse(long courseId) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Course getCourseByUrlTitle(long groupId, String urlTitle);
+
 	/**
 	 * Returns the course matching the UUID and group.
 	 *

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.liferaybook.courses.manager.exception.*;
 import com.liferaybook.courses.manager.model.Lecture;
 
 import java.io.Serializable;
@@ -81,7 +82,7 @@ public interface LectureLocalService
 
 	public Lecture addLecture(
 			long userId, long courseId, String name, String description,
-			String videoLink, ServiceContext serviceContext)
+			String videoLink, String urlTitle, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -337,7 +338,7 @@ public interface LectureLocalService
 
 	public Lecture updateLecture(
 			long userId, long lectureId, String name, String description,
-			String videoLink, ServiceContext serviceContext)
+			String videoLink, String urlTitle, ServiceContext serviceContext)
 		throws PortalException;
 
 }

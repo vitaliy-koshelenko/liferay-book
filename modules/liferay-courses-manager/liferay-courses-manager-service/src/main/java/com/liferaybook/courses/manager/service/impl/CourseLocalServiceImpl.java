@@ -39,6 +39,10 @@ import java.util.List;
 )
 public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
+	public Course getCourseByUrlTitle(long groupId, String urlTitle) {
+		return coursePersistence.fetchByGroupIdAndUrlTitle(groupId, urlTitle);
+	}
+
 	public List<Course> getUserCourses(long groupId, long userId) {
 		return courseFinder.findSiteCoursesForUser(groupId, userId);
 	}

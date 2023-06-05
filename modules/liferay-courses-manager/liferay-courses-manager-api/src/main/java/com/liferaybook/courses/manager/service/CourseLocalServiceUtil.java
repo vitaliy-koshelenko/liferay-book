@@ -248,6 +248,10 @@ public class CourseLocalServiceUtil {
 		return getService().getCourse(courseId);
 	}
 
+	public static Course getCourseByUrlTitle(long groupId, String urlTitle) {
+		return getService().getCourseByUrlTitle(groupId, urlTitle);
+	}
+
 	/**
 	 * Returns the course matching the UUID and group.
 	 *

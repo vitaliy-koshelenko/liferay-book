@@ -13,6 +13,7 @@
     <clay:container-fluid>
         <clay:sheet size="full">
             <clay:sheet-header>
+                <liferay-ui:error exception="<%= DuplicateUrlTitleException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= DuplicateLectureNameException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= LectureNameLengthException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= LectureDescriptionLengthException.class %>" message="${errorMsg}" />
@@ -29,9 +30,10 @@
                 </h2>
             </clay:sheet-header>
             <clay:sheet-section>
-                <aui:input name="name" label="lectures-name" value="${lecture.name}" />
+                <aui:input name="name" required="true" label="lectures-name" value="${lecture.name}" onChange='<%= liferayPortletResponse.getNamespace() + "changeUrlTitle(this);" %>' />
                 <aui:input type="textarea" name="description" label="lectures-description" value="${lecture.description}" />
-                <aui:input name="videoLink" label="lectures-video-link" value="${lecture.videoLink}" />
+                <aui:input name="urlTitle" required="true" label="lectures-url-title" value="${lecture.urlTitle}" />
+                <aui:input name="videoLink" required="true" label="lectures-video-link" value="${lecture.videoLink}" />
             </clay:sheet-section>
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
                 <div class="btn-group">
@@ -49,3 +51,15 @@
         </clay:sheet>
     </clay:container-fluid>
 </aui:form>
+
+<aui:script>
+    function <portlet:namespace />changeUrlTitle(courseNameInput) {
+        console.log('edit_lecture.jsp - changeUrlTitle.');
+        const urlTitleInput = document.getElementById('<portlet:namespace />urlTitle');
+        urlTitleInput.value = courseNameInput.value
+                    .replace(/[^a-z0-9_-]/gi, '-')
+                    .replace(/^-+/, '')
+                    .replace(/--+/, '-')
+                    .toLowerCase();
+    }
+</aui:script>

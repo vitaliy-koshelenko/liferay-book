@@ -29,7 +29,14 @@
 										 delta="4" emptyResultsMessage="lectures-empty-list">
 				<liferay-ui:search-container-results results="<%= coursesAPI.getLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
 				<liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Lecture" modelVar="lecture" keyProperty="lectureId">
-					<liferay-ui:search-container-column-text name="lectures-lecture-id" value="${lecture.lectureId}" />
+					<portlet:renderURL var="editLectureURL">
+						<portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
+						<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+						<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
+					</portlet:renderURL>
+					<liferay-ui:search-container-column-text name="lectures-lecture-id">
+						<a href="${editLectureURL}">${lecture.lectureId}</a>
+					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text name="lectures-name" value="${lecture.name}" />
 					<liferay-ui:search-container-column-text name="lectures-description" value="${lecture.description}" />
 					<liferay-ui:search-container-column-text name="lectures-video-link">
@@ -47,11 +54,6 @@
 					</liferay-ui:search-container-column-text>
 					<liferay-ui:search-container-column-text>
 						<liferay-ui:icon-menu direction="left-side" icon="" markupView="lexicon" message="actions" showWhenSingleIcon="<%= true %>">
-							<portlet:renderURL var="editLectureURL">
-								<portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
-								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
-								<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
-							</portlet:renderURL>
 							<liferay-ui:icon message="edit" url="${editLectureURL}" />
 							<portlet:actionURL name="/courses/delete_lecture" var="deleteLectureURL">
 								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />

@@ -1938,6 +1938,255 @@ public class LecturePersistenceImpl
 	private static final String _FINDER_COLUMN_COURSEID_COURSEID_2 =
 		"lecture.courseId = ?";
 
+	private FinderPath _finderPathFetchByGroupIdAndUrlTitle;
+	private FinderPath _finderPathCountByGroupIdAndUrlTitle;
+
+	/**
+	 * Returns the lecture where groupId = &#63; and urlTitle = &#63; or throws a <code>NoSuchLectureException</code> if it could not be found.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the matching lecture
+	 * @throws NoSuchLectureException if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture findByGroupIdAndUrlTitle(long groupId, String urlTitle)
+		throws NoSuchLectureException {
+
+		Lecture lecture = fetchByGroupIdAndUrlTitle(groupId, urlTitle);
+
+		if (lecture == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("groupId=");
+			sb.append(groupId);
+
+			sb.append(", urlTitle=");
+			sb.append(urlTitle);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchLectureException(sb.toString());
+		}
+
+		return lecture;
+	}
+
+	/**
+	 * Returns the lecture where groupId = &#63; and urlTitle = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture fetchByGroupIdAndUrlTitle(long groupId, String urlTitle) {
+		return fetchByGroupIdAndUrlTitle(groupId, urlTitle, true);
+	}
+
+	/**
+	 * Returns the lecture where groupId = &#63; and urlTitle = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching lecture, or <code>null</code> if a matching lecture could not be found
+	 */
+	@Override
+	public Lecture fetchByGroupIdAndUrlTitle(
+		long groupId, String urlTitle, boolean useFinderCache) {
+
+		urlTitle = Objects.toString(urlTitle, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {groupId, urlTitle};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByGroupIdAndUrlTitle, finderArgs, this);
+		}
+
+		if (result instanceof Lecture) {
+			Lecture lecture = (Lecture)result;
+
+			if ((groupId != lecture.getGroupId()) ||
+				!Objects.equals(urlTitle, lecture.getUrlTitle())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_LECTURE_WHERE);
+
+			sb.append(_FINDER_COLUMN_GROUPIDANDURLTITLE_GROUPID_2);
+
+			boolean bindUrlTitle = false;
+
+			if (urlTitle.isEmpty()) {
+				sb.append(_FINDER_COLUMN_GROUPIDANDURLTITLE_URLTITLE_3);
+			}
+			else {
+				bindUrlTitle = true;
+
+				sb.append(_FINDER_COLUMN_GROUPIDANDURLTITLE_URLTITLE_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				if (bindUrlTitle) {
+					queryPos.add(urlTitle);
+				}
+
+				List<Lecture> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByGroupIdAndUrlTitle, finderArgs,
+							list);
+					}
+				}
+				else {
+					Lecture lecture = list.get(0);
+
+					result = lecture;
+
+					cacheResult(lecture);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (Lecture)result;
+		}
+	}
+
+	/**
+	 * Removes the lecture where groupId = &#63; and urlTitle = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the lecture that was removed
+	 */
+	@Override
+	public Lecture removeByGroupIdAndUrlTitle(long groupId, String urlTitle)
+		throws NoSuchLectureException {
+
+		Lecture lecture = findByGroupIdAndUrlTitle(groupId, urlTitle);
+
+		return remove(lecture);
+	}
+
+	/**
+	 * Returns the number of lectures where groupId = &#63; and urlTitle = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param urlTitle the url title
+	 * @return the number of matching lectures
+	 */
+	@Override
+	public int countByGroupIdAndUrlTitle(long groupId, String urlTitle) {
+		urlTitle = Objects.toString(urlTitle, "");
+
+		FinderPath finderPath = _finderPathCountByGroupIdAndUrlTitle;
+
+		Object[] finderArgs = new Object[] {groupId, urlTitle};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_LECTURE_WHERE);
+
+			sb.append(_FINDER_COLUMN_GROUPIDANDURLTITLE_GROUPID_2);
+
+			boolean bindUrlTitle = false;
+
+			if (urlTitle.isEmpty()) {
+				sb.append(_FINDER_COLUMN_GROUPIDANDURLTITLE_URLTITLE_3);
+			}
+			else {
+				bindUrlTitle = true;
+
+				sb.append(_FINDER_COLUMN_GROUPIDANDURLTITLE_URLTITLE_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(groupId);
+
+				if (bindUrlTitle) {
+					queryPos.add(urlTitle);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_GROUPIDANDURLTITLE_GROUPID_2 =
+		"lecture.groupId = ? AND ";
+
+	private static final String _FINDER_COLUMN_GROUPIDANDURLTITLE_URLTITLE_2 =
+		"lecture.urlTitle = ?";
+
+	private static final String _FINDER_COLUMN_GROUPIDANDURLTITLE_URLTITLE_3 =
+		"(lecture.urlTitle IS NULL OR lecture.urlTitle = '')";
+
 	private FinderPath _finderPathFetchByCourseIdAndName;
 	private FinderPath _finderPathCountByCourseIdAndName;
 
@@ -2217,6 +2466,11 @@ public class LecturePersistenceImpl
 			new Object[] {lecture.getUuid(), lecture.getGroupId()}, lecture);
 
 		finderCache.putResult(
+			_finderPathFetchByGroupIdAndUrlTitle,
+			new Object[] {lecture.getGroupId(), lecture.getUrlTitle()},
+			lecture);
+
+		finderCache.putResult(
 			_finderPathFetchByCourseIdAndName,
 			new Object[] {lecture.getCourseId(), lecture.getName()}, lecture);
 	}
@@ -2295,6 +2549,15 @@ public class LecturePersistenceImpl
 
 		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
 		finderCache.putResult(_finderPathFetchByUUID_G, args, lectureModelImpl);
+
+		args = new Object[] {
+			lectureModelImpl.getGroupId(), lectureModelImpl.getUrlTitle()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByGroupIdAndUrlTitle, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByGroupIdAndUrlTitle, args, lectureModelImpl);
 
 		args = new Object[] {
 			lectureModelImpl.getCourseId(), lectureModelImpl.getName()
@@ -2832,6 +3095,17 @@ public class LecturePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCourseId",
 			new String[] {Long.class.getName()}, new String[] {"courseId"},
 			false);
+
+		_finderPathFetchByGroupIdAndUrlTitle = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByGroupIdAndUrlTitle",
+			new String[] {Long.class.getName(), String.class.getName()},
+			new String[] {"groupId", "urlTitle"}, true);
+
+		_finderPathCountByGroupIdAndUrlTitle = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByGroupIdAndUrlTitle",
+			new String[] {Long.class.getName(), String.class.getName()},
+			new String[] {"groupId", "urlTitle"}, false);
 
 		_finderPathFetchByCourseIdAndName = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByCourseIdAndName",

@@ -20,10 +20,7 @@ import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferaybook.courses.manager.exception.DuplicateLectureNameException;
-import com.liferaybook.courses.manager.exception.LectureDescriptionLengthException;
-import com.liferaybook.courses.manager.exception.LectureNameLengthException;
-import com.liferaybook.courses.manager.exception.LectureVideoLinkException;
+import com.liferaybook.courses.manager.exception.*;
 import com.liferaybook.courses.manager.model.Lecture;
 import com.liferaybook.courses.manager.service.base.LectureLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
@@ -39,9 +36,10 @@ import java.util.List;
 )
 public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 
-	public Lecture addLecture(long userId, long courseId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException {
+	public Lecture addLecture(long userId, long courseId, String name, String description, String videoLink,
+							  String urlTitle, ServiceContext serviceContext) throws PortalException {
 		long lectureId = counterLocalService.increment();
-		validate(lectureId, courseId, name, description, videoLink);
+		validate(lectureId, courseId, serviceContext.getScopeGroupId(), name, description, videoLink, urlTitle);
 		User user = userLocalService.fetchUser(userId);
 		Lecture lecture = lecturePersistence.create(lectureId);
 		lecture.setCourseId(courseId);
@@ -52,20 +50,23 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 		lecture.setName(name);
 		lecture.setDescription(description);
 		lecture.setVideoLink(videoLink);
+		lecture.setUrlTitle(urlTitle);
 		return lectureLocalService.updateLecture(lecture);
 	}
 
-	public Lecture updateLecture(long userId, long lectureId, String name, String description, String videoLink, ServiceContext serviceContext) throws PortalException {
+	public Lecture updateLecture(long userId, long lectureId, String name, String description, String videoLink,
+								 String urlTitle, ServiceContext serviceContext) throws PortalException {
 		Lecture lecture = lecturePersistence.fetchByPrimaryKey(lectureId);
-		validate(lectureId, lecture.getCourseId(), name, description, videoLink);
+		validate(lectureId, lecture.getCourseId(), serviceContext.getScopeGroupId(), name, description, videoLink, urlTitle);
 		lecture.setUserId(userId);
 		lecture.setName(name);
 		lecture.setDescription(description);
 		lecture.setVideoLink(videoLink);
+		lecture.setUrlTitle(urlTitle);
 		return lectureLocalService.updateLecture(lecture);
 	}
 
-	private void validate(long lectureId, long courseId, String name, String description, String videoLink) throws PortalException {
+	private void validate(long lectureId, long courseId, long groupId, String name, String description, String videoLink, String urlTitle) throws PortalException {
 		int nameMinLength = 5;
 		int nameMaxLength = ModelHintsUtil.getMaxLength(Lecture.class.getName(), "name");
 		if (Validator.isNull(name) || name.length() < nameMinLength || name.length() > nameMaxLength) {
@@ -83,6 +84,10 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 		Lecture lecture = lecturePersistence.fetchByCourseIdAndName(courseId, name);
 		if (lecture != null && lecture.getLectureId() != lectureId) {
 			throw new DuplicateLectureNameException(String.format("Lecture name '%s' is already in use.", name));
+		}
+		lecture = lecturePersistence.fetchByGroupIdAndUrlTitle(groupId, urlTitle);
+		if (lecture != null && lecture.getGroupId() != groupId) {
+			throw new DuplicateUrlTitleException(String.format("Lecture with urlTitle='%s' already exists.", urlTitle));
 		}
 	}
 

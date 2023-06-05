@@ -8,5 +8,6 @@ create unique index IX_FE72906B on lb_CourseSubscription (courseId, userId);
 create index IX_CE0D5321 on lb_CourseSubscription (userId);
 
 create unique index IX_64421C64 on lb_Lecture (courseId, name[$COLUMN_LENGTH:100$]);
+create unique index IX_EF99BD0C on lb_Lecture (groupId, urlTitle[$COLUMN_LENGTH:75$]);
 create index IX_5F29474F on lb_Lecture (uuid_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_5DA95591 on lb_Lecture (uuid_[$COLUMN_LENGTH:75$], groupId);
