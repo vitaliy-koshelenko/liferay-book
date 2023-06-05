@@ -52,6 +52,8 @@ public class CourseTable extends BaseTable<CourseTable> {
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<CourseTable, String> description = createColumn(
 		"description", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<CourseTable, String> urlTitle = createColumn(
+		"urlTitle", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 
 	private CourseTable() {
 		super("lb_Course", CourseTable::new);

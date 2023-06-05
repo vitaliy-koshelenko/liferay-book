@@ -56,6 +56,8 @@ public class LectureTable extends BaseTable<LectureTable> {
 		"description", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<LectureTable, String> videoLink = createColumn(
 		"videoLink", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<LectureTable, String> urlTitle = createColumn(
+		"urlTitle", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 
 	private LectureTable() {
 		super("lb_Lecture", LectureTable::new);

@@ -52,6 +52,7 @@ public class CourseWrapper
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
+		attributes.put("urlTitle", getUrlTitle());
 
 		return attributes;
 	}
@@ -116,6 +117,12 @@ public class CourseWrapper
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String urlTitle = (String)attributes.get("urlTitle");
+
+		if (urlTitle != null) {
+			setUrlTitle(urlTitle);
 		}
 	}
 
@@ -212,6 +219,16 @@ public class CourseWrapper
 	@Override
 	public java.util.List<CourseSubscription> getSubscriptions() {
 		return model.getSubscriptions();
+	}
+
+	/**
+	 * Returns the url title of this course.
+	 *
+	 * @return the url title of this course
+	 */
+	@Override
+	public String getUrlTitle() {
+		return model.getUrlTitle();
 	}
 
 	/**
@@ -342,6 +359,16 @@ public class CourseWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the url title of this course.
+	 *
+	 * @param urlTitle the url title of this course
+	 */
+	@Override
+	public void setUrlTitle(String urlTitle) {
+		model.setUrlTitle(urlTitle);
 	}
 
 	/**

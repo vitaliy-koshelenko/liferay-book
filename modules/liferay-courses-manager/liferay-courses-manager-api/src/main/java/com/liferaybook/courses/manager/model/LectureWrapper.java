@@ -55,6 +55,7 @@ public class LectureWrapper
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("videoLink", getVideoLink());
+		attributes.put("urlTitle", getUrlTitle());
 
 		return attributes;
 	}
@@ -131,6 +132,12 @@ public class LectureWrapper
 
 		if (videoLink != null) {
 			setVideoLink(videoLink);
+		}
+
+		String urlTitle = (String)attributes.get("urlTitle");
+
+		if (urlTitle != null) {
+			setUrlTitle(urlTitle);
 		}
 	}
 
@@ -237,6 +244,16 @@ public class LectureWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the url title of this lecture.
+	 *
+	 * @return the url title of this lecture
+	 */
+	@Override
+	public String getUrlTitle() {
+		return model.getUrlTitle();
 	}
 
 	/**
@@ -382,6 +399,16 @@ public class LectureWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the url title of this lecture.
+	 *
+	 * @param urlTitle the url title of this lecture
+	 */
+	@Override
+	public void setUrlTitle(String urlTitle) {
+		model.setUrlTitle(urlTitle);
 	}
 
 	/**

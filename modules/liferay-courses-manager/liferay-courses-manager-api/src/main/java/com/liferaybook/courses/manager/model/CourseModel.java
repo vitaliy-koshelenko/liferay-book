@@ -233,6 +233,21 @@ public interface CourseModel
 	 */
 	public void setDescription(String description);
 
+	/**
+	 * Returns the url title of this course.
+	 *
+	 * @return the url title of this course
+	 */
+	@AutoEscape
+	public String getUrlTitle();
+
+	/**
+	 * Sets the url title of this course.
+	 *
+	 * @param urlTitle the url title of this course
+	 */
+	public void setUrlTitle(String urlTitle);
+
 	@Override
 	public Course cloneWithOriginalValues();
 

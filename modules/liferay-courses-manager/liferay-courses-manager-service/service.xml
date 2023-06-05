@@ -22,6 +22,7 @@
 		<!-- Other fields -->
 		<column name="name" type="String" />
 		<column name="description" type="String" />
+		<column name="urlTitle" type="String" />
 
 		<!-- Order -->
 		<order by="asc">
@@ -73,6 +74,7 @@
 		<column name="name" type="String" />
 		<column name="description" type="String" />
 		<column name="videoLink" type="String" />
+		<column name="urlTitle" type="String" />
 		<!-- Finder methods -->
 		<finder name="CourseId" return-type="Collection">
 			<finder-column name="courseId" />

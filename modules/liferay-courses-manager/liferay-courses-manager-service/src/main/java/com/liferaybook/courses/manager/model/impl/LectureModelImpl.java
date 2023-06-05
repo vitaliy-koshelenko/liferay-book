@@ -77,7 +77,8 @@ public class LectureModelImpl
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"courseId", Types.BIGINT}, {"name", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"videoLink", Types.VARCHAR}
+		{"description", Types.VARCHAR}, {"videoLink", Types.VARCHAR},
+		{"urlTitle", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -96,10 +97,11 @@ public class LectureModelImpl
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("videoLink", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("urlTitle", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Lecture (uuid_ VARCHAR(75) null,lectureId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,courseId LONG,name VARCHAR(100) null,description VARCHAR(1000) null,videoLink VARCHAR(100) null)";
+		"create table lb_Lecture (uuid_ VARCHAR(75) null,lectureId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,courseId LONG,name VARCHAR(100) null,description VARCHAR(1000) null,videoLink VARCHAR(100) null,urlTitle VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Lecture";
 
@@ -273,6 +275,7 @@ public class LectureModelImpl
 			attributeGetterFunctions.put(
 				"description", Lecture::getDescription);
 			attributeGetterFunctions.put("videoLink", Lecture::getVideoLink);
+			attributeGetterFunctions.put("urlTitle", Lecture::getUrlTitle);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -317,6 +320,8 @@ public class LectureModelImpl
 			attributeSetterBiConsumers.put(
 				"videoLink",
 				(BiConsumer<Lecture, String>)Lecture::setVideoLink);
+			attributeSetterBiConsumers.put(
+				"urlTitle", (BiConsumer<Lecture, String>)Lecture::setUrlTitle);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -587,6 +592,25 @@ public class LectureModelImpl
 	}
 
 	@Override
+	public String getUrlTitle() {
+		if (_urlTitle == null) {
+			return "";
+		}
+		else {
+			return _urlTitle;
+		}
+	}
+
+	@Override
+	public void setUrlTitle(String urlTitle) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_urlTitle = urlTitle;
+	}
+
+	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
 			PortalUtil.getClassNameId(Lecture.class.getName()));
@@ -660,6 +684,7 @@ public class LectureModelImpl
 		lectureImpl.setName(getName());
 		lectureImpl.setDescription(getDescription());
 		lectureImpl.setVideoLink(getVideoLink());
+		lectureImpl.setUrlTitle(getUrlTitle());
 
 		lectureImpl.resetOriginalValues();
 
@@ -689,6 +714,8 @@ public class LectureModelImpl
 			this.<String>getColumnOriginalValue("description"));
 		lectureImpl.setVideoLink(
 			this.<String>getColumnOriginalValue("videoLink"));
+		lectureImpl.setUrlTitle(
+			this.<String>getColumnOriginalValue("urlTitle"));
 
 		return lectureImpl;
 	}
@@ -834,6 +861,14 @@ public class LectureModelImpl
 			lectureCacheModel.videoLink = null;
 		}
 
+		lectureCacheModel.urlTitle = getUrlTitle();
+
+		String urlTitle = lectureCacheModel.urlTitle;
+
+		if ((urlTitle != null) && (urlTitle.length() == 0)) {
+			lectureCacheModel.urlTitle = null;
+		}
+
 		return lectureCacheModel;
 	}
 
@@ -908,6 +943,7 @@ public class LectureModelImpl
 	private String _name;
 	private String _description;
 	private String _videoLink;
+	private String _urlTitle;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -951,6 +987,7 @@ public class LectureModelImpl
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("description", _description);
 		_columnOriginalValues.put("videoLink", _videoLink);
+		_columnOriginalValues.put("urlTitle", _urlTitle);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -997,6 +1034,8 @@ public class LectureModelImpl
 		columnBitmasks.put("description", 1024L);
 
 		columnBitmasks.put("videoLink", 2048L);
+
+		columnBitmasks.put("urlTitle", 4096L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

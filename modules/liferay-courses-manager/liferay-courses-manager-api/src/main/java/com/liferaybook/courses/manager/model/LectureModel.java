@@ -262,6 +262,21 @@ public interface LectureModel
 	 */
 	public void setVideoLink(String videoLink);
 
+	/**
+	 * Returns the url title of this lecture.
+	 *
+	 * @return the url title of this lecture
+	 */
+	@AutoEscape
+	public String getUrlTitle();
+
+	/**
+	 * Sets the url title of this lecture.
+	 *
+	 * @param urlTitle the url title of this lecture
+	 */
+	public void setUrlTitle(String urlTitle);
+
 	@Override
 	public Lecture cloneWithOriginalValues();
 

@@ -16,6 +16,7 @@
 		<field name="description" type="String">
 			<hint name="max-length">1000</hint>
 		</field>
+		<field name="urlTitle" type="String" />
 	</model>
 	<model name="com.liferaybook.courses.manager.model.CourseSubscription">
 		<field name="courseSubscriptionId" type="long" />
@@ -41,5 +42,6 @@
 		<field name="videoLink" type="String">
 			<hint name="max-length">100</hint>
 		</field>
+		<field name="urlTitle" type="String" />
 	</model>
 </model-hints>

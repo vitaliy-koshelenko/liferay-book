@@ -76,7 +76,8 @@ public class CourseModelImpl
 		{"companyId", Types.BIGINT}, {"groupId", Types.BIGINT},
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"name", Types.VARCHAR}, {"description", Types.VARCHAR}
+		{"name", Types.VARCHAR}, {"description", Types.VARCHAR},
+		{"urlTitle", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -93,10 +94,11 @@ public class CourseModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("urlTitle", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table lb_Course (uuid_ VARCHAR(75) null,courseId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(100) null,description VARCHAR(1000) null)";
+		"create table lb_Course (uuid_ VARCHAR(75) null,courseId LONG not null primary key,companyId LONG,groupId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(100) null,description VARCHAR(1000) null,urlTitle VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table lb_Course";
 
@@ -249,6 +251,7 @@ public class CourseModelImpl
 				"modifiedDate", Course::getModifiedDate);
 			attributeGetterFunctions.put("name", Course::getName);
 			attributeGetterFunctions.put("description", Course::getDescription);
+			attributeGetterFunctions.put("urlTitle", Course::getUrlTitle);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -287,6 +290,8 @@ public class CourseModelImpl
 			attributeSetterBiConsumers.put(
 				"description",
 				(BiConsumer<Course, String>)Course::setDescription);
+			attributeSetterBiConsumers.put(
+				"urlTitle", (BiConsumer<Course, String>)Course::setUrlTitle);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -514,6 +519,25 @@ public class CourseModelImpl
 	}
 
 	@Override
+	public String getUrlTitle() {
+		if (_urlTitle == null) {
+			return "";
+		}
+		else {
+			return _urlTitle;
+		}
+	}
+
+	@Override
+	public void setUrlTitle(String urlTitle) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_urlTitle = urlTitle;
+	}
+
+	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
 			PortalUtil.getClassNameId(Course.class.getName()));
@@ -585,6 +609,7 @@ public class CourseModelImpl
 		courseImpl.setModifiedDate(getModifiedDate());
 		courseImpl.setName(getName());
 		courseImpl.setDescription(getDescription());
+		courseImpl.setUrlTitle(getUrlTitle());
 
 		courseImpl.resetOriginalValues();
 
@@ -608,6 +633,7 @@ public class CourseModelImpl
 		courseImpl.setName(this.<String>getColumnOriginalValue("name"));
 		courseImpl.setDescription(
 			this.<String>getColumnOriginalValue("description"));
+		courseImpl.setUrlTitle(this.<String>getColumnOriginalValue("urlTitle"));
 
 		return courseImpl;
 	}
@@ -741,6 +767,14 @@ public class CourseModelImpl
 			courseCacheModel.description = null;
 		}
 
+		courseCacheModel.urlTitle = getUrlTitle();
+
+		String urlTitle = courseCacheModel.urlTitle;
+
+		if ((urlTitle != null) && (urlTitle.length() == 0)) {
+			courseCacheModel.urlTitle = null;
+		}
+
 		return courseCacheModel;
 	}
 
@@ -812,6 +846,7 @@ public class CourseModelImpl
 	private boolean _setModifiedDate;
 	private String _name;
 	private String _description;
+	private String _urlTitle;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -853,6 +888,7 @@ public class CourseModelImpl
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("description", _description);
+		_columnOriginalValues.put("urlTitle", _urlTitle);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -895,6 +931,8 @@ public class CourseModelImpl
 		columnBitmasks.put("name", 256L);
 
 		columnBitmasks.put("description", 512L);
+
+		columnBitmasks.put("urlTitle", 1024L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

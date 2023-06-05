@@ -61,7 +61,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -83,6 +83,8 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		sb.append(name);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", urlTitle=");
+		sb.append(urlTitle);
 		sb.append("}");
 
 		return sb.toString();
@@ -139,6 +141,13 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 			courseImpl.setDescription(description);
 		}
 
+		if (urlTitle == null) {
+			courseImpl.setUrlTitle("");
+		}
+		else {
+			courseImpl.setUrlTitle(urlTitle);
+		}
+
 		courseImpl.resetOriginalValues();
 
 		return courseImpl;
@@ -160,6 +169,7 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
+		urlTitle = objectInput.readUTF();
 	}
 
 	@Override
@@ -202,6 +212,13 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 		else {
 			objectOutput.writeUTF(description);
 		}
+
+		if (urlTitle == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(urlTitle);
+		}
 	}
 
 	public String uuid;
@@ -214,5 +231,6 @@ public class CourseCacheModel implements CacheModel<Course>, Externalizable {
 	public long modifiedDate;
 	public String name;
 	public String description;
+	public String urlTitle;
 
 }

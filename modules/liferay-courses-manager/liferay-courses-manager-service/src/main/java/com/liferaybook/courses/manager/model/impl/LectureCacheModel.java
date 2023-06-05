@@ -61,7 +61,7 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -87,6 +87,8 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 		sb.append(description);
 		sb.append(", videoLink=");
 		sb.append(videoLink);
+		sb.append(", urlTitle=");
+		sb.append(urlTitle);
 		sb.append("}");
 
 		return sb.toString();
@@ -152,6 +154,13 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 			lectureImpl.setVideoLink(videoLink);
 		}
 
+		if (urlTitle == null) {
+			lectureImpl.setUrlTitle("");
+		}
+		else {
+			lectureImpl.setUrlTitle(urlTitle);
+		}
+
 		lectureImpl.resetOriginalValues();
 
 		return lectureImpl;
@@ -176,6 +185,7 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		videoLink = objectInput.readUTF();
+		urlTitle = objectInput.readUTF();
 	}
 
 	@Override
@@ -227,6 +237,13 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 		else {
 			objectOutput.writeUTF(videoLink);
 		}
+
+		if (urlTitle == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(urlTitle);
+		}
 	}
 
 	public String uuid;
@@ -241,5 +258,6 @@ public class LectureCacheModel implements CacheModel<Lecture>, Externalizable {
 	public String name;
 	public String description;
 	public String videoLink;
+	public String urlTitle;
 
 }

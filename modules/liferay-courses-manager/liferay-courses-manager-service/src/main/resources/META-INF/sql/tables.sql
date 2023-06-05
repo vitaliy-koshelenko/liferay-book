@@ -8,7 +8,8 @@ create table lb_Course (
 	createDate DATE null,
 	modifiedDate DATE null,
 	name VARCHAR(100) null,
-	description VARCHAR(1000) null
+	description VARCHAR(1000) null,
+	urlTitle VARCHAR(75) null
 );
 
 create table lb_CourseSubscription (
@@ -29,5 +30,6 @@ create table lb_Lecture (
 	courseId LONG,
 	name VARCHAR(100) null,
 	description VARCHAR(1000) null,
-	videoLink VARCHAR(100) null
+	videoLink VARCHAR(100) null,
+	urlTitle VARCHAR(75) null
 );

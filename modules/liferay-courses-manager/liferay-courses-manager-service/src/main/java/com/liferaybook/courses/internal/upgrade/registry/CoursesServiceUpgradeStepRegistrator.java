@@ -6,6 +6,7 @@ import com.liferaybook.courses.internal.upgrade.v2_0_1.LectureUuidUpgradeProcess
 import com.liferaybook.courses.internal.upgrade.v2_0_2.LectureAuditUpgradeProcess;
 import com.liferaybook.courses.internal.upgrade.v2_1_0.CourseSubscriptionUpgradeProcess;
 import com.liferaybook.courses.internal.upgrade.v2_1_1.LectureColumnLengthUpgradeProcess;
+import com.liferaybook.courses.internal.upgrade.v2_1_2.UrlTitleUpgradeProcess;
 import org.osgi.service.component.annotations.Component;
 
 @Component(service = UpgradeStepRegistrator.class)
@@ -18,6 +19,7 @@ public class CoursesServiceUpgradeStepRegistrator implements UpgradeStepRegistra
         registry.register("2.0.1", "2.0.2", new LectureAuditUpgradeProcess());
         registry.register("2.0.2", "2.1.0", new CourseSubscriptionUpgradeProcess());
         registry.register("2.1.0", "2.1.1", new LectureColumnLengthUpgradeProcess());
+        registry.register("2.1.1", "2.1.2", new UrlTitleUpgradeProcess());
     }
 
 }
