@@ -64,4 +64,8 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public boolean isUserSubscribed(long userId);
 
+	public String getCreateDateString();
+
+	public String getModifiedDateString();
+
 }

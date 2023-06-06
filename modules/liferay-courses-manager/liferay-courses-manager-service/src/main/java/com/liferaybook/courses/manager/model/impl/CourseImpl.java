@@ -19,12 +19,16 @@ import com.liferaybook.courses.manager.model.Lecture;
 import com.liferaybook.courses.manager.service.CourseSubscriptionLocalServiceUtil;
 import com.liferaybook.courses.manager.service.LectureLocalServiceUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
  * @author Vitaliy Koshelenko
  */
 public class CourseImpl extends CourseBaseImpl {
+
+    private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm";
 
     public List<Lecture> getLectures() {
         long courseId = getCourseId();
@@ -39,6 +43,16 @@ public class CourseImpl extends CourseBaseImpl {
     public boolean isUserSubscribed(long userId) {
         long courseId = getCourseId();
         return CourseSubscriptionLocalServiceUtil.isSubscribed(userId, courseId);
+    }
+
+    public String getCreateDateString() {
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        return dateFormat.format(getCreateDate());
+    }
+
+    public String getModifiedDateString() {
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        return dateFormat.format(getModifiedDate());
     }
 
 }

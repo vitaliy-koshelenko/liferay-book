@@ -6,10 +6,7 @@
             <div class="text-center">
                 <h1 class="sheet-title">${course.name}</h1>
                 <p>${course.description}</p>
-                <p class="list-group-subtitle small mt-2 mb-4">
-                    <fmt:formatDate var="courseModifiedDate" value="${course.modifiedDate}" pattern="dd-MM-yyyy HH:mm" />
-                        ${course.userName}, ${courseModifiedDate}
-                </p>
+                <p class="list-group-subtitle small mt-1 mb-4">${course.userName}, ${course.modifiedDateString}</p>
             </div>
             <c:choose>
                 <c:when test="${not empty course.getLectures()}">

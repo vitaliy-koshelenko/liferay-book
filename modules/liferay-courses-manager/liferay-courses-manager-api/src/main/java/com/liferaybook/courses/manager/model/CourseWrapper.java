@@ -161,6 +161,11 @@ public class CourseWrapper
 		return model.getCreateDate();
 	}
 
+	@Override
+	public String getCreateDateString() {
+		return model.getCreateDateString();
+	}
+
 	/**
 	 * Returns the description of this course.
 	 *
@@ -194,6 +199,11 @@ public class CourseWrapper
 	@Override
 	public Date getModifiedDate() {
 		return model.getModifiedDate();
+	}
+
+	@Override
+	public String getModifiedDateString() {
+		return model.getModifiedDateString();
 	}
 
 	/**
