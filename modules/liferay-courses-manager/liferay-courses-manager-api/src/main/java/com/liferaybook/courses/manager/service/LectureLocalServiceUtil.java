@@ -278,6 +278,10 @@ public class LectureLocalServiceUtil {
 		return getService().getLecture(lectureId);
 	}
 
+	public static Lecture getLectureByUrlTitle(long groupId, String urlTitle) {
+		return getService().getLectureByUrlTitle(groupId, urlTitle);
+	}
+
 	/**
 	 * Returns the lecture matching the UUID and group.
 	 *

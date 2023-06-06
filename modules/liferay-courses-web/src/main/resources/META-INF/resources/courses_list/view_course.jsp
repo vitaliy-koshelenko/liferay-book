@@ -44,7 +44,7 @@
                                     <td>
                                         <portlet:renderURL var="lectureDetailsURL">
                                             <portlet:param name="mvcRenderCommandName" value="/courses/view_lecture" />
-                                            <portlet:param name="lectureId" value="${lecture.lectureId}" />
+                                            <portlet:param name="urlTitle" value="${lecture.urlTitle}" />
                                         </portlet:renderURL>
                                         <a href="${lectureDetailsURL}">${lecture.lectureId}</a>
                                     </td>

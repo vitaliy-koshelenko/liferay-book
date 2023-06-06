@@ -15,8 +15,7 @@ import org.osgi.service.component.annotations.Reference;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.LECTURE;
-import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.LECTURE_ID;
+import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
 
 @Component(
 	property = {
@@ -32,6 +31,12 @@ public class ViewLectureMVCRenderCommand implements MVCRenderCommand {
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
 		long lectureId = ParamUtil.getLong(renderRequest, LECTURE_ID);
 		Lecture lecture = liferayCoursesAPI.getLecture(lectureId);
+		if (lecture == null) {
+			ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+			long groupId = themeDisplay.getScopeGroupId();
+			String urlTitle = ParamUtil.getString(renderRequest, URL_TITLE);
+			lecture = liferayCoursesAPI.getLecture(groupId, urlTitle);
+		}
 		renderRequest.setAttribute(LECTURE, lecture);
 		return getViewPath(renderRequest);
 	}

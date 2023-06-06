@@ -129,6 +129,11 @@ public class LiferayCoursesService implements LiferayCoursesAPI {
 	}
 
 	@Override
+	public Lecture getLecture(long groupId, String urlTitle) {
+		return lectureLocalService.getLectureByUrlTitle(groupId, urlTitle);
+	}
+
+	@Override
 	public void saveLecture(long userId, long courseId, String name, String description, String videoLink,
 							String urlTitle, ServiceContext serviceContext) throws PortalException {
 		lectureLocalService.addLecture(userId, courseId, name, description, videoLink, urlTitle, serviceContext);

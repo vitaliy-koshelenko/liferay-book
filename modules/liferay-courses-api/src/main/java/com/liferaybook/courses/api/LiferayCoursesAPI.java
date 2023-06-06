@@ -43,6 +43,8 @@ public interface LiferayCoursesAPI {
 
     Lecture getLecture(Long lectureId);
 
+    Lecture getLecture(long groupId, String urlTitle);
+
     void saveLecture(long userId, long courseId, String name, String description, String videoLink,
                      String urlTitle, ServiceContext serviceContext) throws PortalException;
 

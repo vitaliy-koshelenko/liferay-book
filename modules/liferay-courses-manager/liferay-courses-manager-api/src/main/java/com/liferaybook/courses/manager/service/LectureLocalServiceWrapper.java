@@ -314,6 +314,13 @@ public class LectureLocalServiceWrapper
 		return _lectureLocalService.getLecture(lectureId);
 	}
 
+	@Override
+	public com.liferaybook.courses.manager.model.Lecture getLectureByUrlTitle(
+		long groupId, String urlTitle) {
+
+		return _lectureLocalService.getLectureByUrlTitle(groupId, urlTitle);
+	}
+
 	/**
 	 * Returns the lecture matching the UUID and group.
 	 *

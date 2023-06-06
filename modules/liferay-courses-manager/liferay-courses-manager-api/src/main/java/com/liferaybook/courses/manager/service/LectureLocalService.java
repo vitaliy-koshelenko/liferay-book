@@ -248,6 +248,9 @@ public interface LectureLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Lecture getLecture(long lectureId) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Lecture getLectureByUrlTitle(long groupId, String urlTitle);
+
 	/**
 	 * Returns the lecture matching the UUID and group.
 	 *

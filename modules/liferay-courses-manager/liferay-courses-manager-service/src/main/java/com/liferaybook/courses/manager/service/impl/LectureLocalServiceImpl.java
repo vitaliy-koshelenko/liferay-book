@@ -36,6 +36,10 @@ import java.util.List;
 )
 public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 
+	public Lecture getLectureByUrlTitle(long groupId, String urlTitle) {
+		return lecturePersistence.fetchByGroupIdAndUrlTitle(groupId, urlTitle);
+	}
+
 	public Lecture addLecture(long userId, long courseId, String name, String description, String videoLink,
 							  String urlTitle, ServiceContext serviceContext) throws PortalException {
 		long lectureId = counterLocalService.increment();
