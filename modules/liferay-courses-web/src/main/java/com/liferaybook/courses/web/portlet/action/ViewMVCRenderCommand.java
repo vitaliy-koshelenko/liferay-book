@@ -3,6 +3,7 @@ package com.liferaybook.courses.web.portlet.action;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.manager.model.Course;
@@ -13,6 +14,7 @@ import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -34,7 +36,8 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
 		String viewPath = getViewPath(renderRequest);
 		if (LiferayCourseDisplayPortletKeys.VIEW_JSP.equals(viewPath)) {
-			long courseId = 43114L; //todo;
+			PortletPreferences preferences = renderRequest.getPreferences();
+			long courseId = PrefsParamUtil.getLong(preferences, renderRequest, "courseId");
 			Course course = liferayCoursesAPI.getCourse(courseId);
 			renderRequest.setAttribute(COURSE, course);
 		} else {

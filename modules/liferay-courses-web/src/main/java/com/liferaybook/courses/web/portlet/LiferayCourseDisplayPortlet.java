@@ -15,6 +15,7 @@ import javax.portlet.Portlet;
 		"javax.portlet.display-name=" +   LiferayCourseDisplayPortletKeys.DISPLAY_NAME,
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=" +   LiferayCourseDisplayPortletKeys.VIEW_JSP,
+		"javax.portlet.init-param.config-template=" +   LiferayCourseDisplayPortletKeys.CONFIG_JSP,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user",
 		"javax.portlet.init-param.add-process-action-success-action=false",

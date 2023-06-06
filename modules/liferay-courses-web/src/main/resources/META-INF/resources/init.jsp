@@ -9,6 +9,8 @@
 <%@ taglib prefix="liferay-frontend" uri="http://liferay.com/tld/frontend" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
+<%@ page import="com.liferay.portal.kernel.util.Constants" %>
+<%@ page import="com.liferay.portal.kernel.util.PrefsParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder" %>
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
