@@ -19,6 +19,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.COURSE;
+import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.URL_TITLE;
 
 @Component(
 		property = {
@@ -37,8 +38,10 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		String viewPath = getViewPath(renderRequest);
 		if (LiferayCourseDisplayPortletKeys.VIEW_JSP.equals(viewPath)) {
 			PortletPreferences preferences = renderRequest.getPreferences();
-			long courseId = PrefsParamUtil.getLong(preferences, renderRequest, "courseId");
-			Course course = liferayCoursesAPI.getCourse(courseId);
+			ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+			long groupId = themeDisplay.getScopeGroupId();
+			String urlTitle = PrefsParamUtil.getString(preferences, renderRequest, URL_TITLE);
+			Course course = liferayCoursesAPI.getCourse(groupId, urlTitle);
 			renderRequest.setAttribute(COURSE, course);
 		} else {
 			renderRequest.setAttribute(LiferayCoursesAPI.class.getName(), liferayCoursesAPI);
