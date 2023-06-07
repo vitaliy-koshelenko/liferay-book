@@ -1,6 +1,6 @@
 <%@ include file="init.jsp" %>
 
-<% String urlTitle = PrefsParamUtil.getString(portletPreferences, request, "urlTitle", StringPool.BLANK); %>
+<% String urlTitle = PrefsParamUtil.getString(portletPreferences, request, "urlTitle"); %>
 
 <liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationActionURL" />
 <liferay-portlet:renderURL portletConfiguration="<%= true %>" var="configurationRenderURL" />
