@@ -5,11 +5,11 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 
 @ExtendedObjectClassDefinition(
         category = "liferay-book",
+        generateUI = false,
         scope = ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE
 )
 @Meta.OCD(
-        id = "com.liferaybook.courses.web.configuration" +
-                ".CourseDisplayPortletInstanceConfiguration",
+        id = "com.liferaybook.courses.web.configuration.CourseDisplayPortletInstanceConfiguration",
         localization = "content/Language",
         name = "course-display-portlet-instance-configuration-name"
 )
