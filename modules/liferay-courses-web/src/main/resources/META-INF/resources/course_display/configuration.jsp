@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <clay:button id='<%= liferayPortletResponse.getNamespace() + "selectCourseButton" %>'
-                                     displayType="secondary" label="Select Course" />
+                                     displayType="secondary" label="course-display-configuration-select-course" />
                     </div>
                 </div>
             </div>
@@ -68,16 +68,15 @@
         function() {
             Liferay.Util.openSelectionModal({
                 onSelect: function (event) {
-                    console.log('event: ', event);
                     // Parse Course Data
                     var course = JSON.parse(event.value);
                     // Course Preview
-                    var coursePreviewEl = document.getElementsByClassName('course-preview')[0];
-                    coursePreviewEl.querySelector('.card-title').setAttribute('title', course.name);
-                    coursePreviewEl.querySelector('.card-title .text-truncate').setHTML(course.name);
-                    coursePreviewEl.querySelector('.card-subtitle').setAttribute('title', course.description);
-                    coursePreviewEl.querySelector('.card-subtitle .text-truncate').setHTML(course.description);
-                    coursePreviewEl.classList.remove('d-none');
+                    var courseEl = document.getElementsByClassName('course-preview')[0];
+                    courseEl.querySelector('.card-title').setAttribute('title', course.name);
+                    courseEl.querySelector('.card-title .text-truncate').setHTML(course.name);
+                    courseEl.querySelector('.card-subtitle').setAttribute('title', course.description);
+                    courseEl.querySelector('.card-subtitle .text-truncate').setHTML(course.description);
+                    courseEl.classList.remove('d-none');
                     // Course urlTitle Hidden Field
                     document.getElementById('<portlet:namespace />urlTitle').value = course.urlTitle;
                 },
