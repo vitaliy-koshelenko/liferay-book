@@ -104,6 +104,11 @@ public class CourseAssetRenderer extends BaseJSPAssetRenderer<Course> {
     }
 
     @Override
+    public String getViewInContextMessage() {
+        return "view-details";
+    }
+
+    @Override
     public String getURLViewInContext(LiferayPortletRequest liferayPortletRequest, LiferayPortletResponse liferayPortletResponse,
                                       String noSuchEntryRedirect) throws PortalException {
         ThemeDisplay themeDisplay = (ThemeDisplay)liferayPortletRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -111,10 +116,6 @@ public class CourseAssetRenderer extends BaseJSPAssetRenderer<Course> {
     }
 
     @Override
-    public String getViewInContextMessage() {
-        return "view-details";
-    }
-
     public String getURLViewInContext(ThemeDisplay themeDisplay, String noSuchEntryRedirect) throws PortalException {
         if (_assetDisplayPageFriendlyURLProvider != null) {
             String friendlyURL = _assetDisplayPageFriendlyURLProvider.getFriendlyURL( getClassName(), getClassPK(), themeDisplay);
