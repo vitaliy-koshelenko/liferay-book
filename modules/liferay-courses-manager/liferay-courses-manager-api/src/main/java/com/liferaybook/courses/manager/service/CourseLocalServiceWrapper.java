@@ -416,9 +416,22 @@ public class CourseLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferaybook.courses.manager.model.Course>
-		getUserCourses(long groupId, long userId) {
+		getUserCourses(long groupId, long userId, int start, int end) {
 
-		return _courseLocalService.getUserCourses(groupId, userId);
+		return _courseLocalService.getUserCourses(groupId, userId, start, end);
+	}
+
+	@Override
+	public int getUserCoursesCount(long groupId, long userId) {
+		return _courseLocalService.getUserCoursesCount(groupId, userId);
+	}
+
+	@Override
+	public com.liferaybook.courses.manager.model.Course removeCourse(
+			com.liferaybook.courses.manager.model.Course course)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _courseLocalService.removeCourse(course);
 	}
 
 	/**

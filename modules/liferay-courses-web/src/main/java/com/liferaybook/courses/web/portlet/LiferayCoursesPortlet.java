@@ -10,7 +10,7 @@ import javax.portlet.Portlet;
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=" + LiferayCoursesPortletKeys.CATEGORY_NAME,
-		"com.liferay.portlet.instanceable=true",
+		"com.liferay.portlet.instanceable=false",
 		"javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
 		"javax.portlet.display-name=" + LiferayCoursesPortletKeys.DISPLAY_NAME,
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
@@ -18,7 +18,7 @@ import javax.portlet.Portlet;
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user",
 		"javax.portlet.init-param.add-process-action-success-action=false",
-		"com.liferay.portlet.css-class-wrapper=liferay-courses-wrapper",
+		"com.liferay.portlet.css-class-wrapper=liferay-courses-list-wrapper",
 		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"javax.portlet.version=3.0"
 	},

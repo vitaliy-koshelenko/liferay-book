@@ -364,8 +364,18 @@ public class CourseLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static List<Course> getUserCourses(long groupId, long userId) {
-		return getService().getUserCourses(groupId, userId);
+	public static List<Course> getUserCourses(
+		long groupId, long userId, int start, int end) {
+
+		return getService().getUserCourses(groupId, userId, start, end);
+	}
+
+	public static int getUserCoursesCount(long groupId, long userId) {
+		return getService().getUserCoursesCount(groupId, userId);
+	}
+
+	public static Course removeCourse(Course course) throws PortalException {
+		return getService().removeCourse(course);
 	}
 
 	/**

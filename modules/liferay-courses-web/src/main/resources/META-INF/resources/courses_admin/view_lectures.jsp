@@ -1,6 +1,6 @@
 <%@ include file="init.jsp" %>
 <%
-	LiferayCoursesAPI coursesAPI = (LiferayCoursesAPI) request.getAttribute(LiferayCoursesAPI.class.getName());
+	LectureLocalService lecturesService = (LectureLocalService) request.getAttribute(LectureLocalService.class.getName());
 	Course course = (Course) request.getAttribute("course");
 	Long courseId = course.getCourseId();
 
@@ -25,9 +25,9 @@
 					<clay:link href="${addLectureURL}" label="+" type="button" displayType="primary" />
 				</div>
 			</clay:sheet-header>
-			<liferay-ui:search-container iteratorURL="<%= iteratorURL %>" total="<%= coursesAPI.getLecturesCount(courseId) %>"
+			<liferay-ui:search-container iteratorURL="<%= iteratorURL %>" total="<%= lecturesService.getCourseLecturesCount(courseId) %>"
 										 delta="4" emptyResultsMessage="lectures-empty-list">
-				<liferay-ui:search-container-results results="<%= coursesAPI.getLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
+				<liferay-ui:search-container-results results="<%= lecturesService.getCourseLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
 				<liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Lecture" modelVar="lecture" keyProperty="lectureId">
 					<portlet:renderURL var="editLectureURL">
 						<portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />

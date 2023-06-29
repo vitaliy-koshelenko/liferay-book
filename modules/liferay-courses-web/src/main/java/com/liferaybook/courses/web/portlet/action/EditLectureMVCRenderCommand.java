@@ -2,8 +2,8 @@ package com.liferaybook.courses.web.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.manager.model.Lecture;
+import com.liferaybook.courses.manager.service.LectureLocalService;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -26,13 +26,13 @@ public class EditLectureMVCRenderCommand implements MVCRenderCommand {
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse){
 		long courseId = ParamUtil.getLong(renderRequest, COURSE_ID);
 		long lectureId = ParamUtil.getLong(renderRequest, LECTURE_ID);
-		Lecture lecture = liferayCoursesAPI.getLecture(lectureId);
+		Lecture lecture = lectureLocalService.fetchLecture(lectureId);
 		renderRequest.setAttribute(LECTURE, lecture);
 		renderRequest.setAttribute(COURSE_ID, courseId);
 		return LiferayCoursesAdminPortletKeys.EDIT_LECTURE_JSP;
 	}
 
 	@Reference
-	private LiferayCoursesAPI liferayCoursesAPI;
+	private LectureLocalService lectureLocalService;
 
 }

@@ -7,8 +7,8 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.manager.model.Lecture;
+import com.liferaybook.courses.manager.service.LectureLocalService;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -40,9 +40,9 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
             long userId = portal.getUserId(actionRequest);
             ServiceContext serviceContext = ServiceContextFactory.getInstance(Lecture.class.getName(), actionRequest);
             if (lectureId > 0) {
-                liferayCoursesAPI.updateLecture(userId, lectureId, name, description, videoLink, urlTitle, serviceContext);
+                lectureLocalService.updateLecture(userId, lectureId, name, description, videoLink, urlTitle, serviceContext);
             } else {
-                liferayCoursesAPI.saveLecture(userId, courseId, name, description, videoLink, urlTitle, serviceContext);
+                lectureLocalService.addLecture(userId, courseId, name, description, videoLink, urlTitle, serviceContext);
             }
             actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/view_lectures");
         } catch (Exception e) {
@@ -58,6 +58,6 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
     @Reference
     private Portal portal;
     @Reference
-    private LiferayCoursesAPI liferayCoursesAPI;
+    private LectureLocalService lectureLocalService;
 
 }

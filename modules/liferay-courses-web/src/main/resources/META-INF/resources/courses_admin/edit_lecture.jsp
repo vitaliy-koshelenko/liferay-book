@@ -54,7 +54,6 @@
 
 <aui:script>
     function <portlet:namespace />changeUrlTitle(courseNameInput) {
-        console.log('edit_lecture.jsp - changeUrlTitle.');
         const urlTitleInput = document.getElementById('<portlet:namespace />urlTitle');
         urlTitleInput.value = courseNameInput.value
                     .replace(/[^a-z0-9_-]/gi, '-')

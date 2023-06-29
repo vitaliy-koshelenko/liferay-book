@@ -2,8 +2,8 @@ package com.liferaybook.courses.web.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.manager.model.Course;
+import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -11,7 +11,8 @@ import org.osgi.service.component.annotations.Reference;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
+import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.COURSE;
+import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.COURSE_ID;
 
 @Component(
 	property = {
@@ -25,13 +26,13 @@ public class EditCourseMVCRenderCommand implements MVCRenderCommand {
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse){
 		long courseId = ParamUtil.getLong(renderRequest, COURSE_ID);
-		Course course = liferayCoursesAPI.getCourse(courseId);
+		Course course = courseLocalService.fetchCourse(courseId);
 		renderRequest.setAttribute(COURSE, course);
-		renderRequest.setAttribute(LiferayCoursesAPI.class.getName(), liferayCoursesAPI);
+		renderRequest.setAttribute(CourseLocalService.class.getName(), courseLocalService);
 		return LiferayCoursesAdminPortletKeys.EDIT_COURSE_JSP;
 	}
 
 	@Reference
-	private LiferayCoursesAPI liferayCoursesAPI;
+	private CourseLocalService courseLocalService;
 
 }

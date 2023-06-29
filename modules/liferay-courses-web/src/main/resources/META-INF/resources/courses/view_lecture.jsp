@@ -3,12 +3,11 @@
 <clay:container-fluid>
     <clay:sheet size="full">
         <clay:sheet-header>
-            <%@ include file="tabs/tabs-navigaton.jsp" %>
-        </clay:sheet-header>
-        <clay:sheet-section>
             <h2 class="sheet-title">
                 ${lecture.name}
             </h2>
+        </clay:sheet-header>
+        <clay:sheet-section>
             <p>
                 <b><liferay-ui:message key="lectures-user" /> :</b> ${lecture.userName}
             </p>
@@ -27,18 +26,18 @@
             </p>
             <p class="mt-4 p-2">
                 <iframe width="750" height="400" src="${lecture.embedVideoLink}" title=""
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
                 </iframe>
             </p>
         </clay:sheet-section>
         <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
             <div class="btn-group">
                 <div class="btn-group-item">
-                    <portlet:renderURL var="courseLecturesURL">
-                        <portlet:param name="mvcRenderCommandName" value="/courses/view_lectures" />
+                    <portlet:renderURL var="courseDetailsURL">
+                        <portlet:param name="mvcRenderCommandName" value="/courses/view_course" />
                         <portlet:param name="courseId" value="${lecture.courseId}" />
                     </portlet:renderURL>
-                    <clay:link href="${courseLecturesURL}" type="button" displayType="secondary" label="back" />
+                    <clay:link href="${courseDetailsURL}" type="button" displayType="secondary" label="back" />
                 </div>
             </div>
         </clay:sheet-footer>

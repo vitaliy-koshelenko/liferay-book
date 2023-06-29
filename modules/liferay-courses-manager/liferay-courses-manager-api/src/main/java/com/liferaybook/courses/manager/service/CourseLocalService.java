@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import com.liferaybook.courses.manager.model.*;
 import com.liferaybook.courses.manager.model.Course;
 
 import java.io.Serializable;
@@ -79,6 +80,7 @@ public interface CourseLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Course addCourse(Course course);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public Course addCourse(
 			long userId, long groupId, String name, String description,
 			String urlTitle, ServiceContext serviceContext)
@@ -323,7 +325,14 @@ public interface CourseLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Course> getUserCourses(long groupId, long userId);
+	public List<Course> getUserCourses(
+		long groupId, long userId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserCoursesCount(long groupId, long userId);
+
+	@Indexable(type = IndexableType.DELETE)
+	public Course removeCourse(Course course) throws PortalException;
 
 	/**
 	 * Updates the course in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -338,6 +347,7 @@ public interface CourseLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Course updateCourse(Course course);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public Course updateCourse(
 			long userId, long courseId, String name, String description,
 			String urlTitle, ServiceContext serviceContext)

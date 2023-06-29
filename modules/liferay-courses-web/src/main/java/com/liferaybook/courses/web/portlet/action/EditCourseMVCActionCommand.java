@@ -7,8 +7,8 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferaybook.courses.api.LiferayCoursesAPI;
 import com.liferaybook.courses.manager.model.Course;
+import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,10 +38,10 @@ public class EditCourseMVCActionCommand extends BaseMVCActionCommand {
             long userId = portal.getUserId(actionRequest);
             ServiceContext serviceContext = ServiceContextFactory.getInstance(Course.class.getName(), actionRequest);
             if (courseId > 0) {
-                liferayCoursesAPI.updateCourse(userId, courseId, name, description, urlTitle, serviceContext);
+                courseLocalService.updateCourse(userId, courseId, name, description, urlTitle, serviceContext);
             } else {
                 long groupId = portal.getScopeGroupId(actionRequest);
-                liferayCoursesAPI.saveCourse(userId, groupId, name, description, urlTitle, serviceContext);
+                courseLocalService.addCourse(userId, groupId, name, description, urlTitle, serviceContext);
             }
         } catch (Exception e) {
             SessionErrors.add(actionRequest, e.getClass());
@@ -54,6 +54,6 @@ public class EditCourseMVCActionCommand extends BaseMVCActionCommand {
     @Reference
     private Portal portal;
     @Reference
-    private LiferayCoursesAPI liferayCoursesAPI;
+    private CourseLocalService courseLocalService;
 
 }

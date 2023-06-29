@@ -1,4 +1,0 @@
-dependencies {
-	compileOnly group: "com.liferay.portal", name: "release.portal.api"
-	compileOnly project(":modules:liferay-courses-manager:liferay-courses-manager-api")
-}

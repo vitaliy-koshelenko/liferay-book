@@ -4,7 +4,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferaybook.courses.api.LiferayCoursesAPI;
+import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesConstants;
 import org.osgi.service.component.annotations.Component;
@@ -27,7 +27,7 @@ public class DeleteCourseMVCActionCommand extends BaseMVCActionCommand {
     protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
         try {
             long courseId = ParamUtil.getLong(actionRequest, LiferayCoursesConstants.COURSE_ID);
-            liferayCoursesAPI.deleteCourse(courseId);
+            courseLocalService.deleteCourse(courseId);
         } catch (Exception e) {
             SessionErrors.add(actionRequest, e.getClass());
             hideDefaultErrorMessage(actionRequest);
@@ -35,6 +35,6 @@ public class DeleteCourseMVCActionCommand extends BaseMVCActionCommand {
     }
 
     @Reference
-    private LiferayCoursesAPI liferayCoursesAPI;
+    private CourseLocalService courseLocalService;
 
 }

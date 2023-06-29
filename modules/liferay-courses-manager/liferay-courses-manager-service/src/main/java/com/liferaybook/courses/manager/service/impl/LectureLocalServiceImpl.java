@@ -18,6 +18,8 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferaybook.courses.manager.exception.*;
@@ -93,6 +95,12 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 		if (lecture != null && lecture.getGroupId() != groupId) {
 			throw new DuplicateUrlTitleException(String.format("Lecture with urlTitle='%s' already exists.", urlTitle));
 		}
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public Lecture deleteLecture(Lecture lecture) {
+		return lecturePersistence.remove(lecture);
 	}
 
 	public List<Lecture> getCourseLectures(long courseId) {
