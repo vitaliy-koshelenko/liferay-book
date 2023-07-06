@@ -79,6 +79,17 @@
                         classPK="${course.courseId}"
                 />
             </p>
+            <p>
+                <liferay-comment:discussion
+                        className="<%= Course.class.getName() %>"
+                        classPK="${course.courseId}"
+                        discussion="${courseDisplayContext.discussion}"
+                        formName="fm2"
+                        ratingsEnabled="<%= true %>"
+                        redirect="<%= currentURL %>"
+                        userId="${course.userId}"
+                />
+            </p>
         </clay:sheet-section>
         <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
             <div class="btn-group">

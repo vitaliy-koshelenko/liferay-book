@@ -9,6 +9,7 @@ import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import com.liferaybook.courses.web.constants.MyLiferayCoursesPortletKeys;
+import com.liferaybook.courses.web.display.context.CourseDisplayContext;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -38,14 +39,12 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
 			course = courseLocalService.getCourseByUrlTitle(groupId, urlTitle);
 		}
 		renderRequest.setAttribute(COURSE, course);
-		return getViewPath(renderRequest);
-	}
-
-	private String getViewPath(RenderRequest renderRequest) {
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 		String portletName = portletDisplay.getPortletName();
 		if (LiferayCoursesPortletKeys.PORTLET_ID.equals(portletName)) {
+			CourseDisplayContext courseDisplayContext = new CourseDisplayContext(course, renderRequest, renderResponse);
+			renderRequest.setAttribute(COURSE_CONTEXT, courseDisplayContext);
 			return LiferayCoursesPortletKeys.VIEW_COURSE_JSP;
 		} else {
 			return MyLiferayCoursesPortletKeys.VIEW_COURSE_JSP;
