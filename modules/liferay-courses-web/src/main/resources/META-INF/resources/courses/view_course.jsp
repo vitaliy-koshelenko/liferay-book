@@ -7,24 +7,23 @@
                 <liferay-ui:message key="course" /> #${course.courseId}: "${course.name}"
             </h2>
             <p>
-                <b><liferay-ui:message key="courses-user" /> :</b> ${course.userName}
-            </p>
-            <p>
-                <b><liferay-ui:message key="courses-create-date" /> :</b>
-                <fmt:formatDate var="courseCreateDate" value="${course.createDate}" pattern="dd-MM-yyyy HH:mm" />
-                ${courseCreateDate}
-            </p>
-            <p>
-                <b><liferay-ui:message key="courses-modified-date" /> :</b>
-                <fmt:formatDate var="courseModifiedDate" value="${course.modifiedDate}" pattern="dd-MM-yyyy HH:mm" />
-                ${courseModifiedDate}
-            </p>
-            <p class="mt-4 p-2">
                 ${course.description}
             </p>
-            <p>
-                <b>Lectures</b>
-            </p>
+            <div class="text-right">
+                <p>
+                    <b><liferay-ui:message key="courses-user" /> :</b> ${course.userName}
+                </p>
+                <p>
+                    <b><liferay-ui:message key="courses-create-date" /> :</b>
+                    <fmt:formatDate var="courseCreateDate" value="${course.createDate}" pattern="dd-MM-yyyy HH:mm" />
+                        ${courseCreateDate}
+                </p>
+                <p>
+                    <b><liferay-ui:message key="courses-modified-date" /> :</b>
+                    <fmt:formatDate var="courseModifiedDate" value="${course.modifiedDate}" pattern="dd-MM-yyyy HH:mm" />
+                        ${courseModifiedDate}
+                </p>
+            </div>
             <c:choose>
                 <c:when test="${not empty course.getLectures()}">
                     <table class="table table-autofit table-heading-nowrap table-list lfr-search-container-wrapper">
@@ -74,6 +73,12 @@
                     </tr>
                 </c:otherwise>
             </c:choose>
+            <p>
+                <liferay-asset:asset-links
+                        className="<%= Course.class.getName() %>"
+                        classPK="${course.courseId}"
+                />
+            </p>
         </clay:sheet-section>
         <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
             <div class="btn-group">

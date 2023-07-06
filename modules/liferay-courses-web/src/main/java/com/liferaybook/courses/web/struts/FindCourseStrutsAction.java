@@ -2,6 +2,7 @@ package com.liferaybook.courses.web.struts;
 
 import com.liferay.portal.kernel.portlet.PortletLayoutFinder;
 import com.liferay.portal.kernel.struts.StrutsAction;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.struts.FindStrutsAction;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
@@ -28,7 +29,8 @@ public class FindCourseStrutsAction extends FindStrutsAction {
 	@Override
 	public void setPrimaryKeyParameter(PortletURL portletURL, long primaryKey) {
 		Course course = courseLocalService.fetchCourse(primaryKey);
-		portletURL.getRenderParameters().setValue("courseId", String.valueOf(course.getCourseId()));
+		portletURL.getRenderParameters().setValue("urlTitle", course.getUrlTitle());
+		portletURL.getRenderParameters().removeParameter("courseId");
 	}
 
 	@Override

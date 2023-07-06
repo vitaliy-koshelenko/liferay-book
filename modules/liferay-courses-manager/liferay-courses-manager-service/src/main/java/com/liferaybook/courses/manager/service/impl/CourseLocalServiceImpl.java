@@ -14,7 +14,10 @@
 
 package com.liferaybook.courses.manager.service.impl;
 
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetLinkConstants;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
+import com.liferay.asset.kernel.service.AssetLinkLocalService;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -92,13 +95,18 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		long[] assetCategoryIds = serviceContext.getAssetCategoryIds();
 		String[] assetTagNames = serviceContext.getAssetTagNames();
 		double priority = serviceContext.getAssetPriority();
-		assetEntryLocalService.updateEntry(
+		AssetEntry assetEntry = assetEntryLocalService.updateEntry(
 				userId, course.getGroupId(), course.getCreateDate(),
 				course.getModifiedDate(), Course.class.getName(),
 				course.getCourseId(), course.getUuid(), 0, assetCategoryIds,
 				assetTagNames, true, true, null, null, null, null,
 				ContentTypes.TEXT_HTML, course.getName(), course.getDescription(),
 				summary, null, null, 0, 0, priority);
+
+		long[] assetLinkEntryIds = serviceContext.getAssetLinkEntryIds();
+		assetLinkLocalService.updateLinks(
+				userId, assetEntry.getEntryId(), assetLinkEntryIds,
+				AssetLinkConstants.TYPE_RELATED);
 	}
 
 	private void validate(long courseId, long groupId, String name, String description, String urlTitle) throws PortalException {
@@ -199,6 +207,8 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
 	@Reference
 	private AssetEntryLocalService assetEntryLocalService;
+	@Reference
+	private AssetLinkLocalService assetLinkLocalService;
 	@Reference
 	private LectureLocalService lectureLocalService;
 	@Reference

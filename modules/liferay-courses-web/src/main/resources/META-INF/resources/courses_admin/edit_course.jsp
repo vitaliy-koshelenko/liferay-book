@@ -32,13 +32,19 @@
                     <aui:input type="textarea" name="description" label="courses-description" value="${course.description}" />
                     <aui:input name="urlTitle" required="true" label="courses-url-title" value="${course.urlTitle}" />
                 </aui:fieldset>
-                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="categorization" cssClass="courses-categorization">
+                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="categorization" cssClass="courses-fieldset courses-fieldset__categorization">
                     <liferay-asset:asset-categories-selector
                             showOnlyRequiredVocabularies="true"
                             className="<%= Course.class.getName() %>"
                             classPK="${course.courseId}"
                     />
                     <liferay-asset:asset-tags-selector
+                            className="<%= Course.class.getName() %>"
+                            classPK="${course.courseId}"
+                    />
+                </aui:fieldset>
+                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="related-assets" cssClass="courses-fieldset">
+                    <liferay-asset:input-asset-links
                             className="<%= Course.class.getName() %>"
                             classPK="${course.courseId}"
                     />

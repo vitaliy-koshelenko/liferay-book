@@ -1,14 +1,18 @@
-.liferay-courses-admin-wrapper .courses-categorization {
-  padding: 1rem !important;
-  margin-top: 2rem;
-}
-
-.liferay-courses-admin-wrapper .courses-categorization .panel-body {
-  padding: 0;
-}
-
-.liferay-courses-admin-wrapper .courses-categorization .panel-body a,
-.liferay-courses-admin-wrapper .courses-categorization .panel-body .sheet-subtitle,
-.liferay-courses-admin-wrapper .courses-categorization .panel-body .sheet-subtitle + p {
-  display: none !important;
+.liferay-courses-admin-wrapper {
+  .courses-fieldset {
+    padding: 1rem !important;
+    margin-top: 2rem;
+    .panel-body {
+      padding: 0;
+    }
+    &__categorization {
+      .panel-body {
+        a,
+        .sheet-subtitle,
+        .sheet-subtitle + p {
+          display: none !important;
+        }
+      }
+    }
+  }
 }
