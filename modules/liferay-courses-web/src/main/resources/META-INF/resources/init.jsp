@@ -7,6 +7,7 @@
 <%@ taglib prefix="clay" uri="http://liferay.com/tld/clay" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="liferay-frontend" uri="http://liferay.com/tld/frontend" %>
+<%@ taglib prefix="liferay-asset" uri="http://liferay.com/tld/asset" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 <%@ page import="com.liferay.petra.string.StringPool" %>
@@ -16,6 +17,7 @@
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %>
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
+<%@ page import="com.liferay.asset.kernel.model.AssetVocabularyConstants" %>
 <%@ page import="com.liferaybook.courses.manager.service.CourseLocalService" %>
 <%@ page import="com.liferaybook.courses.manager.service.LectureLocalService" %>
 <%@ page import="com.liferaybook.courses.manager.exception.*" %>

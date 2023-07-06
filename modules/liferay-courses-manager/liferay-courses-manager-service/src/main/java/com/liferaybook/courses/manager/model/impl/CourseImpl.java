@@ -14,6 +14,18 @@
 
 package com.liferaybook.courses.manager.model.impl;
 
+import com.liferay.asset.entry.rel.model.AssetEntryAssetCategoryRel;
+import com.liferay.asset.entry.rel.service.AssetEntryAssetCategoryRelLocalServiceUtil;
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
+import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
+import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.model.CourseSubscription;
 import com.liferaybook.courses.manager.model.Lecture;
 import com.liferaybook.courses.manager.service.CourseSubscriptionLocalServiceUtil;
@@ -21,7 +33,9 @@ import com.liferaybook.courses.manager.service.LectureLocalServiceUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Koshelenko
@@ -53,6 +67,43 @@ public class CourseImpl extends CourseBaseImpl {
     public String getModifiedDateString() {
         DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         return dateFormat.format(getModifiedDate());
+    }
+
+    public AssetEntry getAssetEntry() {
+        long classNameId = PortalUtil.getClassNameId(Course.class.getName());
+        return AssetEntryLocalServiceUtil.fetchEntry(classNameId, getCourseId());
+    }
+
+    public List<AssetCategory> getCategories() {
+        AssetEntry assetEntry = getAssetEntry();
+        List<AssetEntryAssetCategoryRel> entryCategoryRels = AssetEntryAssetCategoryRelLocalServiceUtil
+                .getAssetEntryAssetCategoryRelsByAssetEntryId(assetEntry.getEntryId());
+        return entryCategoryRels.stream()
+                .map(rel -> AssetCategoryLocalServiceUtil.fetchCategory(rel.getAssetCategoryId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getCategoryNames() {
+        return getCategories().stream()
+                .map(AssetCategory::getName).collect(Collectors.toList());
+    }
+
+    public String getCategoryNamesString() {
+        return toString(getCategoryNames());
+    }
+
+    public String getTagNamesString() {
+        return toString(getTagNames());
+    }
+
+    public List<String> getTagNames() {
+        long classNameId = PortalUtil.getClassNameId(Course.class.getName());
+        return Arrays.asList(AssetTagLocalServiceUtil.getTagNames(classNameId, getCourseId()));
+    }
+
+    private String toString(List<String> array) {
+        return ListUtil.isNotEmpty(array)
+                ? StringUtil.merge(array, StringPool.COMMA_AND_SPACE) : StringPool.DASH;
     }
 
 }

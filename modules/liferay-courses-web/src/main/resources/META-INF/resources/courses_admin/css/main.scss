@@ -1,3 +1,14 @@
-.liferay-courses-admin-wrapper {
+.liferay-courses-admin-wrapper .courses-categorization {
+  padding: 1rem !important;
+  margin-top: 2rem;
+}
 
+.liferay-courses-admin-wrapper .courses-categorization .panel-body {
+  padding: 0;
+}
+
+.liferay-courses-admin-wrapper .courses-categorization .panel-body a,
+.liferay-courses-admin-wrapper .courses-categorization .panel-body .sheet-subtitle,
+.liferay-courses-admin-wrapper .courses-categorization .panel-body .sheet-subtitle + p {
+  display: none !important;
 }

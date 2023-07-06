@@ -131,6 +131,28 @@ public class CourseWrapper
 		return wrap(model.cloneWithOriginalValues());
 	}
 
+	@Override
+	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry() {
+		return model.getAssetEntry();
+	}
+
+	@Override
+	public java.util.List<com.liferay.asset.kernel.model.AssetCategory>
+		getCategories() {
+
+		return model.getCategories();
+	}
+
+	@Override
+	public java.util.List<String> getCategoryNames() {
+		return model.getCategoryNames();
+	}
+
+	@Override
+	public String getCategoryNamesString() {
+		return model.getCategoryNamesString();
+	}
+
 	/**
 	 * Returns the company ID of this course.
 	 *
@@ -229,6 +251,16 @@ public class CourseWrapper
 	@Override
 	public java.util.List<CourseSubscription> getSubscriptions() {
 		return model.getSubscriptions();
+	}
+
+	@Override
+	public java.util.List<String> getTagNames() {
+		return model.getTagNames();
+	}
+
+	@Override
+	public String getTagNamesString() {
+		return model.getTagNamesString();
 	}
 
 	/**

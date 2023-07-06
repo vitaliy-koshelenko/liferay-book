@@ -19,7 +19,8 @@
             <a href="${courseLecturesURL}">${course.courseId}</a>
         </liferay-ui:search-container-column-text>
         <liferay-ui:search-container-column-text name="courses-name" value="${course.name}" />
-        <liferay-ui:search-container-column-text name="courses-description" value="${course.description}" />
+        <liferay-ui:search-container-column-text name="courses-categories" value="${course.categoryNamesString}" />
+        <liferay-ui:search-container-column-text name="courses-tags" value="${course.tagNamesString}" />
         <liferay-ui:search-container-column-text name="courses-user"
                                                  value="${course.userName}" />
         <liferay-ui:search-container-column-text name="courses-create-date">

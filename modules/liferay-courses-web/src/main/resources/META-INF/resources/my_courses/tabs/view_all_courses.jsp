@@ -12,7 +12,8 @@
     <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
         <liferay-ui:search-container-column-text name="courses-course-id" value="${course.courseId}" />
         <liferay-ui:search-container-column-text name="courses-name" value="${course.name}" />
-        <liferay-ui:search-container-column-text name="courses-description" value="${course.description}" />
+        <liferay-ui:search-container-column-text name="courses-categories" value="${course.categoryNamesString}" />
+        <liferay-ui:search-container-column-text name="courses-tags" value="${course.tagNamesString}" />
         <liferay-ui:search-container-column-text name="courses-user"
                                                  value="${course.userName}" />
         <liferay-ui:search-container-column-text name="courses-create-date">

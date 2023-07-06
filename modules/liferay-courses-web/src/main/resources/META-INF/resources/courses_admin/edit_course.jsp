@@ -1,3 +1,4 @@
+<%@ page import="com.liferay.asset.kernel.exception.AssetCategoryException" %>
 <%@ include file="init.jsp" %>
 
 <% Course course = (Course) request.getAttribute("course"); %>
@@ -9,6 +10,7 @@
     <clay:container-fluid>
         <clay:sheet size="full">
             <clay:sheet-header>
+                <liferay-ui:error exception="<%= AssetCategoryException.class %>" message="course-category-required" />
                 <liferay-ui:error exception="<%= DuplicateUrlTitleException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= DuplicateCourseNameException.class %>" message="${errorMsg}" />
                 <liferay-ui:error exception="<%= CourseNameLengthException.class %>" message="${errorMsg}" />
@@ -25,9 +27,22 @@
                 </h2>
             </clay:sheet-header>
             <clay:sheet-section>
-                <aui:input name="name" required="true" label="courses-name" value="${course.name}" onChange='<%= liferayPortletResponse.getNamespace() + "changeUrlTitle(this);" %>' />
-                <aui:input type="textarea" name="description" label="courses-description" value="${course.description}" />
-                <aui:input name="urlTitle" required="true" label="courses-url-title" value="${course.urlTitle}" />
+                <aui:fieldset>
+                    <aui:input name="name" required="true" label="courses-name" value="${course.name}" onChange='<%= liferayPortletResponse.getNamespace() + "changeUrlTitle(this);" %>' />
+                    <aui:input type="textarea" name="description" label="courses-description" value="${course.description}" />
+                    <aui:input name="urlTitle" required="true" label="courses-url-title" value="${course.urlTitle}" />
+                </aui:fieldset>
+                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="categorization" cssClass="courses-categorization">
+                    <liferay-asset:asset-categories-selector
+                            showOnlyRequiredVocabularies="true"
+                            className="<%= Course.class.getName() %>"
+                            classPK="${course.courseId}"
+                    />
+                    <liferay-asset:asset-tags-selector
+                            className="<%= Course.class.getName() %>"
+                            classPK="${course.courseId}"
+                    />
+                </aui:fieldset>
             </clay:sheet-section>
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
                 <div class="btn-group">

@@ -68,4 +68,17 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public String getModifiedDateString();
 
+	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry();
+
+	public java.util.List<com.liferay.asset.kernel.model.AssetCategory>
+		getCategories();
+
+	public java.util.List<String> getCategoryNames();
+
+	public String getCategoryNamesString();
+
+	public java.util.List<String> getTagNames();
+
+	public String getTagNamesString();
+
 }
