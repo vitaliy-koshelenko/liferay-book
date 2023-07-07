@@ -83,10 +83,9 @@
                 <liferay-comment:discussion
                         className="<%= Course.class.getName() %>"
                         classPK="${course.courseId}"
-                        discussion="${courseDisplayContext.discussion}"
+                        discussion="${courseContext.discussion}"
                         formName="fm2"
                         ratingsEnabled="<%= true %>"
-                        redirect="<%= currentURL %>"
                         userId="${course.userId}"
                 />
             </p>

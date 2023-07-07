@@ -43,8 +43,8 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 		String portletName = portletDisplay.getPortletName();
 		if (LiferayCoursesPortletKeys.PORTLET_ID.equals(portletName)) {
-			CourseDisplayContext courseDisplayContext = new CourseDisplayContext(course, renderRequest, renderResponse);
-			renderRequest.setAttribute(COURSE_CONTEXT, courseDisplayContext);
+			CourseDisplayContext courseContext = new CourseDisplayContext(course, renderRequest);
+			renderRequest.setAttribute(COURSE_CONTEXT, courseContext);
 			return LiferayCoursesPortletKeys.VIEW_COURSE_JSP;
 		} else {
 			return MyLiferayCoursesPortletKeys.VIEW_COURSE_JSP;
