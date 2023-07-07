@@ -74,6 +74,10 @@ public class CourseImpl extends CourseBaseImpl {
         return AssetEntryLocalServiceUtil.fetchEntry(classNameId, getCourseId());
     }
 
+    public long getViewCount() {
+        return getAssetEntry().getViewCount();
+    }
+
     public List<AssetCategory> getCategories() {
         AssetEntry assetEntry = getAssetEntry();
         List<AssetEntryAssetCategoryRel> entryCategoryRels = AssetEntryAssetCategoryRelLocalServiceUtil

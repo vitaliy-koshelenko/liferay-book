@@ -24,8 +24,8 @@
                         ${courseModifiedDate}
                 </p>
                 <p>
-                    <b>View Count:</b>
-                    ${course.getAssetEntry().getViewCount()}
+                    <b><liferay-ui:message key="courses-view-count" /> :</b>
+                    ${course.viewCount}
                 </p>
             </div>
             <c:choose>

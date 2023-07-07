@@ -314,6 +314,11 @@ public class CourseWrapper
 	}
 
 	@Override
+	public long getViewCount() {
+		return model.getViewCount();
+	}
+
+	@Override
 	public boolean isUserSubscribed(long userId) {
 		return model.isUserSubscribed(userId);
 	}

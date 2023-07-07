@@ -70,6 +70,8 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry();
 
+	public long getViewCount();
+
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory>
 		getCategories();
 
@@ -77,8 +79,8 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public String getCategoryNamesString();
 
-	public java.util.List<String> getTagNames();
-
 	public String getTagNamesString();
+
+	public java.util.List<String> getTagNames();
 
 }
