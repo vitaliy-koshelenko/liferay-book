@@ -6,6 +6,7 @@
 <%@ taglib prefix="liferay-comment" uri="http://liferay.com/tld/comment" %>
 <%@ taglib prefix="liferay-frontend" uri="http://liferay.com/tld/frontend" %>
 <%@ taglib prefix="liferay-portlet" uri="http://liferay.com/tld/portlet" %>
+<%@ taglib prefix="liferay-ratings" uri="http://liferay.com/tld/ratings" %>
 <%@ taglib prefix="liferay-theme" uri="http://liferay.com/tld/theme" %>
 <%@ taglib prefix="liferay-ui" uri="http://liferay.com/tld/ui" %>
 <%@ taglib prefix="portlet" uri="http://xmlns.jcp.org/portlet_3_0"  %>

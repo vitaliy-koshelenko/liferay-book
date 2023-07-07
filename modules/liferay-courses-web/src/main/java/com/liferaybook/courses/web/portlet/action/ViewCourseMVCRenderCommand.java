@@ -1,5 +1,10 @@
 package com.liferaybook.courses.web.portlet.action;
 
+import com.liferay.application.list.PanelCategoryRegistry;
+import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.service.AssetEntryService;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -39,9 +44,10 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
 			course = courseLocalService.getCourseByUrlTitle(groupId, urlTitle);
 		}
 		renderRequest.setAttribute(COURSE, course);
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-		String portletName = portletDisplay.getPortletName();
+
+		incrementViewCount(course);
+
+		String portletName = getPortletName(renderRequest);
 		if (LiferayCoursesPortletKeys.PORTLET_ID.equals(portletName)) {
 			CourseDisplayContext courseContext = new CourseDisplayContext(course, renderRequest);
 			renderRequest.setAttribute(COURSE_CONTEXT, courseContext);
@@ -51,6 +57,26 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
 		}
 	}
 
+	private static String getPortletName(RenderRequest renderRequest) {
+		ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+		return portletDisplay.getPortletName();
+	}
+
+	private void incrementViewCount(Course course) {
+		try {
+			AssetEntry assetEntry = course.getAssetEntry();
+			assetEntryService.incrementViewCounter(assetEntry);
+		} catch (Exception e) {
+			_log.error("Failed to increment view counter for Course, cause: " + e.getMessage());
+		}
+	}
+
 	@Reference
 	private CourseLocalService courseLocalService;
+	@Reference
+	private AssetEntryService assetEntryService;
+
+	private static final Log _log = LogFactoryUtil.getLog(PanelCategoryRegistry.class);
+
 }

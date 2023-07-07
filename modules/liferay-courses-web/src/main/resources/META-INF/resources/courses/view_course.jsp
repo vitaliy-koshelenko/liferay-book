@@ -23,6 +23,10 @@
                     <fmt:formatDate var="courseModifiedDate" value="${course.modifiedDate}" pattern="dd-MM-yyyy HH:mm" />
                         ${courseModifiedDate}
                 </p>
+                <p>
+                    <b>View Count:</b>
+                    ${course.getAssetEntry().getViewCount()}
+                </p>
             </div>
             <c:choose>
                 <c:when test="${not empty course.getLectures()}">
@@ -75,6 +79,12 @@
             </c:choose>
             <p>
                 <liferay-asset:asset-links
+                        className="<%= Course.class.getName() %>"
+                        classPK="${course.courseId}"
+                />
+            </p>
+            <p>
+                <liferay-ratings:ratings type="thumbs"
                         className="<%= Course.class.getName() %>"
                         classPK="${course.courseId}"
                 />
