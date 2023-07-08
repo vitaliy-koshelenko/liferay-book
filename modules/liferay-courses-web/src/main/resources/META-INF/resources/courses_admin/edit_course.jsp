@@ -43,11 +43,19 @@
                             classPK="${course.courseId}"
                     />
                 </aui:fieldset>
-                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="related-assets" cssClass="courses-fieldset">
+                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="fieldset-related-courses" cssClass="courses-fieldset">
                     <liferay-asset:input-asset-links
                             className="<%= Course.class.getName() %>"
                             classPK="${course.courseId}"
                     />
+                </aui:fieldset>
+                <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="fieldset-priority" cssClass="courses-fieldset">
+                    <aui:input cssClass="form-control-sm" name="assetPriority" type="text" value="${course.priority}"
+                               label="course-priority" helpMessage="course-priority-help" wrapperCssClass="mb-3">
+                        <aui:validator name="number" />
+                        <aui:validator name="min">[0]</aui:validator>
+                        <aui:validator name="max">[99]</aui:validator>
+                    </aui:input>
                 </aui:fieldset>
             </clay:sheet-section>
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">

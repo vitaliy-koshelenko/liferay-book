@@ -15,6 +15,7 @@
 package com.liferaybook.courses.manager.service.impl;
 
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetEntryTable;
 import com.liferay.asset.kernel.model.AssetLinkConstants;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
@@ -29,10 +30,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.*;
 import com.liferaybook.courses.manager.exception.CourseDescriptionLengthException;
 import com.liferaybook.courses.manager.exception.CourseNameLengthException;
 import com.liferaybook.courses.manager.exception.DuplicateCourseNameException;
@@ -203,6 +201,21 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
 	public List<Course> getGroupCourses(long groupId, int start, int end) {
 		return coursePersistence.findByGroupId(groupId, start, end);
+	}
+
+	public List<Course> getPrioritizedGroupCourses(long groupId, int start, int end) {
+		long classNameId = PortalUtil.getClassNameId(getModelClass());
+		DSLQuery dslQuery = DSLQueryFactoryUtil
+				.select(CourseTable.INSTANCE)
+				.from(CourseTable.INSTANCE)
+				.innerJoinON(AssetEntryTable.INSTANCE,
+					CourseTable.INSTANCE.courseId.eq(AssetEntryTable.INSTANCE.classPK)
+						.and(AssetEntryTable.INSTANCE.classNameId.eq(classNameId))
+				)
+				.where(CourseTable.INSTANCE.groupId.eq(groupId))
+				.orderBy(AssetEntryTable.INSTANCE.priority.descending())
+				.limit(start, end);
+		return coursePersistence.dslQuery(dslQuery);
 	}
 
 	@Reference

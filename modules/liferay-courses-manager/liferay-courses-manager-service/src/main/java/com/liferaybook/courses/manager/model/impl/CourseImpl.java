@@ -78,6 +78,11 @@ public class CourseImpl extends CourseBaseImpl {
         return getAssetEntry().getViewCount();
     }
 
+    public double getPriority() {
+        AssetEntry assetEntry = getAssetEntry();
+        return assetEntry != null ? assetEntry.getPriority() : 0.0;
+    }
+
     public List<AssetCategory> getCategories() {
         AssetEntry assetEntry = getAssetEntry();
         List<AssetEntryAssetCategoryRel> entryCategoryRels = AssetEntryAssetCategoryRelLocalServiceUtil

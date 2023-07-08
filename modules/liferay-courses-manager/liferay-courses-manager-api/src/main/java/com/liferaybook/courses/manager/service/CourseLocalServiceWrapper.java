@@ -416,6 +416,14 @@ public class CourseLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferaybook.courses.manager.model.Course>
+		getPrioritizedGroupCourses(long groupId, int start, int end) {
+
+		return _courseLocalService.getPrioritizedGroupCourses(
+			groupId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferaybook.courses.manager.model.Course>
 		getUserCourses(long groupId, long userId, int start, int end) {
 
 		return _courseLocalService.getUserCourses(groupId, userId, start, end);

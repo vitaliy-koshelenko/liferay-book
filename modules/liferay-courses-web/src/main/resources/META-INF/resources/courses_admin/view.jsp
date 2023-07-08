@@ -12,7 +12,7 @@
                 <clay:link href="${addCourseURL}" label="+" type="button" displayType="primary" />
             </div>
             <liferay-ui:search-container total="<%= coursesService.getGroupCoursesCount(scopeGroupId) %>" delta="4" emptyResultsMessage="courses-empty-list">
-                <liferay-ui:search-container-results results="<%= coursesService.getGroupCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
+                <liferay-ui:search-container-results results="<%= coursesService.getPrioritizedGroupCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
                 <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
                     <portlet:renderURL var="viewLecturesURL">
                         <portlet:param name="mvcRenderCommandName" value="/courses/view_lectures" />
@@ -22,6 +22,7 @@
                         <a href="${viewLecturesURL}">${course.courseId}</a>
                     </liferay-ui:search-container-column-text>
                     <liferay-ui:search-container-column-text name="courses-name" value="${course.name}" />
+                    <liferay-ui:search-container-column-text name="courses-priority" value="${course.priority}" />
                     <liferay-ui:search-container-column-text name="courses-categories" value="${course.categoryNamesString}" />
                     <liferay-ui:search-container-column-text name="courses-tags" value="${course.tagNamesString}" />
                     <liferay-ui:search-container-column-text name="courses-user"

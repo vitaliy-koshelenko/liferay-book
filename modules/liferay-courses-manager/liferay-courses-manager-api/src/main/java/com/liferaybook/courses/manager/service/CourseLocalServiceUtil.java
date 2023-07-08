@@ -364,6 +364,12 @@ public class CourseLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static List<Course> getPrioritizedGroupCourses(
+		long groupId, int start, int end) {
+
+		return getService().getPrioritizedGroupCourses(groupId, start, end);
+	}
+
 	public static List<Course> getUserCourses(
 		long groupId, long userId, int start, int end) {
 

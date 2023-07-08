@@ -6,7 +6,7 @@
     <clay:sheet size="full">
         <clay:sheet-section>
             <liferay-ui:search-container total="<%= coursesService.getGroupCoursesCount(scopeGroupId) %>" delta="4" emptyResultsMessage="courses-empty-list">
-                <liferay-ui:search-container-results results="<%= coursesService.getGroupCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
+                <liferay-ui:search-container-results results="<%= coursesService.getPrioritizedGroupCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
                 <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
                     <portlet:renderURL var="courseDetailsURL">
                         <portlet:param name="mvcRenderCommandName" value="/courses/view_course" />
@@ -16,7 +16,9 @@
                         <a href="${courseDetailsURL}">${course.courseId}</a>
                     </liferay-ui:search-container-column-text>
                     <liferay-ui:search-container-column-text name="courses-name" value="${course.name}" />
-                    <liferay-ui:search-container-column-text name="courses-description" value="${course.description}" />
+                    <liferay-ui:search-container-column-text name="courses-priority" value="${course.priority}" />
+                    <liferay-ui:search-container-column-text name="courses-categories" value="${course.categoryNamesString}" />
+                    <liferay-ui:search-container-column-text name="courses-tags" value="${course.tagNamesString}" />
                     <liferay-ui:search-container-column-text name="courses-user" value="${course.userName}" />
                     <liferay-ui:search-container-column-text name="courses-create-date">
                         <fmt:formatDate var="courseCreateDate" value="${course.createDate}" pattern="dd-MM-yyyy HH:mm" />

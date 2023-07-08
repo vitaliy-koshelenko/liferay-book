@@ -249,6 +249,11 @@ public class CourseWrapper
 	}
 
 	@Override
+	public double getPriority() {
+		return model.getPriority();
+	}
+
+	@Override
 	public java.util.List<CourseSubscription> getSubscriptions() {
 		return model.getSubscriptions();
 	}

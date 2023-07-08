@@ -72,6 +72,8 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public long getViewCount();
 
+	public double getPriority();
+
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory>
 		getCategories();
 
