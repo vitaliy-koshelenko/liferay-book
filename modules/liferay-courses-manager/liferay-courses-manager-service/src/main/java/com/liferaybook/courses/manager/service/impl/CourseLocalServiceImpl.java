@@ -162,14 +162,35 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 			}
 		}
 
-		// Delete Course
-		course = coursePersistence.remove(course);
-
 		// Delete Asset Entry
 		assetEntryLocalService.deleteEntry(Course.class.getName(), course.getCourseId());
 
+		// Delete Course
+		course = coursePersistence.remove(course);
+
 		return course;
 	}
+
+	public int getNotEmptyCoursesCount(long groupId) {
+		DSLQuery dslQuery = buildNotEmptyCoursesDSLQuery(groupId);
+		List<Course> courses = courseLocalService.dslQuery(dslQuery);
+		return courses.size();
+	}
+
+	public List<Course> getNotEmptyCourses(long groupId, int start, int end) {
+		GroupByStep baseQuery = (GroupByStep) buildNotEmptyCoursesDSLQuery(groupId);
+		DSLQuery dslQuery = baseQuery.limit(start, end);
+		return courseLocalService.dslQuery(dslQuery);
+	}
+
+	private DSLQuery buildNotEmptyCoursesDSLQuery(long groupId) {
+		return DSLQueryFactoryUtil
+				.selectDistinct(CourseTable.INSTANCE)
+				.from(CourseTable.INSTANCE)
+				.innerJoinON(LectureTable.INSTANCE, LectureTable.INSTANCE.courseId.eq(CourseTable.INSTANCE.courseId))
+				.where(CourseTable.INSTANCE.groupId.eq(groupId));
+	}
+
 
 	public int getUserCoursesCount(long groupId, long userId) {
 		DSLQuery dslQuery = buildUserCoursesDSLQuery(groupId, userId);

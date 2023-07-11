@@ -153,6 +153,11 @@ public class CourseWrapper
 		return model.getCategoryNamesString();
 	}
 
+	@Override
+	public int getCommentsCount() {
+		return model.getCommentsCount();
+	}
+
 	/**
 	 * Returns the company ID of this course.
 	 *
@@ -198,6 +203,13 @@ public class CourseWrapper
 		return model.getDescription();
 	}
 
+	@Override
+	public String getDisplayPageURL(
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay) {
+
+		return model.getDisplayPageURL(themeDisplay);
+	}
+
 	/**
 	 * Returns the group ID of this course.
 	 *
@@ -211,6 +223,11 @@ public class CourseWrapper
 	@Override
 	public java.util.List<Lecture> getLectures() {
 		return model.getLectures();
+	}
+
+	@Override
+	public int getLecturesCount() {
+		return model.getLecturesCount();
 	}
 
 	/**
@@ -251,6 +268,16 @@ public class CourseWrapper
 	@Override
 	public double getPriority() {
 		return model.getPriority();
+	}
+
+	@Override
+	public double getRating() {
+		return model.getRating();
+	}
+
+	@Override
+	public int getSubscribedUsersCount() {
+		return model.getSubscribedUsersCount();
 	}
 
 	@Override

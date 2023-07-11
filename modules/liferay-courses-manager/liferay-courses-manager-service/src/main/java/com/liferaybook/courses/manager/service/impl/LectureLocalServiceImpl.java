@@ -14,16 +14,17 @@
 
 package com.liferaybook.courses.manager.service.impl;
 
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.search.Indexable;
-import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferaybook.courses.manager.exception.*;
-import com.liferaybook.courses.manager.model.Lecture;
+import com.liferaybook.courses.manager.model.*;
 import com.liferaybook.courses.manager.service.base.LectureLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
 
@@ -72,6 +73,29 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 		return lectureLocalService.updateLecture(lecture);
 	}
 
+	public int getUserLecturesCount(long groupId, long userId) {
+		DSLQuery dslQuery = buildUserLecturesDSLQuery(groupId, userId);
+		List<Course> courses = lectureLocalService.dslQuery(dslQuery);
+		return courses.size();
+	}
+
+	public List<Lecture> getUserLectures(long groupId, long userId, int start, int end) {
+		GroupByStep baseQuery = (GroupByStep) buildUserLecturesDSLQuery(groupId, userId);
+		DSLQuery dslQuery = baseQuery.limit(start, end);
+		return lectureLocalService.dslQuery(dslQuery);
+	}
+	private DSLQuery buildUserLecturesDSLQuery(long groupId, long userId) {
+		return DSLQueryFactoryUtil
+				.select(LectureTable.INSTANCE)
+				.from(LectureTable.INSTANCE)
+				.innerJoinON(CourseTable.INSTANCE, CourseTable.INSTANCE.courseId.eq(LectureTable.INSTANCE.courseId))
+				.innerJoinON(CourseSubscriptionTable.INSTANCE, CourseSubscriptionTable.INSTANCE.courseId.eq(CourseTable.INSTANCE.courseId))
+				.where(
+						CourseTable.INSTANCE.groupId.eq(groupId)
+								.and(CourseSubscriptionTable.INSTANCE.userId.eq(userId))
+				);
+	}
+
 	private void validate(long lectureId, long courseId, long groupId, String name, String description, String videoLink, String urlTitle) throws PortalException {
 		int nameMinLength = 5;
 		int nameMaxLength = ModelHintsUtil.getMaxLength(Lecture.class.getName(), "name");
@@ -95,12 +119,6 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 		if (lecture != null && lecture.getGroupId() != groupId) {
 			throw new DuplicateUrlTitleException(String.format("Lecture with urlTitle='%s' already exists.", urlTitle));
 		}
-	}
-
-	@Indexable(type = IndexableType.DELETE)
-	@Override
-	public Lecture deleteLecture(Lecture lecture) {
-		return lecturePersistence.remove(lecture);
 	}
 
 	public List<Lecture> getCourseLectures(long courseId) {

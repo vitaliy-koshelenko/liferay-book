@@ -21,10 +21,19 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
+import com.liferay.message.boards.model.MBMessage;
+import com.liferay.message.boards.service.MBMessageLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.ratings.kernel.model.RatingsStats;
+import com.liferay.ratings.kernel.service.RatingsStatsLocalServiceUtil;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.model.CourseSubscription;
 import com.liferaybook.courses.manager.model.Lecture;
@@ -43,20 +52,27 @@ import java.util.stream.Collectors;
 public class CourseImpl extends CourseBaseImpl {
 
     private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm";
+    private static final int RATINGS_SCALE = 5;
 
     public List<Lecture> getLectures() {
-        long courseId = getCourseId();
-        return LectureLocalServiceUtil.getCourseLectures(courseId);
+        return LectureLocalServiceUtil.getCourseLectures(getCourseId());
+    }
+
+    public int getLecturesCount() {
+        return LectureLocalServiceUtil.getCourseLecturesCount(getCourseId());
     }
 
     public List<CourseSubscription> getSubscriptions() {
-        long courseId = getCourseId();
-        return CourseSubscriptionLocalServiceUtil.getSubscriptionsForCourse(courseId);
+        return CourseSubscriptionLocalServiceUtil.getSubscriptionsForCourse(getCourseId());
     }
 
     public boolean isUserSubscribed(long userId) {
-        long courseId = getCourseId();
-        return CourseSubscriptionLocalServiceUtil.isSubscribed(userId, courseId);
+        return CourseSubscriptionLocalServiceUtil.isSubscribed(userId, getCourseId());
+    }
+
+    public int getSubscribedUsersCount() {
+        List<CourseSubscription> subscriptions = CourseSubscriptionLocalServiceUtil.getSubscriptionsForCourse(getCourseId());
+        return subscriptions.size();
     }
 
     public String getCreateDateString() {
@@ -74,13 +90,40 @@ public class CourseImpl extends CourseBaseImpl {
         return AssetEntryLocalServiceUtil.fetchEntry(classNameId, getCourseId());
     }
 
+    public int getCommentsCount() {
+        List<MBMessage> comments = MBMessageLocalServiceUtil.getMessages(Course.class.getName(), getCourseId(), WorkflowConstants.STATUS_APPROVED);
+        int commentsCount = comments.size();
+        if (commentsCount > 0) {
+            commentsCount--; // Exclude "root" message
+        }
+        return commentsCount;
+    }
+
     public long getViewCount() {
         return getAssetEntry().getViewCount();
     }
 
     public double getPriority() {
         AssetEntry assetEntry = getAssetEntry();
-        return assetEntry != null ? assetEntry.getPriority() : 0.0;
+        return assetEntry != null ? assetEntry.getPriority() : GetterUtil.DEFAULT_DOUBLE;
+    }
+
+    public double getRating() {
+        RatingsStats stats = RatingsStatsLocalServiceUtil.fetchStats(Course.class.getName(), getCourseId());
+        return stats != null ? stats.getAverageScore() * RATINGS_SCALE : GetterUtil.DEFAULT_DOUBLE;
+    }
+
+    public String getDisplayPageURL(ThemeDisplay themeDisplay) {
+        if (themeDisplay == null) {
+            return StringPool.BLANK;
+        }
+        long groupId = themeDisplay.getScopeGroupId();
+        Group group = GroupLocalServiceUtil.fetchGroup(groupId);
+        StringBuilder sb = new StringBuilder("/web");
+        sb.append(group.getFriendlyURL());
+        sb.append("/course/");
+        sb.append(getUrlTitle());
+        return sb.toString();
     }
 
     public List<AssetCategory> getCategories() {

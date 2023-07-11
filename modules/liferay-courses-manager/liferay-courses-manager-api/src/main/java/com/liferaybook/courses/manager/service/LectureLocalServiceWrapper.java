@@ -423,6 +423,19 @@ public class LectureLocalServiceWrapper
 		return _lectureLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public java.util.List<com.liferaybook.courses.manager.model.Lecture>
+		getUserLectures(long groupId, long userId, int start, int end) {
+
+		return _lectureLocalService.getUserLectures(
+			groupId, userId, start, end);
+	}
+
+	@Override
+	public int getUserLecturesCount(long groupId, long userId) {
+		return _lectureLocalService.getUserLecturesCount(groupId, userId);
+	}
+
 	/**
 	 * Updates the lecture in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

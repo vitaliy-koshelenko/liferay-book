@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.liferaybook.courses.manager.exception.*;
+import com.liferaybook.courses.manager.model.*;
 import com.liferaybook.courses.manager.model.Lecture;
 
 import java.io.Serializable;
@@ -325,6 +326,13 @@ public interface LectureLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Lecture> getUserLectures(
+		long groupId, long userId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserLecturesCount(long groupId, long userId);
 
 	/**
 	 * Updates the lecture in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

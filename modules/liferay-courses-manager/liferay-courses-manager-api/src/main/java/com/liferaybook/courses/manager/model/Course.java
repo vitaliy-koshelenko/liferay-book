@@ -60,9 +60,13 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public java.util.List<Lecture> getLectures();
 
+	public int getLecturesCount();
+
 	public java.util.List<CourseSubscription> getSubscriptions();
 
 	public boolean isUserSubscribed(long userId);
+
+	public int getSubscribedUsersCount();
 
 	public String getCreateDateString();
 
@@ -70,9 +74,16 @@ public interface Course extends CourseModel, PersistedModel {
 
 	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry();
 
+	public int getCommentsCount();
+
 	public long getViewCount();
 
 	public double getPriority();
+
+	public double getRating();
+
+	public String getDisplayPageURL(
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay);
 
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory>
 		getCategories();

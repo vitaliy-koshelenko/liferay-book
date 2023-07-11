@@ -346,6 +346,16 @@ public class CourseLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static List<Course> getNotEmptyCourses(
+		long groupId, int start, int end) {
+
+		return getService().getNotEmptyCourses(groupId, start, end);
+	}
+
+	public static int getNotEmptyCoursesCount(long groupId) {
+		return getService().getNotEmptyCoursesCount(groupId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

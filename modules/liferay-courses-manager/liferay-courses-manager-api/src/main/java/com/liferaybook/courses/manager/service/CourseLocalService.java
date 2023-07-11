@@ -310,6 +310,12 @@ public interface CourseLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Course> getNotEmptyCourses(long groupId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getNotEmptyCoursesCount(long groupId);
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

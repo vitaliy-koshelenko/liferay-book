@@ -369,6 +369,16 @@ public class LectureLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static List<Lecture> getUserLectures(
+		long groupId, long userId, int start, int end) {
+
+		return getService().getUserLectures(groupId, userId, start, end);
+	}
+
+	public static int getUserLecturesCount(long groupId, long userId) {
+		return getService().getUserLecturesCount(groupId, userId);
+	}
+
 	/**
 	 * Updates the lecture in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *

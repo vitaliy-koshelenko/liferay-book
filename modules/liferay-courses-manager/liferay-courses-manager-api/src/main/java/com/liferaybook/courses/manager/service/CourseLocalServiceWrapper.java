@@ -393,6 +393,18 @@ public class CourseLocalServiceWrapper
 		return _courseLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.liferaybook.courses.manager.model.Course>
+		getNotEmptyCourses(long groupId, int start, int end) {
+
+		return _courseLocalService.getNotEmptyCourses(groupId, start, end);
+	}
+
+	@Override
+	public int getNotEmptyCoursesCount(long groupId) {
+		return _courseLocalService.getNotEmptyCoursesCount(groupId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
