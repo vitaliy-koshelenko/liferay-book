@@ -6,3 +6,4 @@ Provide-Capability:\
 	liferay.language.resources;\
 		resource.bundle.base.name="content.Language";\
 		service.ranking:Long="1"
+-dsannotations-options: inherit
