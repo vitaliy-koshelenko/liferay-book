@@ -1,6 +1,7 @@
 dependencies {
 	compileOnly group: "com.liferay.portal", name: "release.portal.api"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl"
+	compileOnly group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", version: "2.3.1"
 	compileOnly project(":modules:liferay-courses-manager:liferay-courses-manager-api")
 	cssBuilder group: "com.liferay", name: "com.liferay.css.builder", version: "3.1.0"
 }
