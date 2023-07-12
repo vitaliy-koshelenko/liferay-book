@@ -17,6 +17,8 @@ public abstract class BaseCourseInfoItemRenderer implements InfoItemRenderer<Cou
 	protected static final String ABSTRACT_JSP = "abstract.jsp";
 	protected static final String FULL_CONTENT_LABEL_KEY = "full-content";
 	protected static final String FULL_CONTENT_JSP_NAME = "full_content.jsp";
+	protected static final String CARD_LABEL_KEY = "card";
+	protected static final String CARD_JSP = "card.jsp";
 
 	@Override
 	public String getLabel(Locale locale) {

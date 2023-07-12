@@ -9,11 +9,11 @@ import org.osgi.service.component.annotations.Component;
 public class CourseCardInfoItemRenderer extends BaseCourseInfoItemRenderer {
 	@Override
 	public String getLabelKey() {
-		return "cards";
+		return CARD_LABEL_KEY;
 	}
 
 	@Override
 	public String getJspName() {
-		return "card.jsp";
+		return CARD_JSP;
 	}
 }
