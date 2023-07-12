@@ -1,7 +1,6 @@
 package com.liferaybook.courses.web.info.list.renderer;
 
 import com.liferay.info.list.renderer.InfoListRenderer;
-import com.liferay.info.list.renderer.InfoListRendererContext;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferaybook.courses.manager.model.Course;
 import org.osgi.service.component.annotations.Component;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Component(service = InfoListRenderer.class)
-public class CardsCourseInfoListRenderer extends BaseCourseBasicInfoListRenderer {
+public class CardsCourseInfoListRenderer implements InfoListRenderer<Course> {
 
 	@Override
 	public String getLabel(Locale locale) {
@@ -23,15 +22,8 @@ public class CardsCourseInfoListRenderer extends BaseCourseBasicInfoListRenderer
 	}
 
 	@Override
-	public String getListStyle() {
-		return "cards";
-	}
-
-	@Override
-	public void render(List<Course> courses, InfoListRendererContext context) {
+	public void render(List<Course> courses, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			HttpServletRequest request = context.getHttpServletRequest();
-			HttpServletResponse response = context.getHttpServletResponse();
 			request.setAttribute("courses", courses);
 			RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/courses/info/item/renderer/card_list.jsp");
 			requestDispatcher.include(request, response);
@@ -43,5 +35,4 @@ public class CardsCourseInfoListRenderer extends BaseCourseBasicInfoListRenderer
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferaybook.courses.web)")
 	private ServletContext servletContext;
-
 }
