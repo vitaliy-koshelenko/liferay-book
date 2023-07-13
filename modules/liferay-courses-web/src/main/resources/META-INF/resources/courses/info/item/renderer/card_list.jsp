@@ -11,7 +11,11 @@
 								<div class="autofit-col autofit-col-expand">
 									<section class="autofit-section">
 										<h3 class="card-title">${course.name}</h3>
-										<p class="card-subtitle">${course.description}</p>
+										<clay:badge displayType="info" label="${course.categoryNamesString}" />
+										<p class="card-subtitle mt-2">${course.description}</p>
+										<p class="mt-2 mb-2" style="color: #888; font-size: smaller; font-style: italic;">
+											Created by <b>${course.userName}</b> on <b>${course.createDateString}</b>.
+										</p>
 										<p class="text-right mt-2">
 											<a href="${course.getDisplayPageURL(themeDisplay)}">
 												<liferay-ui:message key="read-more" />

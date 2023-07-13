@@ -277,6 +277,11 @@ public class CourseLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<String> getCourseAuthorNames(long groupId) {
+		return _courseLocalService.getCourseAuthorNames(groupId);
+	}
+
+	@Override
 	public com.liferaybook.courses.manager.model.Course getCourseByUrlTitle(
 		long groupId, String urlTitle) {
 

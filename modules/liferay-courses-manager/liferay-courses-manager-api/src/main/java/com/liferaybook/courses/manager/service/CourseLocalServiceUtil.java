@@ -248,6 +248,10 @@ public class CourseLocalServiceUtil {
 		return getService().getCourse(courseId);
 	}
 
+	public static List<String> getCourseAuthorNames(long groupId) {
+		return getService().getCourseAuthorNames(groupId);
+	}
+
 	public static Course getCourseByUrlTitle(long groupId, String urlTitle) {
 		return getService().getCourseByUrlTitle(groupId, urlTitle);
 	}

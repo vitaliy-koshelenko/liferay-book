@@ -235,6 +235,9 @@ public interface CourseLocalService
 	public Course getCourse(long courseId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<String> getCourseAuthorNames(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Course getCourseByUrlTitle(long groupId, String urlTitle);
 
 	/**

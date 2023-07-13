@@ -24,6 +24,7 @@ import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.User;
@@ -43,6 +44,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Koshelenko
@@ -171,12 +173,14 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		return course;
 	}
 
+	@Override
 	public int getNotEmptyCoursesCount(long groupId) {
 		DSLQuery dslQuery = buildNotEmptyCoursesDSLQuery(groupId);
 		List<Course> courses = courseLocalService.dslQuery(dslQuery);
 		return courses.size();
 	}
 
+	@Override
 	public List<Course> getNotEmptyCourses(long groupId, int start, int end) {
 		GroupByStep baseQuery = (GroupByStep) buildNotEmptyCoursesDSLQuery(groupId);
 		DSLQuery dslQuery = baseQuery.limit(start, end);
@@ -192,12 +196,14 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 	}
 
 
+	@Override
 	public int getUserCoursesCount(long groupId, long userId) {
 		DSLQuery dslQuery = buildUserCoursesDSLQuery(groupId, userId);
 		List<Course> courses = courseLocalService.dslQuery(dslQuery);
 		return courses.size();
 	}
 
+	@Override
 	public List<Course> getUserCourses(long groupId, long userId, int start, int end) {
 		GroupByStep baseQuery = (GroupByStep) buildUserCoursesDSLQuery(groupId, userId);
 		DSLQuery dslQuery = baseQuery.limit(start, end);
@@ -216,14 +222,17 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 				);
 	}
 
+	@Override
 	public int getGroupCoursesCount(long groupId) {
 		return coursePersistence.countByGroupId(groupId);
 	}
 
+	@Override
 	public List<Course> getGroupCourses(long groupId, int start, int end) {
 		return coursePersistence.findByGroupId(groupId, start, end);
 	}
 
+	@Override
 	public List<Course> getPrioritizedGroupCourses(long groupId, int start, int end) {
 		long classNameId = PortalUtil.getClassNameId(getModelClass());
 		DSLQuery dslQuery = DSLQueryFactoryUtil
@@ -237,6 +246,12 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 				.orderBy(AssetEntryTable.INSTANCE.priority.descending())
 				.limit(start, end);
 		return coursePersistence.dslQuery(dslQuery);
+	}
+
+	@Override
+	public List<String> getCourseAuthorNames(long groupId) {
+		List<Course> siteCourses = getGroupCourses(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		return siteCourses.stream().map(Course::getUserName).distinct().collect(Collectors.toList());
 	}
 
 	@Reference

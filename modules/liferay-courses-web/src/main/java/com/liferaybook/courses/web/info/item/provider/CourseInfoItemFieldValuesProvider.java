@@ -67,7 +67,6 @@ public class CourseInfoItemFieldValuesProvider implements InfoItemFieldValuesPro
 		if (themeDisplay != null) {
 			values.add(new InfoFieldValue<>(CourseInfoItemFields.displayPageURLInfoField, getDisplayPageURL(course)));
 		}
-		// ...
 		return values;
 	}
 
