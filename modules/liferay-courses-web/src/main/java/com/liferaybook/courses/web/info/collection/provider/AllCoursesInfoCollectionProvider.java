@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 @Component(service = InfoCollectionProvider.class)
 public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionProvider<Course> {
+
     @Override
     public List<InfoFilter> getSupportedInfoFilters() {
         return Arrays.asList(
@@ -39,6 +40,7 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
                 new AuthorInfoFilter()
         );
     }
+
     @Override
     public InfoPage<Course> getCollectionInfoPage(CollectionQuery query) {
         InfoPage<Course> coursePage = null;
