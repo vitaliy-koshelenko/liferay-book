@@ -12,6 +12,8 @@ import com.liferaybook.courses.web.constants.LiferayCourseDisplayPortletKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import com.liferaybook.courses.web.constants.MyLiferayCoursesPortletKeys;
+import com.liferaybook.courses.web.security.permission.resource.CoursePermission;
+import com.liferaybook.courses.web.security.permission.resource.LecturePermission;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -67,6 +69,10 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		}
 	}
 
+	@Reference
+	private LecturePermission lecturePermission;
+	@Reference
+	private CoursePermission coursePermission;
 	@Reference
 	private CourseLocalService courseLocalService;
 	@Reference

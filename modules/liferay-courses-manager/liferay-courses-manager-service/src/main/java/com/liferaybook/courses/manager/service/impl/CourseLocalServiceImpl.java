@@ -26,10 +26,12 @@ import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ModelHintsUtil;
-import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.*;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.*;
 import com.liferaybook.courses.manager.exception.CourseDescriptionLengthException;
@@ -73,7 +75,14 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		course.setDescription(description);
 		course.setUrlTitle(urlTitle);
 		course = courseLocalService.updateCourse(course);
+
+		// Resources
+		resourceLocalService.addModelResources(course.getCompanyId(), course.getGroupId(), course.getUserId(),
+				Course.class.getName(), course.getCourseId(), serviceContext.getModelPermissions());
+
+		// Asset
 		updateAsset(userId, course, serviceContext);
+
 		return course;
 	}
 
@@ -81,13 +90,30 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 	public Course updateCourse(long userId, long courseId, String name, String description, String urlTitle, ServiceContext serviceContext) throws PortalException {
 		Course course = coursePersistence.findByPrimaryKey(courseId);
 		validate(courseId, course.getGroupId(), name, description, urlTitle);
-		course.setUserId(userId);
 		course.setName(name);
 		course.setDescription(description);
 		course.setUrlTitle(urlTitle);
 		course = courseLocalService.updateCourse(course);
+
+		// Resource
+		boolean hasResourcePermission = hasResourcePermission(course);
+		if (!hasResourcePermission) {
+			resourceLocalService.addResources(course.getCompanyId(), course.getGroupId(), course.getUserId(),
+					Course.class.getName(), course.getCourseId(), false, serviceContext);
+		}
+
+		// Asset
 		updateAsset(userId, course, serviceContext);
 		return course;
+	}
+
+	private boolean hasResourcePermission(Course course) throws PortalException {
+		long companyId = course.getCompanyId();
+		Role role = roleLocalService.getRole(companyId, RoleConstants.OWNER);
+		String className = Course.class.getName();
+		ResourcePermission resourcePermission = resourcePermissionLocalService
+				.fetchResourcePermission(companyId, className, ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(course.getCourseId()), role.getRoleId());
+		return resourcePermission != null;
 	}
 
 	private void updateAsset(long userId, Course course, ServiceContext serviceContext) throws PortalException {
@@ -148,6 +174,7 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
 	@Indexable(type = IndexableType.DELETE)
 	public Course removeCourse(Course course) throws PortalException {
+
 		// Delete Course Lectures
 		List<Lecture> lectures = course.getLectures();
 		if (ListUtil.isNotEmpty(lectures)) {
@@ -163,6 +190,11 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 				courseSubscriptionLocalService.deleteCourseSubscription(subscription);
 			}
 		}
+
+		// Delete Resource
+		resourceLocalService.deleteResource(
+				course.getCompanyId(),Course.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, course.getCourseId());
 
 		// Delete Asset Entry
 		assetEntryLocalService.deleteEntry(Course.class.getName(), course.getCourseId());
@@ -262,5 +294,9 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 	private LectureLocalService lectureLocalService;
 	@Reference
 	private CourseSubscriptionLocalService courseSubscriptionLocalService;
+	@Reference
+	private RoleLocalService roleLocalService;
+	@Reference
+	private ResourcePermissionLocalService resourcePermissionLocalService;
 
 }

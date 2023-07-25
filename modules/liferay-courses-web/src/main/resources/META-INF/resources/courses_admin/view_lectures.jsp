@@ -29,11 +29,24 @@
 										 delta="4" emptyResultsMessage="lectures-empty-list">
 				<liferay-ui:search-container-results results="<%= lecturesService.getCourseLectures(courseId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
 				<liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Lecture" modelVar="lecture" keyProperty="lectureId">
+					<%-- Portlet URLs --%>
 					<portlet:renderURL var="editLectureURL">
 						<portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
 						<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
 						<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
 					</portlet:renderURL>
+					<portlet:actionURL name="/courses/delete_lecture" var="deleteLectureURL">
+						<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+						<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
+					</portlet:actionURL>
+					<liferay-security:permissionsURL
+							modelResource="<%= Lecture.class.getName() %>"
+							modelResourceDescription="<%= lecture.getName() %>"
+							resourcePrimKey="<%= String.valueOf(lecture.getLectureId()) %>"
+							var="lecturePermissionsURL"
+							windowState="<%= LiferayWindowState.POP_UP.toString() %>"
+					/>
+					<%-- Search Container Columns --%>
 					<liferay-ui:search-container-column-text name="lectures-lecture-id">
 						<a href="${editLectureURL}">${lecture.lectureId}</a>
 					</liferay-ui:search-container-column-text>
@@ -55,10 +68,7 @@
 					<liferay-ui:search-container-column-text>
 						<liferay-ui:icon-menu direction="left-side" icon="" markupView="lexicon" message="actions" showWhenSingleIcon="<%= true %>">
 							<liferay-ui:icon message="edit" url="${editLectureURL}" />
-							<portlet:actionURL name="/courses/delete_lecture" var="deleteLectureURL">
-								<portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
-								<portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
-							</portlet:actionURL>
+							<liferay-ui:icon message="permissions" method="get" url="${lecturePermissionsURL}" useDialog="<%= true %>" />
 							<liferay-ui:icon-delete message="delete" confirmation="lecture-delete-confirmation" url="${deleteLectureURL}" />
 						</liferay-ui:icon-menu>
 					</liferay-ui:search-container-column-text>

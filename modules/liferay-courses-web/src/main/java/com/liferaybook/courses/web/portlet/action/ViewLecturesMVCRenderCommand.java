@@ -1,13 +1,11 @@
 package com.liferaybook.courses.web.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.theme.PortletDisplay;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.manager.service.LectureLocalService;
+import com.liferaybook.courses.web.constants.CourseMVCCommandKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
 import com.liferaybook.courses.web.constants.MyLiferayCoursesPortletKeys;
 import org.osgi.service.component.annotations.Component;
@@ -24,11 +22,11 @@ import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.COUR
 	property = {
 		"javax.portlet.name=" + MyLiferayCoursesPortletKeys.PORTLET_ID,
 		"javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
-		"mvc.command.name=/courses/view_lectures"
+		"mvc.command.name=" + CourseMVCCommandKeys.COURSE_LECTURES
 	},
 	service = MVCRenderCommand.class
 )
-public class ViewLecturesMVCRenderCommand implements MVCRenderCommand {
+public class ViewLecturesMVCRenderCommand implements MVCRenderCommand, CoursesMVCCommand {
 
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
@@ -42,12 +40,6 @@ public class ViewLecturesMVCRenderCommand implements MVCRenderCommand {
 		} else {
 			return MyLiferayCoursesPortletKeys.VIEW_LECTURES_JSP;
 		}
-	}
-
-	private String getPortletId(RenderRequest renderRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-		return portletDisplay.getPortletName();
 	}
 
 	@Reference

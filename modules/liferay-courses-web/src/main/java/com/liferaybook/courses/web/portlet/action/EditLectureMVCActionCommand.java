@@ -9,24 +9,29 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferaybook.courses.manager.model.Lecture;
 import com.liferaybook.courses.manager.service.LectureLocalService;
+import com.liferaybook.courses.web.constants.CourseMVCCommandKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
+import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import java.util.Objects;
+
 import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
 
 @Component(
     immediate = true,
     property = {
+        "javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
         "javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
-        "mvc.command.name=/courses/edit_lecture"
+            "mvc.command.name=" + CourseMVCCommandKeys.EDIT_LECTURE
     },
     service = MVCActionCommand.class
 )
-public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
+public class EditLectureMVCActionCommand extends BaseMVCActionCommand implements CoursesMVCCommand {
 
     @Override
     protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) {
@@ -44,14 +49,14 @@ public class EditLectureMVCActionCommand extends BaseMVCActionCommand {
             } else {
                 lectureLocalService.addLecture(userId, courseId, name, description, videoLink, urlTitle, serviceContext);
             }
-            actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/view_lectures");
+            boolean isAdminPortlet = Objects.equals(getPortletId(actionRequest), LiferayCoursesAdminPortletKeys.PORTLET_ID);
+            String mvcRenderCommandName = isAdminPortlet ? CourseMVCCommandKeys.COURSE_LECTURES : CourseMVCCommandKeys.COURSE_DETAILS;
+            actionResponse.getRenderParameters().setValue(MVC_RENDER_COMMAND_NAME, mvcRenderCommandName);
         } catch (Exception e) {
             SessionErrors.add(actionRequest, e.getClass());
             actionRequest.setAttribute(ERROR_MSG, e.getMessage());
-            actionResponse.getRenderParameters().setValue("mvcRenderCommandName", "/courses/edit_lecture");
+            actionResponse.getRenderParameters().setValue(MVC_RENDER_COMMAND_NAME, CourseMVCCommandKeys.EDIT_LECTURE);
             hideDefaultErrorMessage(actionRequest);
-        } finally {
-            actionResponse.getRenderParameters().setValue("screenNavigationCategoryKey", "lectures");
         }
     }
 

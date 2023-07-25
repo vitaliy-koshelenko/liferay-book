@@ -6,12 +6,12 @@ import com.liferay.asset.kernel.service.AssetEntryService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
+import com.liferaybook.courses.web.constants.CourseMVCCommandKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import com.liferaybook.courses.web.constants.MyLiferayCoursesPortletKeys;
 import com.liferaybook.courses.web.display.context.CourseDisplayContext;
@@ -27,11 +27,11 @@ import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
 	property = {
 		"javax.portlet.name=" + MyLiferayCoursesPortletKeys.PORTLET_ID,
 		"javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
-		"mvc.command.name=/courses/view_course"
+		"mvc.command.name=" + CourseMVCCommandKeys.COURSE_DETAILS
 	},
 	service = MVCRenderCommand.class
 )
-public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
+public class ViewCourseMVCRenderCommand implements MVCRenderCommand, CoursesMVCCommand {
 
 	@Override
 	public String render(RenderRequest renderRequest, RenderResponse renderResponse) {
@@ -47,7 +47,7 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
 
 		incrementViewCount(course);
 
-		String portletName = getPortletName(renderRequest);
+		String portletName = getPortletId(renderRequest);
 		if (LiferayCoursesPortletKeys.PORTLET_ID.equals(portletName)) {
 			CourseDisplayContext courseContext = new CourseDisplayContext(course, renderRequest);
 			renderRequest.setAttribute(COURSE_CONTEXT, courseContext);
@@ -55,12 +55,6 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand {
 		} else {
 			return MyLiferayCoursesPortletKeys.VIEW_COURSE_JSP;
 		}
-	}
-
-	private static String getPortletName(RenderRequest renderRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-		return portletDisplay.getPortletName();
 	}
 
 	private void incrementViewCount(Course course) {

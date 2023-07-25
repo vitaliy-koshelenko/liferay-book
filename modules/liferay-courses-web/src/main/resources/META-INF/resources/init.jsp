@@ -10,8 +10,12 @@
 <%@ taglib prefix="liferay-theme" uri="http://liferay.com/tld/theme" %>
 <%@ taglib prefix="liferay-ui" uri="http://liferay.com/tld/ui" %>
 <%@ taglib prefix="portlet" uri="http://xmlns.jcp.org/portlet_3_0"  %>
+<%@ taglib prefix="liferay-security" uri="http://liferay.com/tld/security" %>
 
+<%@ page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %>
+<%@ page import="com.liferay.portal.kernel.security.permission.ActionKeys" %>
 <%@ page import="com.liferay.asset.kernel.model.AssetVocabularyConstants" %>
+<%@ page import="com.liferay.asset.kernel.exception.AssetCategoryException" %>
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %>
 <%@ page import="com.liferay.petra.string.StringPool" %>
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
@@ -20,11 +24,15 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portal.kernel.util.PrefsParamUtil" %>
 <%@ page import="com.liferaybook.courses.manager.exception.*" %>
+<%@ page import="com.liferaybook.courses.manager.constants.CoursesActionKeys" %>
 <%@ page import="com.liferaybook.courses.manager.model.Course" %>
 <%@ page import="com.liferaybook.courses.manager.model.Lecture" %>
 <%@ page import="com.liferaybook.courses.manager.service.CourseLocalService" %>
 <%@ page import="com.liferaybook.courses.manager.service.LectureLocalService" %>
 <%@ page import="com.liferaybook.courses.web.display.context.CoursesDisplayContext" %>
+<%@ page import="com.liferaybook.courses.web.security.permission.resource.CoursePermission" %>
+<%@ page import="com.liferaybook.courses.web.security.permission.resource.LecturePermission" %>
+<%@ page import="com.liferaybook.courses.web.security.permission.resource.CoursesPermission" %>
 <%@ page import="javax.portlet.PortletURL" %>
 
 <liferay-theme:defineObjects />

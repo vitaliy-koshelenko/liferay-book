@@ -19,7 +19,7 @@ import javax.portlet.Portlet;
 		"javax.portlet.security-role-ref=power-user,user",
 		"javax.portlet.init-param.add-process-action-success-action=false",
 		"com.liferay.portlet.css-class-wrapper=liferay-courses-list-wrapper",
-		"com.liferay.portlet.header-portlet-css=/css/main.css",
+		"com.liferay.portlet.header-portlet-css=/courses/css/main.css",
 		"javax.portlet.version=3.0"
 	},
 	service = Portlet.class

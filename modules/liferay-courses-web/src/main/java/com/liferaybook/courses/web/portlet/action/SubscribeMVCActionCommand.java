@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferaybook.courses.manager.service.CourseSubscriptionLocalService;
+import com.liferaybook.courses.web.constants.CourseMVCCommandKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesConstants;
 import com.liferaybook.courses.web.constants.MyLiferayCoursesPortletKeys;
 import org.osgi.service.component.annotations.Component;
@@ -18,7 +19,7 @@ import javax.portlet.ActionResponse;
     immediate = true,
     property = {
         "javax.portlet.name=" + MyLiferayCoursesPortletKeys.PORTLET_ID,
-        "mvc.command.name=/courses/subscribe"
+        "mvc.command.name=" + CourseMVCCommandKeys.SUBSCRIBE_COURSE
     },
     service = MVCActionCommand.class
 )

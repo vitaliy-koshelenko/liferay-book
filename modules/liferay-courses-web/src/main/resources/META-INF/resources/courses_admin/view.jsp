@@ -14,10 +14,26 @@
             <liferay-ui:search-container total="<%= coursesService.getGroupCoursesCount(scopeGroupId) %>" delta="4" emptyResultsMessage="courses-empty-list">
                 <liferay-ui:search-container-results results="<%= coursesService.getPrioritizedGroupCourses(scopeGroupId, searchContainer.getStart(), searchContainer.getEnd())  %>"/>
                 <liferay-ui:search-container-row className="com.liferaybook.courses.manager.model.Course" modelVar="course" keyProperty="courseId">
+                    <%-- Portlet URLs --%>
                     <portlet:renderURL var="viewLecturesURL">
                         <portlet:param name="mvcRenderCommandName" value="/courses/view_lectures" />
                         <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
                     </portlet:renderURL>
+                    <portlet:renderURL var="editCourseURL">
+                        <portlet:param name="mvcRenderCommandName" value="/courses/edit_course" />
+                        <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+                    </portlet:renderURL>
+                    <liferay-security:permissionsURL
+                            modelResource="<%= Course.class.getName() %>"
+                            modelResourceDescription="<%= course.getName() %>"
+                            resourcePrimKey="<%= String.valueOf(course.getCourseId()) %>"
+                            var="coursePermissionsURL"
+                            windowState="<%= LiferayWindowState.POP_UP.toString() %>"
+                    />
+                    <portlet:actionURL name="/courses/delete_course" var="deleteCourseURL">
+                        <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+                    </portlet:actionURL>
+                    <%-- Search Container Columns --%>
                     <liferay-ui:search-container-column-text name="courses-course-id">
                         <a href="${viewLecturesURL}">${course.courseId}</a>
                     </liferay-ui:search-container-column-text>
@@ -38,14 +54,8 @@
                     <liferay-ui:search-container-column-text>
                         <liferay-ui:icon-menu direction="left-side" icon="" markupView="lexicon" message="actions" showWhenSingleIcon="<%= true %>">
                             <liferay-ui:icon message="lectures" url="${viewLecturesURL}" />
-                            <portlet:renderURL var="editCourseURL">
-                                <portlet:param name="mvcRenderCommandName" value="/courses/edit_course" />
-                                <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
-                            </portlet:renderURL>
                             <liferay-ui:icon message="edit" url="${editCourseURL}" />
-                            <portlet:actionURL name="/courses/delete_course" var="deleteCourseURL">
-                                <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
-                            </portlet:actionURL>
+                            <liferay-ui:icon message="permissions" method="get" url="${coursePermissionsURL}" useDialog="<%= true %>" />
                             <liferay-ui:icon-delete message="delete" confirmation="courses-delete-confirmation" url="${deleteCourseURL}" />
                         </liferay-ui:icon-menu>
                     </liferay-ui:search-container-column-text>

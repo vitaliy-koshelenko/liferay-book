@@ -1,5 +1,7 @@
 <%@ include file="init.jsp" %>
 
+<% Course course = (Course) request.getAttribute("course"); %>
+
 <clay:container-fluid>
     <clay:sheet size="full">
         <clay:sheet-section>
@@ -28,6 +30,15 @@
                     ${course.viewCount}
                 </p>
             </div>
+            <c:if test="<%= CoursePermission.contains(permissionChecker, course.getCourseId(), CoursesActionKeys.ADD_LECTURE) %>">
+                <div class="w-100 mb-2 text-right">
+                    <portlet:renderURL var="addLectureURL">
+                        <portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
+                        <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+                    </portlet:renderURL>
+                    <clay:link href="${addLectureURL}" label="+" type="button" displayType="primary" />
+                </div>
+            </c:if>
             <c:choose>
                 <c:when test="${not empty course.getLectures()}">
                     <table class="table table-autofit table-heading-nowrap table-list lfr-search-container-wrapper">
@@ -39,17 +50,29 @@
                                 <th><liferay-ui:message key="lectures-user" /></th>
                                 <th><liferay-ui:message key="lectures-create-date" /></th>
                                 <th><liferay-ui:message key="lectures-modified-date" /></th>
+                                <th><%-- Actions --%></th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="lecture" items="${course.getLectures()}">
+                                <%
+                                    Lecture lecture = (Lecture) pageContext.getAttribute("lecture");
+                                    boolean hasViewPermission = LecturePermission.contains(permissionChecker, lecture.getLectureId(), ActionKeys.VIEW);
+                                %>
                                 <tr>
                                     <td>
                                         <portlet:renderURL var="lectureDetailsURL">
                                             <portlet:param name="mvcRenderCommandName" value="/courses/view_lecture" />
                                             <portlet:param name="urlTitle" value="${lecture.urlTitle}" />
                                         </portlet:renderURL>
-                                        <a href="${lectureDetailsURL}">${lecture.lectureId}</a>
+                                        <c:choose>
+                                            <c:when test="<%= hasViewPermission %>">
+                                                <a href="${lectureDetailsURL}">${lecture.lectureId}</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${lecture.lectureId}
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                     <td>${lecture.name}</td>
                                     <td>${lecture.description}</td>
@@ -61,6 +84,39 @@
                                     <td>
                                         <fmt:formatDate var="courseModifiedDate" value="${lecture.modifiedDate}" pattern="dd-MM-yyyy HH:mm" />
                                         ${courseModifiedDate}
+                                    </td>
+                                    <td>
+                                        <liferay-ui:icon-menu direction="left-side" icon="<%= StringPool.BLANK %>"
+                                                              markupView="lexicon" message="actions" showWhenSingleIcon="<%= true %>">
+                                            <c:if test="<%= hasViewPermission %>">
+                                                <liferay-ui:icon message="details" url="${lectureDetailsURL}" />
+                                            </c:if>
+                                            <c:if test="<%= LecturePermission.contains(permissionChecker, lecture.getLectureId(), ActionKeys.UPDATE) %>">
+                                                <portlet:renderURL var="editLectureURL">
+                                                    <portlet:param name="mvcRenderCommandName" value="/courses/edit_lecture" />
+                                                    <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+                                                    <portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
+                                                </portlet:renderURL>
+                                                <liferay-ui:icon message="edit" url="${editLectureURL}" />
+                                            </c:if>
+                                            <c:if test="<%= LecturePermission.contains(permissionChecker, lecture.getLectureId(), ActionKeys.PERMISSIONS) %>">
+                                                <liferay-security:permissionsURL
+                                                        modelResource="<%= Lecture.class.getName() %>"
+                                                        modelResourceDescription="<%= lecture.getName() %>"
+                                                        resourcePrimKey="<%= String.valueOf(lecture.getLectureId()) %>"
+                                                        var="lecturePermissionsURL"
+                                                        windowState="<%= LiferayWindowState.POP_UP.toString() %>"
+                                                />
+                                                <liferay-ui:icon message="permissions" method="get" url="${lecturePermissionsURL}" useDialog="<%= true %>" />
+                                            </c:if>
+                                            <c:if test="<%= LecturePermission.contains(permissionChecker, lecture.getLectureId(), ActionKeys.DELETE) %>">
+                                                <portlet:actionURL name="/courses/delete_lecture" var="deleteLectureURL">
+                                                    <portlet:param name="courseId" value="<%= String.valueOf(course.getCourseId()) %>" />
+                                                    <portlet:param name="lectureId" value="<%= String.valueOf(lecture.getLectureId()) %>" />
+                                                </portlet:actionURL>
+                                                <liferay-ui:icon-delete message="delete" confirmation="lecture-delete-confirmation" url="${deleteLectureURL}" />
+                                            </c:if>
+                                        </liferay-ui:icon-menu>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -103,9 +159,7 @@
         <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
             <div class="btn-group">
                 <div class="btn-group-item">
-                    <button class="btn btn-secondary" onclick="history.back();">
-                        <liferay-ui:message key="back" />
-                    </button>
+                    <clay:link href="${coursesListUrl}" type="button" displayType="secondary" label="back" />
                 </div>
             </div>
         </clay:sheet-footer>

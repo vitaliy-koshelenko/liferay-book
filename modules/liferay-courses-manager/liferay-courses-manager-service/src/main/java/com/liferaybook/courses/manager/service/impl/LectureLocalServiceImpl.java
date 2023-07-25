@@ -14,19 +14,23 @@
 
 package com.liferaybook.courses.manager.service.impl;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ModelHintsUtil;
-import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.*;
+import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferaybook.courses.manager.exception.*;
 import com.liferaybook.courses.manager.model.*;
 import com.liferaybook.courses.manager.service.base.LectureLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import java.util.List;
 
@@ -58,19 +62,69 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 		lecture.setDescription(description);
 		lecture.setVideoLink(videoLink);
 		lecture.setUrlTitle(urlTitle);
-		return lectureLocalService.updateLecture(lecture);
+		lecture = lectureLocalService.updateLecture(lecture);
+
+		// Resources
+		resourceLocalService.addModelResources(lecture.getCompanyId(), lecture.getGroupId(), lecture.getUserId(),
+				Lecture.class.getName(), lecture.getLectureId(), serviceContext.getModelPermissions());
+
+		return lecture;
 	}
 
 	public Lecture updateLecture(long userId, long lectureId, String name, String description, String videoLink,
 								 String urlTitle, ServiceContext serviceContext) throws PortalException {
 		Lecture lecture = lecturePersistence.fetchByPrimaryKey(lectureId);
 		validate(lectureId, lecture.getCourseId(), serviceContext.getScopeGroupId(), name, description, videoLink, urlTitle);
-		lecture.setUserId(userId);
 		lecture.setName(name);
 		lecture.setDescription(description);
 		lecture.setVideoLink(videoLink);
 		lecture.setUrlTitle(urlTitle);
-		return lectureLocalService.updateLecture(lecture);
+		lecture = lectureLocalService.updateLecture(lecture);
+
+		// Resource
+		boolean hasResourcePermission = hasResourcePermission(lecture);
+		if (!hasResourcePermission) {
+			resourceLocalService.addResources(lecture.getCompanyId(), lecture.getGroupId(), lecture.getUserId(),
+					Lecture.class.getName(), lecture.getLectureId(), false, serviceContext);
+		}
+
+		return lecture;
+	}
+
+	private boolean hasResourcePermission(Lecture lecture) throws PortalException {
+		long companyId = lecture.getCompanyId();
+		Role role = roleLocalService.getRole(companyId, RoleConstants.OWNER);
+		ResourcePermission resourcePermission = resourcePermissionLocalService
+				.fetchResourcePermission(companyId, Lecture.class.getName(), ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(lecture.getLectureId()), role.getRoleId());
+		return resourcePermission != null;
+	}
+
+	@Override
+	public Lecture deleteLecture(long lectureId) throws PortalException {
+		Lecture lecture = lecturePersistence.fetchByPrimaryKey(lectureId);
+		return deleteLecture(lecture);
+	}
+
+	@Override
+	public Lecture deleteLecture(Lecture lecture) {
+		try {
+			return removeLecture(lecture);
+		} catch (PortalException e) {
+			return ReflectionUtil.throwException(e);
+		}
+	}
+
+	private Lecture removeLecture(Lecture lecture) throws PortalException {
+
+		// Delete Resource
+		resourceLocalService.deleteResource(
+				lecture.getCompanyId(), Lecture.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, lecture.getLectureId());
+
+		// Delete Lecture
+		lecture = lecturePersistence.remove(lecture);
+
+		return lecture;
 	}
 
 	public int getUserLecturesCount(long groupId, long userId) {
@@ -132,5 +186,10 @@ public class LectureLocalServiceImpl extends LectureLocalServiceBaseImpl {
 	public List<Lecture> getCourseLectures(long courseId, int start, int end) {
 		return lecturePersistence.findByCourseId(courseId, start, end);
 	}
+
+	@Reference
+	private RoleLocalService roleLocalService;
+	@Reference
+	private ResourcePermissionLocalService resourcePermissionLocalService;
 
 }

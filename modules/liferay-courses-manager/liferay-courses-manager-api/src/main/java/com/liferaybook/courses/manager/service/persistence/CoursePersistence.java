@@ -516,6 +516,62 @@ public interface CoursePersistence extends BasePersistence<Course> {
 		throws NoSuchCourseException;
 
 	/**
+	 * Returns all the courses that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the matching courses that the user has permission to view
+	 */
+	public java.util.List<Course> filterFindByGroupId(long groupId);
+
+	/**
+	 * Returns a range of all the courses that the user has permission to view where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of courses
+	 * @param end the upper bound of the range of courses (not inclusive)
+	 * @return the range of matching courses that the user has permission to view
+	 */
+	public java.util.List<Course> filterFindByGroupId(
+		long groupId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the courses that the user has permissions to view where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CourseModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of courses
+	 * @param end the upper bound of the range of courses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching courses that the user has permission to view
+	 */
+	public java.util.List<Course> filterFindByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<Course>
+			orderByComparator);
+
+	/**
+	 * Returns the courses before and after the current course in the ordered set of courses that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param courseId the primary key of the current course
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next course
+	 * @throws NoSuchCourseException if a course with the primary key could not be found
+	 */
+	public Course[] filterFindByGroupId_PrevAndNext(
+			long courseId, long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<Course>
+				orderByComparator)
+		throws NoSuchCourseException;
+
+	/**
 	 * Removes all the courses where groupId = &#63; from the database.
 	 *
 	 * @param groupId the group ID
@@ -529,6 +585,14 @@ public interface CoursePersistence extends BasePersistence<Course> {
 	 * @return the number of matching courses
 	 */
 	public int countByGroupId(long groupId);
+
+	/**
+	 * Returns the number of courses that the user has permission to view where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @return the number of matching courses that the user has permission to view
+	 */
+	public int filterCountByGroupId(long groupId);
 
 	/**
 	 * Returns the course where groupId = &#63; and urlTitle = &#63; or throws a <code>NoSuchCourseException</code> if it could not be found.

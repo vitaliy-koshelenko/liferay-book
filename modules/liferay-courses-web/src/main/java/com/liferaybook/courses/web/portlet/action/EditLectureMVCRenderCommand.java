@@ -4,7 +4,9 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferaybook.courses.manager.model.Lecture;
 import com.liferaybook.courses.manager.service.LectureLocalService;
+import com.liferaybook.courses.web.constants.CourseMVCCommandKeys;
 import com.liferaybook.courses.web.constants.LiferayCoursesAdminPortletKeys;
+import com.liferaybook.courses.web.constants.LiferayCoursesPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -15,8 +17,9 @@ import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
 
 @Component(
 	property = {
+		"javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
 		"javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
-		"mvc.command.name=/courses/edit_lecture"
+			"mvc.command.name=" + CourseMVCCommandKeys.EDIT_LECTURE
 	},
 	service = MVCRenderCommand.class
 )

@@ -2,6 +2,7 @@ Bundle-Name: Liferay Courses Manager API
 Bundle-SymbolicName: com.liferaybook.courses.manager.api
 Bundle-Version: 1.0.0
 Export-Package:\
+	com.liferaybook.courses.manager.constants,\
 	com.liferaybook.courses.manager.exception,\
 	com.liferaybook.courses.manager.model,\
 	com.liferaybook.courses.manager.service,\

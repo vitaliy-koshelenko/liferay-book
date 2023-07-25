@@ -1,4 +1,3 @@
-<%@ page import="com.liferay.asset.kernel.exception.AssetCategoryException" %>
 <%@ include file="init.jsp" %>
 
 <% Course course = (Course) request.getAttribute("course"); %>
@@ -57,6 +56,14 @@
                         <aui:validator name="max">[99]</aui:validator>
                     </aui:input>
                 </aui:fieldset>
+                <c:if test="${course eq null or courses.isNew()}">
+                    <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>"
+                                  label="fieldset-course-permissions" cssClass="courses-fieldset">
+                        <liferay-ui:input-permissions modelName="<%= Course.class.getName() %>" />
+                        <aui:input name="addEntryResources" type="hidden" value="<%= true %>" />
+                    </aui:fieldset>
+                </c:if>
+
             </clay:sheet-section>
             <clay:sheet-footer cssClass="sheet-footer-btn-block-sm-down">
                 <div class="btn-group">
