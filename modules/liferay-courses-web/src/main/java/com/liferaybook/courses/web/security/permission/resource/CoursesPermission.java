@@ -8,12 +8,12 @@ import com.liferaybook.courses.manager.constants.CoursesConstants;
 public class CoursesPermission {
 
 	public static boolean contains(PermissionChecker permissionChecker, long groupId, String actionId) {
-		PortletResourcePermission portletResourcePermission = _portletResourcePermissionSnapshot.get();
+		PortletResourcePermission portletResourcePermission = SNAPSHOT.get();
 		return portletResourcePermission.contains(permissionChecker, groupId, actionId);
 	}
 
-	private static final Snapshot<PortletResourcePermission>
-		_portletResourcePermissionSnapshot = new Snapshot<>(CoursesPermission.class, PortletResourcePermission.class,
+	private static final Snapshot<PortletResourcePermission> SNAPSHOT =
+			new Snapshot<>(CoursesPermission.class, PortletResourcePermission.class,
 			"(resource.name=" + CoursesConstants.RESOURCE_NAME + ")");
 
 }

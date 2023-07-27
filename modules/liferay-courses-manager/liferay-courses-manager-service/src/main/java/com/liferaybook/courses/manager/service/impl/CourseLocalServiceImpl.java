@@ -112,7 +112,8 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		Role role = roleLocalService.getRole(companyId, RoleConstants.OWNER);
 		String className = Course.class.getName();
 		ResourcePermission resourcePermission = resourcePermissionLocalService
-				.fetchResourcePermission(companyId, className, ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(course.getCourseId()), role.getRoleId());
+				.fetchResourcePermission(companyId, className, ResourceConstants.SCOPE_INDIVIDUAL,
+						String.valueOf(course.getCourseId()), role.getRoleId());
 		return resourcePermission != null;
 	}
 
