@@ -39,7 +39,6 @@
                     <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>"
                                   label="fieldset-lecture-permissions" cssClass="courses-fieldset">
                         <liferay-ui:input-permissions modelName="<%= Lecture.class.getName() %>" />
-                        <aui:input name="addEntryResources" type="hidden" value="<%= true %>" />
                     </aui:fieldset>
                 </c:if>
             </clay:sheet-section>

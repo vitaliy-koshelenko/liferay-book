@@ -60,7 +60,6 @@
                     <aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>"
                                   label="fieldset-course-permissions" cssClass="courses-fieldset">
                         <liferay-ui:input-permissions modelName="<%= Course.class.getName() %>" />
-                        <aui:input name="addEntryResources" type="hidden" value="<%= true %>" />
                     </aui:fieldset>
                 </c:if>
 
