@@ -13,15 +13,19 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.*;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.web.info.filter.AuthorInfoFilter;
+import com.liferaybook.courses.web.security.permission.resource.CoursePermission;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -47,6 +51,11 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
         try {
             ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
             HttpServletRequest request = serviceContext.getRequest();
+            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+            PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+            User user = permissionChecker.getUser();
+            boolean isAdmin = roleLocalService.hasUserRole(user.getUserId(), user.getCompanyId(), RoleConstants.ADMINISTRATOR, false);
+
             long groupId = portal.getScopeGroupId(request);
 
             List<Course> courses = courseLocalService.getGroupCourses(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -56,38 +65,37 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
             List<String> filterParams = parameterMap.keySet().stream()
                     .filter(parameter -> parameter.startsWith("filter_")).collect(Collectors.toList());
 
-            if (ListUtil.isNotEmpty(filterParams)) {
-                String keywordsParam = filterParams.stream().filter(filter -> filter.contains("keywords")).findFirst().orElse(null);
-                String categoryParam = filterParams.stream().filter(filter -> filter.contains("category")).findFirst().orElse(null);
-                String authorParam = filterParams.stream().filter(filter -> filter.contains("author")).findFirst().orElse(null);
-                for (Course course: courses) {
-                    if (keywordsParam != null) {
-                        String keywords = ParamUtil.getString(request, keywordsParam).trim().toLowerCase();
-                        String courseName = course.getName() !=null ? course.getName() : StringPool.BLANK;
-                        String courseDescription = course.getDescription() != null ? course.getDescription() : StringPool.BLANK;
-                        boolean hasKeywords = courseName.trim().toLowerCase().contains(keywords) || courseDescription.trim().toLowerCase().contains(keywords);
-                        if (!hasKeywords) {
-                            continue;
-                        }
-                    }
-                    if (categoryParam != null) {
-                        long categoryId = ParamUtil.getLong(request, categoryParam);
-                        long assetEntryId = course.getAssetEntry().getEntryId();
-                        long[] categoryIds = assetEntryAssetCategoryRelLocalService.getAssetCategoryPrimaryKeys(assetEntryId);
-                        if (!ArrayUtil.contains(categoryIds, categoryId)) {
-                            continue;
-                        }
-                    }
-                    if (authorParam != null) {
-                        String author = ParamUtil.getString(request, authorParam);
-                        if (!StringUtil.equalsIgnoreCase(course.getUserName(), author)) {
-                            continue;
-                        }
-                    }
-                    filteredCourses.add(course);
+            String keywordsParam = filterParams.stream().filter(filter -> filter.contains("keywords")).findFirst().orElse(null);
+            String categoryParam = filterParams.stream().filter(filter -> filter.contains("category")).findFirst().orElse(null);
+            String authorParam = filterParams.stream().filter(filter -> filter.contains("author")).findFirst().orElse(null);
+            for (Course course: courses) {
+                if (!isAdmin && !CoursePermission.contains(permissionChecker, course, ActionKeys.VIEW)) {
+                    continue;
                 }
-            } else {
-                filteredCourses = new ArrayList<>(courses);
+                if (keywordsParam != null) {
+                    String keywords = ParamUtil.getString(request, keywordsParam).trim().toLowerCase();
+                    String courseName = course.getName() !=null ? course.getName() : StringPool.BLANK;
+                    String courseDescription = course.getDescription() != null ? course.getDescription() : StringPool.BLANK;
+                    boolean hasKeywords = courseName.trim().toLowerCase().contains(keywords) || courseDescription.trim().toLowerCase().contains(keywords);
+                    if (!hasKeywords) {
+                        continue;
+                    }
+                }
+                if (categoryParam != null) {
+                    long categoryId = ParamUtil.getLong(request, categoryParam);
+                    long assetEntryId = course.getAssetEntry().getEntryId();
+                    long[] categoryIds = assetEntryAssetCategoryRelLocalService.getAssetCategoryPrimaryKeys(assetEntryId);
+                    if (!ArrayUtil.contains(categoryIds, categoryId)) {
+                        continue;
+                    }
+                }
+                if (authorParam != null) {
+                    String author = ParamUtil.getString(request, authorParam);
+                    if (!StringUtil.equalsIgnoreCase(course.getUserName(), author)) {
+                        continue;
+                    }
+                }
+                filteredCourses.add(course);
             }
 
             Pagination pagination = query.getPagination();
@@ -107,6 +115,8 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
 
     @Reference
     private Portal portal;
+    @Reference
+    private RoleLocalService roleLocalService;
     @Reference
     private CourseLocalService courseLocalService;
     @Reference

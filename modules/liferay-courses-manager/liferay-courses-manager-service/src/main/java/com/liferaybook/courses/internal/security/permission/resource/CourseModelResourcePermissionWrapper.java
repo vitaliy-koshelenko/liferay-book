@@ -2,6 +2,7 @@ package com.liferaybook.courses.internal.security.permission.resource;
 
 import com.liferay.exportimport.kernel.staging.permission.StagingPermission;
 import com.liferay.portal.kernel.security.permission.resource.*;
+import com.liferaybook.courses.internal.security.permission.resource.logic.SubscribedCourseModelResourcePermissionLogic;
 import com.liferaybook.courses.manager.constants.CoursesConstants;
 import com.liferaybook.courses.manager.constants.CoursesPortletKeys;
 import com.liferaybook.courses.manager.model.Course;
@@ -21,9 +22,10 @@ public class CourseModelResourcePermissionWrapper extends BaseModelResourcePermi
 				Course.class, Course::getCourseId,
 				courseLocalService::getCourse,
 				portletResourcePermission,
-				(modelResourcePermission, consumer) -> consumer.accept(
-						new StagedModelPermissionLogic<>(stagingPermission, CoursesPortletKeys.COURSES, Course::getCourseId)
-				)
+				(modelResourcePermission, consumer) -> {
+					consumer.accept(subscribedCourseModelResourcePermissionLogic);
+					consumer.accept(new StagedModelPermissionLogic<>(stagingPermission, CoursesPortletKeys.COURSES, Course::getCourseId));
+				}
 		);
 	}
 
@@ -33,5 +35,7 @@ public class CourseModelResourcePermissionWrapper extends BaseModelResourcePermi
 	private CourseLocalService courseLocalService;
 	@Reference(target = "(resource.name=" + CoursesConstants.RESOURCE_NAME + ")")
 	private PortletResourcePermission portletResourcePermission;
+	@Reference
+	private SubscribedCourseModelResourcePermissionLogic subscribedCourseModelResourcePermissionLogic;
 
 }
