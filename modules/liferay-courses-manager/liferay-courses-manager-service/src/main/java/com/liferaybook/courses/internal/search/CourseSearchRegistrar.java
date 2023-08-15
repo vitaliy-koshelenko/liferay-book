@@ -17,7 +17,7 @@ public class CourseSearchRegistrar {
 
     @Activate
     protected void activate(BundleContext bundleContext) {
-        _serviceRegistration = _modelSearchRegistrarHelper.register(
+        serviceRegistration = modelSearchRegistrarHelper.register(
                 Course.class, bundleContext,
                 modelSearchDefinition -> {
                     modelSearchDefinition.setDefaultSelectedFieldNames(
@@ -25,25 +25,23 @@ public class CourseSearchRegistrar {
                             Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK,
                             Field.GROUP_ID, Field.MODIFIED_DATE, Field.SCOPE_GROUP_ID,
                             Field.TITLE, Field.UID);
-                    modelSearchDefinition.setModelIndexWriteContributor(_modelIndexWriterContributor);
-                    modelSearchDefinition.setModelSummaryContributor(_modelSummaryContributor);
+                    modelSearchDefinition.setModelIndexWriteContributor(modelIndexWriterContributor);
+                    modelSearchDefinition.setModelSummaryContributor(modelSummaryContributor);
                 });
     }
 
     @Deactivate
     protected void deactivate() {
-        _serviceRegistration.unregister();
+        serviceRegistration.unregister();
     }
 
-    private ServiceRegistration<?> _serviceRegistration;
-
     @Reference
-    private ModelSearchRegistrarHelper _modelSearchRegistrarHelper;
-
+    private ModelSearchRegistrarHelper modelSearchRegistrarHelper;
     @Reference(target = "(indexer.class.name=com.liferaybook.courses.manager.model.Course)" )
-    private ModelIndexerWriterContributor<Course> _modelIndexWriterContributor;
-
+    private ModelIndexerWriterContributor<Course> modelIndexWriterContributor;
     @Reference(target = "(indexer.class.name=com.liferaybook.courses.manager.model.Course)")
-    private ModelSummaryContributor _modelSummaryContributor;
+    private ModelSummaryContributor modelSummaryContributor;
+
+    private ServiceRegistration<?> serviceRegistration;
 
 }

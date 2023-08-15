@@ -15,18 +15,16 @@ import java.util.Locale;
 )
 public class CourseModelSummaryContributor implements ModelSummaryContributor {
 
+	private static final int MAX_CONTENT_LENGTH = 200;
+
 	@Override
 	public Summary getSummary(Document document, Locale locale, String snippet) {
-		Summary summary = _createSummary(document);
-		summary.setMaxContentLength(200);
-		return summary;
-	}
-
-	private Summary _createSummary(Document document) {
 		String prefix = Field.SNIPPET + StringPool.UNDERLINE;
-		String title = document.get(prefix + Field.TITLE, Field.CONTENT);
+		String title = document.get(prefix + Field.TITLE, Field.TITLE);
 		String content = document.get(prefix + Field.CONTENT, Field.CONTENT);
-		return new Summary(title, content);
+		Summary summary = new Summary(title, content);
+		summary.setMaxContentLength(MAX_CONTENT_LENGTH);
+		return summary;
 	}
 
 }

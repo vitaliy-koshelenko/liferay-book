@@ -24,6 +24,7 @@ import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.GroupByStep;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.*;
@@ -33,7 +34,9 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.*;
+import com.liferay.ratings.kernel.service.RatingsStatsLocalService;
 import com.liferaybook.courses.manager.exception.CourseDescriptionLengthException;
 import com.liferaybook.courses.manager.exception.CourseNameLengthException;
 import com.liferaybook.courses.manager.exception.DuplicateCourseNameException;
@@ -159,6 +162,12 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 	}
 
 	@Override
+	public Course deleteCourse(long courseId) throws PortalException {
+		Course course = coursePersistence.findByPrimaryKey(courseId);
+		return deleteCourse(course);
+	}
+
+	@Override
 	public Course deleteCourse(Course course) {
 		try {
 			return courseLocalService.removeCourse(course);
@@ -167,13 +176,8 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		}
 	}
 
-	@Override
-	public Course deleteCourse(long courseId) throws PortalException {
-		Course course = coursePersistence.findByPrimaryKey(courseId);
-		return deleteCourse(course);
-	}
-
 	@Indexable(type = IndexableType.DELETE)
+	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public Course removeCourse(Course course) throws PortalException {
 
 		// Delete Course Lectures
@@ -192,6 +196,9 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 			}
 		}
 
+		// Delete Ratings
+		ratingsStatsLocalService.deleteStats(Course.class.getName(), course.getCourseId());
+
 		// Delete Resource
 		resourceLocalService.deleteResource(
 				course.getCompanyId(),Course.class.getName(),
@@ -202,6 +209,9 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 
 		// Delete Course
 		course = coursePersistence.remove(course);
+
+		// Delete Comments
+		commentManager.deleteDiscussion(Course.class.getName(), course.getCourseId());
 
 		return course;
 	}
@@ -288,16 +298,20 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 	}
 
 	@Reference
-	private AssetEntryLocalService assetEntryLocalService;
-	@Reference
-	private AssetLinkLocalService assetLinkLocalService;
-	@Reference
-	private LectureLocalService lectureLocalService;
-	@Reference
-	private CourseSubscriptionLocalService courseSubscriptionLocalService;
+	private CommentManager commentManager;
 	@Reference
 	private RoleLocalService roleLocalService;
 	@Reference
+	private LectureLocalService lectureLocalService;
+	@Reference
+	private AssetLinkLocalService assetLinkLocalService;
+	@Reference
+	private AssetEntryLocalService assetEntryLocalService;
+	@Reference
+	private RatingsStatsLocalService ratingsStatsLocalService;
+	@Reference
 	private ResourcePermissionLocalService resourcePermissionLocalService;
+	@Reference
+	private CourseSubscriptionLocalService courseSubscriptionLocalService;
 
 }

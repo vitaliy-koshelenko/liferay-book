@@ -16,14 +16,16 @@ import org.osgi.service.component.annotations.Reference;
 public class CourseModelIndexerWriterContributor implements ModelIndexerWriterContributor<Course> {
 
 	@Override
-	public void customize(BatchIndexingActionable indexingActionable, ModelIndexerWriterDocumentHelper indexerHelper) {
-		indexingActionable.setPerformActionMethod((Course course) ->
-				indexingActionable.addDocuments(indexerHelper.getDocument(course)));
+	public void customize(BatchIndexingActionable batchIndexingActionable,
+						  ModelIndexerWriterDocumentHelper modelIndexerWriterDocumentHelper) {
+		batchIndexingActionable.setPerformActionMethod((Course course) ->
+				batchIndexingActionable.addDocuments(modelIndexerWriterDocumentHelper.getDocument(course))
+		);
 	}
 
 	@Override
 	public BatchIndexingActionable getBatchIndexingActionable() {
-		return actionableFactory.
+		return modelIndexerWriterDocumentHelper.
 			getBatchIndexingActionable(courseLocalService.getIndexableActionableDynamicQuery());
 	}
 
@@ -35,6 +37,6 @@ public class CourseModelIndexerWriterContributor implements ModelIndexerWriterCo
 	@Reference
 	private CourseLocalService courseLocalService;
 	@Reference
-	private DynamicQueryBatchIndexingActionableFactory actionableFactory;
+	private DynamicQueryBatchIndexingActionableFactory modelIndexerWriterDocumentHelper;
 
 }
