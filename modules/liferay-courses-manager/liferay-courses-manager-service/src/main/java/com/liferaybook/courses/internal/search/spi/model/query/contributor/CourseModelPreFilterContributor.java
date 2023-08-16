@@ -18,7 +18,6 @@ public class CourseModelPreFilterContributor implements ModelPreFilterContributo
 	public void contribute(BooleanFilter booleanFilter,
 						   ModelSearchSettings modelSearchSettings, SearchContext searchContext) {
 
-		_log.info("CourseModelPreFilterContributor invoked.");
 
 	}
 
