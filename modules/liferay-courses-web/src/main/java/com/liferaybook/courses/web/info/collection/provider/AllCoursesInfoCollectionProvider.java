@@ -47,14 +47,11 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
 
     @Override
     public InfoPage<Course> getCollectionInfoPage(CollectionQuery collectionQuery) {
-        InfoPage<Course> coursePage = null;
         try {
             ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
             HttpServletRequest request = serviceContext.getRequest();
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
             Pagination pagination = collectionQuery.getPagination();
-
 
             // Build Search Request
             SearchRequestBuilder searchRequestBuilder = searchRequestBuilderFactory
@@ -68,9 +65,7 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
                         searchContext.setGroupIds(new long[]{themeDisplay.getScopeGroupId()});
 
                         // Pagination
-                        _log.info("Search query START: " + pagination.getStart());
                         searchContext.setStart(pagination.getStart());
-                        _log.info("Search query END: " + pagination.getEnd());
                         searchContext.setEnd(pagination.getEnd());
 
                         // "AND" Search to Match ALL Filters
@@ -106,8 +101,6 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
 
             // Get Search Response
             SearchResponse searchResponse = searcher.search(searchRequest);
-            _log.info("requestString: " + searchResponse.getRequestString());
-
             List<Document> documents = ListUtil.subList(searchResponse.getDocuments(), pagination.getStart(), pagination.getEnd());
             int totalCount = searchResponse.getTotalHits();
 
@@ -120,12 +113,11 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
             }
 
             // Return Paginated Result
-            coursePage = InfoPage.of(courses, collectionQuery.getPagination(), totalCount);
+            return InfoPage.of(courses, collectionQuery.getPagination(), totalCount);
 
         } catch (Exception e) {
-            coursePage = InfoPage.of(Collections.emptyList(), collectionQuery.getPagination(), 0);
+            return InfoPage.of(Collections.emptyList(), collectionQuery.getPagination(), 0);
         }
-        return coursePage;
     }
 
     @Override
