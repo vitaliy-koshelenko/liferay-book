@@ -24,11 +24,11 @@ public class CourseKeywordQueryContributor implements KeywordQueryContributor {
 		SearchContext searchContext = keywordQueryContributorHelper.getSearchContext();
 
 		queryHelper.addSearchTerm(booleanQuery, searchContext, Field.TITLE, false);
-		queryHelper.addSearchTerm(booleanQuery, searchContext, Field.CONTENT, false);
+		queryHelper.addSearchTerm(booleanQuery, searchContext, Field.DESCRIPTION, false);
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
-		queryConfig.addHighlightFieldNames(Field.TITLE, Field.CONTENT);
+		queryConfig.addHighlightFieldNames(Field.TITLE, Field.DESCRIPTION);
 	}
 
 	@Reference

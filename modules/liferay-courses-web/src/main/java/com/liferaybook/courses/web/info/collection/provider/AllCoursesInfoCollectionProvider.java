@@ -1,6 +1,5 @@
 package com.liferaybook.courses.web.info.collection.provider;
 
-import com.liferay.asset.entry.rel.service.AssetEntryAssetCategoryRelLocalService;
 import com.liferay.info.collection.provider.CollectionQuery;
 import com.liferay.info.collection.provider.FilteredInfoCollectionProvider;
 import com.liferay.info.collection.provider.InfoCollectionProvider;
@@ -9,29 +8,30 @@ import com.liferay.info.filter.InfoFilter;
 import com.liferay.info.filter.KeywordsInfoFilter;
 import com.liferay.info.pagination.InfoPage;
 import com.liferay.info.pagination.Pagination;
-import com.liferay.petra.string.StringPool;
-import com.liferay.petra.string.StringUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.model.role.RoleConstants;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.*;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.document.Document;
+import com.liferay.portal.search.query.BooleanQuery;
+import com.liferay.portal.search.query.Queries;
+import com.liferay.portal.search.searcher.*;
 import com.liferaybook.courses.manager.model.Course;
 import com.liferaybook.courses.manager.service.CourseLocalService;
 import com.liferaybook.courses.web.info.filter.AuthorInfoFilter;
-import com.liferaybook.courses.web.security.permission.resource.CoursePermission;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component(service = InfoCollectionProvider.class)
 public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionProvider<Course> {
@@ -46,64 +46,84 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
     }
 
     @Override
-    public InfoPage<Course> getCollectionInfoPage(CollectionQuery query) {
+    public InfoPage<Course> getCollectionInfoPage(CollectionQuery collectionQuery) {
         InfoPage<Course> coursePage = null;
         try {
             ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
             HttpServletRequest request = serviceContext.getRequest();
             ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-            User user = permissionChecker.getUser();
-            boolean isAdmin = roleLocalService.hasUserRole(user.getUserId(), user.getCompanyId(), RoleConstants.ADMINISTRATOR, false);
 
-            long groupId = portal.getScopeGroupId(request);
+            Pagination pagination = collectionQuery.getPagination();
 
-            List<Course> courses = courseLocalService.getGroupCourses(groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-            List<Course> filteredCourses = new ArrayList<>();
 
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            List<String> filterParams = parameterMap.keySet().stream()
-                    .filter(parameter -> parameter.startsWith("filter_")).collect(Collectors.toList());
+            // Build Search Request
+            SearchRequestBuilder searchRequestBuilder = searchRequestBuilderFactory
+                    .builder()
+                    .emptySearchEnabled(true)
+                    .modelIndexerClasses(Course.class)
+                    .withSearchContext(searchContext -> {
 
-            String keywordsParam = filterParams.stream().filter(filter -> filter.contains("keywords")).findFirst().orElse(null);
-            String categoryParam = filterParams.stream().filter(filter -> filter.contains("category")).findFirst().orElse(null);
-            String authorParam = filterParams.stream().filter(filter -> filter.contains("author")).findFirst().orElse(null);
-            for (Course course: courses) {
-                if (!isAdmin && !CoursePermission.contains(permissionChecker, course, ActionKeys.VIEW)) {
-                    continue;
-                }
-                if (keywordsParam != null) {
-                    String keywords = ParamUtil.getString(request, keywordsParam).trim().toLowerCase();
-                    String courseName = course.getName() !=null ? course.getName() : StringPool.BLANK;
-                    String courseDescription = course.getDescription() != null ? course.getDescription() : StringPool.BLANK;
-                    boolean hasKeywords = courseName.trim().toLowerCase().contains(keywords) || courseDescription.trim().toLowerCase().contains(keywords);
-                    if (!hasKeywords) {
-                        continue;
-                    }
-                }
-                if (categoryParam != null) {
-                    long categoryId = ParamUtil.getLong(request, categoryParam);
-                    long assetEntryId = course.getAssetEntry().getEntryId();
-                    long[] categoryIds = assetEntryAssetCategoryRelLocalService.getAssetCategoryPrimaryKeys(assetEntryId);
-                    if (!ArrayUtil.contains(categoryIds, categoryId)) {
-                        continue;
-                    }
-                }
-                if (authorParam != null) {
-                    String author = ParamUtil.getString(request, authorParam);
-                    if (!StringUtil.equalsIgnoreCase(course.getUserName(), author)) {
-                        continue;
-                    }
-                }
-                filteredCourses.add(course);
+                        // Scope
+                        searchContext.setCompanyId(themeDisplay.getCompanyId());
+                        searchContext.setGroupIds(new long[]{themeDisplay.getScopeGroupId()});
+
+                        // Pagination
+                        _log.info("Search query START: " + pagination.getStart());
+                        searchContext.setStart(pagination.getStart());
+                        _log.info("Search query END: " + pagination.getEnd());
+                        searchContext.setEnd(pagination.getEnd());
+
+                        // "AND" Search to Match ALL Filters
+                        searchContext.setAndSearch(true);
+
+                        // Category
+                        long categoryId = getCategoryId(request);
+                        if (categoryId > 0) {
+                            searchContext.setAssetCategoryIds(new long[]{categoryId});
+                        }
+
+                        // Author
+                        String author = getAuthor(request);
+                        if (Validator.isNotNull(author)) {
+                            Map<String, Serializable> attributes = searchContext.getAttributes();
+                            attributes.put(Field.USER_NAME, author);
+                            searchContext.setAttributes(attributes);
+                        }
+                    });
+
+            // Add Keywords as Query
+            String keywords = getKeywords(request);
+            if (Validator.isNotNull(keywords)) {
+                BooleanQuery booleanQuery = queries.booleanQuery();
+                booleanQuery.addShouldQueryClauses(
+                        queries.match(Field.TITLE, keywords),
+                        queries.match(Field.DESCRIPTION, keywords)
+                );
+                searchRequestBuilder = searchRequestBuilder.query(booleanQuery);
             }
 
-            Pagination pagination = query.getPagination();
-            List<Course> coursesPage = ListUtil.subList(filteredCourses, pagination.getStart(), pagination.getEnd());
-            coursePage = InfoPage.of(coursesPage, pagination, filteredCourses.size());
+            SearchRequest searchRequest = searchRequestBuilder.build();
+
+            // Get Search Response
+            SearchResponse searchResponse = searcher.search(searchRequest);
+            _log.info("requestString: " + searchResponse.getRequestString());
+
+            List<Document> documents = ListUtil.subList(searchResponse.getDocuments(), pagination.getStart(), pagination.getEnd());
+            int totalCount = searchResponse.getTotalHits();
+
+            // Convert Documents to Courses
+            List<Course> courses = new ArrayList<>();
+            for (Document document: documents) {
+                Long courseId = document.getLong("entryClassPK");
+                Course course = courseLocalService.fetchCourse(courseId);
+                courses.add(course);
+            }
+
+            // Return Paginated Result
+            coursePage = InfoPage.of(courses, collectionQuery.getPagination(), totalCount);
 
         } catch (Exception e) {
-            coursePage = InfoPage.of(Collections.emptyList(), query.getPagination(), 0);
+            coursePage = InfoPage.of(Collections.emptyList(), collectionQuery.getPagination(), 0);
         }
         return coursePage;
     }
@@ -113,13 +133,44 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
         return LanguageUtil.get(locale, "all-courses");
     }
 
+    private String getKeywords(HttpServletRequest request) {
+        return getFilterParam(request, "keywords");
+    }
+
+    private String getAuthor(HttpServletRequest request) {
+        return getFilterParam(request, "author");
+    }
+
+    private long getCategoryId(HttpServletRequest request) {
+        long categoryId = 0;
+        String category = getFilterParam(request, "category");
+        if (Validator.isNotNull(category)) {
+            try {
+                categoryId = Long.parseLong(category);
+            } catch (Exception e) {
+                _log.error(String.format("Failed to parse categoryId '%s', cause: %s", category, e.getMessage()));
+            }
+        }
+        return categoryId;
+    }
+
+    private String getFilterParam(HttpServletRequest request, String filterName) {
+        String paramPrefix = "filter_" + filterName;
+        String paramName = request.getParameterMap().keySet().stream()
+                .filter(name -> name.startsWith(paramPrefix))
+                .findFirst().orElse(null);
+        return Validator.isNotNull(paramName) ? ParamUtil.getString(request, paramName).trim() : null;
+    }
+
     @Reference
-    private Portal portal;
+    private Queries queries;
     @Reference
-    private RoleLocalService roleLocalService;
+    private Searcher searcher;
     @Reference
     private CourseLocalService courseLocalService;
     @Reference
-    private AssetEntryAssetCategoryRelLocalService assetEntryAssetCategoryRelLocalService;
+    protected SearchRequestBuilderFactory searchRequestBuilderFactory;
+
+    private static final Log _log = LogFactoryUtil.getLog(AllCoursesInfoCollectionProvider.class);
 
 }
