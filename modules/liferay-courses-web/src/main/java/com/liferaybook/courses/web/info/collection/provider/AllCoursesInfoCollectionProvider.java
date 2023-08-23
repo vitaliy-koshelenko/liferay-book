@@ -67,6 +67,8 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
                         // Pagination
                         searchContext.setStart(pagination.getStart());
                         searchContext.setEnd(pagination.getEnd());
+                        //_log.info("Get courses, START: " + pagination.getStart());
+                        //_log.info("Get courses, END: " + pagination.getEnd());
 
                         // "AND" Search to Match ALL Filters
                         searchContext.setAndSearch(true);
