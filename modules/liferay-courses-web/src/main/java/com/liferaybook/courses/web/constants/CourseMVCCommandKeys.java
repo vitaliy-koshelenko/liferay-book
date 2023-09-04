@@ -4,6 +4,8 @@ public class CourseMVCCommandKeys {
 
     public static final String DELETE_COURSE = "/courses/delete_course";
     public static final String EDIT_COURSE = "/courses/edit_course";
+    public static final String SEARCH_COURSES = "/courses/search";
+    public static final String RESET_COURSES = "/courses/reset";
     public static final String SUBSCRIBE_COURSE = "/courses/subscribe";
     public static final String COURSE_DETAILS = "/courses/view_course";
     public static final String COURSE_LECTURES = "/courses/view_lectures";

@@ -14,11 +14,11 @@
 
 package com.liferaybook.courses.manager.service.impl;
 
-import com.liferay.asset.kernel.model.AssetEntry;
-import com.liferay.asset.kernel.model.AssetEntryTable;
-import com.liferay.asset.kernel.model.AssetLinkConstants;
-import com.liferay.asset.kernel.service.AssetEntryLocalService;
+import com.liferay.asset.entry.rel.model.AssetEntryAssetCategoryRel;
+import com.liferay.asset.entry.rel.service.AssetEntryAssetCategoryRelLocalService;
+import com.liferay.asset.kernel.model.*;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -27,10 +27,13 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.*;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -48,6 +51,7 @@ import com.liferaybook.courses.manager.service.base.CourseLocalServiceBaseImpl;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -297,16 +301,46 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 		return siteCourses.stream().map(Course::getUserName).distinct().collect(Collectors.toList());
 	}
 
+	public List<com.liferay.asset.kernel.model.AssetCategory> getCourseCategories(long groupId) {
+		List<AssetCategory> assetCategories = new ArrayList<>();
+		try {
+			Group group = groupLocalService.fetchGroup(groupId);
+			long companyId = group.getCompanyId();
+			Group globalGroup = groupLocalService.getCompanyGroup(companyId);
+			AssetVocabulary assetVocabulary = assetVocabularyLocalService.fetchGroupVocabulary(globalGroup.getGroupId(), "Course Category");
+			List<AssetCategory> vocabularyCategories = assetVocabulary.getCategories();
+			for (AssetCategory assetCategory: vocabularyCategories) {
+				long categoryId = assetCategory.getCategoryId();
+				List<AssetEntryAssetCategoryRel> rels = assetEntryAssetCategoryRelLocalService.getAssetEntryAssetCategoryRelsByAssetCategoryId(categoryId);
+				boolean hasCategoryCourse = rels.stream().anyMatch(rel -> {
+					long assetEntryId = rel.getAssetEntryId();
+					AssetEntry assetEntry = assetEntryLocalService.fetchEntry(assetEntryId);
+					return assetEntry.getGroupId() == groupId && Course.class.getName().equals(assetEntry.getClassName());
+				});
+				if (hasCategoryCourse) {
+					assetCategories.add(assetCategory);
+				}
+			}
+		} catch (Exception e) {
+			_log.error(e.getMessage(), e);
+		}
+		return assetCategories;
+	}
+
 	@Reference
 	private CommentManager commentManager;
 	@Reference
 	private RoleLocalService roleLocalService;
 	@Reference
+	private GroupLocalService groupLocalService;
+	@Reference
 	private LectureLocalService lectureLocalService;
 	@Reference
 	private AssetLinkLocalService assetLinkLocalService;
 	@Reference
-	private AssetEntryLocalService assetEntryLocalService;
+	private AssetVocabularyLocalService assetVocabularyLocalService;
+	@Reference
+	private AssetEntryAssetCategoryRelLocalService assetEntryAssetCategoryRelLocalService;
 	@Reference
 	private RatingsStatsLocalService ratingsStatsLocalService;
 	@Reference
@@ -314,4 +348,5 @@ public class CourseLocalServiceImpl extends CourseLocalServiceBaseImpl {
 	@Reference
 	private CourseSubscriptionLocalService courseSubscriptionLocalService;
 
+	private static final Log _log = LogFactoryUtil.getLog(CourseLocalServiceBaseImpl.class);
 }

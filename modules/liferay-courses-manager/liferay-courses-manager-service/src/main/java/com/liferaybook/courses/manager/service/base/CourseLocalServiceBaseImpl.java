@@ -621,6 +621,14 @@ public abstract class CourseLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserLocalService
 		userLocalService;
 
+	@Reference
+	protected com.liferay.asset.kernel.service.AssetCategoryLocalService
+		assetCategoryLocalService;
+
+	@Reference
+	protected com.liferay.asset.kernel.service.AssetEntryLocalService
+		assetEntryLocalService;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CourseLocalServiceBaseImpl.class);
 

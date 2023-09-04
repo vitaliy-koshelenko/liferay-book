@@ -304,6 +304,13 @@ public class CourseLocalServiceWrapper
 		return _courseLocalService.getCourseByUuidAndGroupId(uuid, groupId);
 	}
 
+	@Override
+	public java.util.List<com.liferay.asset.kernel.model.AssetCategory>
+		getCourseCategories(long groupId) {
+
+		return _courseLocalService.getCourseCategories(groupId);
+	}
+
 	/**
 	 * Returns a range of all the courses.
 	 *

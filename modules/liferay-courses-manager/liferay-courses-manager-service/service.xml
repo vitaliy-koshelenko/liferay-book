@@ -42,6 +42,8 @@
 			<finder-column name="name" />
 		</finder>
 
+		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
+		<reference entity="AssetCategory" package-path="com.liferay.portlet.asset" />
 	</entity>
 
 	<entity name="CourseSubscription" local-service="true" remote-service="false" cache-enabled="false">

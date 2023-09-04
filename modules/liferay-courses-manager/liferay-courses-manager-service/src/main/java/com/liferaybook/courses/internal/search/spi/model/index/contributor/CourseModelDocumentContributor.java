@@ -19,8 +19,8 @@ public class CourseModelDocumentContributor implements ModelDocumentContributor<
         document.addText(Field.TITLE, course.getName());
         document.addText(Field.DESCRIPTION, course.getDescription());
         document.addKeyword(Field.USER_NAME, course.getUserName());
-        document.addDate(Field.CREATE_DATE, course.getModifiedDate());
-        document.addDate(Field.MODIFIED_DATE, course.getCreateDate());
+        document.addDate(Field.CREATE_DATE, course.getCreateDate());
+        document.addDate(Field.MODIFIED_DATE, course.getModifiedDate());
         document.addKeywordSortable(CourseField.URL_TITLE, course.getUrlTitle());
     }
 

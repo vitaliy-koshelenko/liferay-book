@@ -27,7 +27,7 @@ import static com.liferaybook.courses.web.constants.LiferayCoursesConstants.*;
     property = {
         "javax.portlet.name=" + LiferayCoursesPortletKeys.PORTLET_ID,
         "javax.portlet.name=" + LiferayCoursesAdminPortletKeys.PORTLET_ID,
-            "mvc.command.name=" + CourseMVCCommandKeys.EDIT_LECTURE
+         "mvc.command.name=" + CourseMVCCommandKeys.EDIT_LECTURE
     },
     service = MVCActionCommand.class
 )

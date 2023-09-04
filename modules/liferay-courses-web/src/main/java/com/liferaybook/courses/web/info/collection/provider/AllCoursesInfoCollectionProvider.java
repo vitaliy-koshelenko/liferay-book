@@ -163,7 +163,7 @@ public class AllCoursesInfoCollectionProvider implements FilteredInfoCollectionP
     @Reference
     private CourseLocalService courseLocalService;
     @Reference
-    protected SearchRequestBuilderFactory searchRequestBuilderFactory;
+    private SearchRequestBuilderFactory searchRequestBuilderFactory;
 
     private static final Log _log = LogFactoryUtil.getLog(AllCoursesInfoCollectionProvider.class);
 

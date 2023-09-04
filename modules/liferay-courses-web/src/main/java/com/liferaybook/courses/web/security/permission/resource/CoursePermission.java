@@ -19,6 +19,6 @@ public class CoursePermission {
 	}
 
 	private static final Snapshot<ModelResourcePermission<Course>> SNAPSHOT =
-			new Snapshot<>(CoursesPermission.class, Snapshot.cast(ModelResourcePermission.class),
+			new Snapshot<>(CoursePermission.class, Snapshot.cast(ModelResourcePermission.class),
 			"(model.class.name=" + Course.class.getName() + ")");
 }

@@ -270,6 +270,12 @@ public class CourseLocalServiceUtil {
 		return getService().getCourseByUuidAndGroupId(uuid, groupId);
 	}
 
+	public static List<com.liferay.asset.kernel.model.AssetCategory>
+		getCourseCategories(long groupId) {
+
+		return getService().getCourseCategories(groupId);
+	}
+
 	/**
 	 * Returns a range of all the courses.
 	 *

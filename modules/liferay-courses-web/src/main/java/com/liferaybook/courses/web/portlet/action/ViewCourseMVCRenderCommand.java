@@ -6,6 +6,8 @@ import com.liferay.asset.kernel.service.AssetEntryService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -61,6 +63,8 @@ public class ViewCourseMVCRenderCommand implements MVCRenderCommand, CoursesMVCC
 		try {
 			AssetEntry assetEntry = course.getAssetEntry();
 			assetEntryService.incrementViewCounter(assetEntry);
+			Indexer<Course> courseIndexer = IndexerRegistryUtil.getIndexer(Course.class);
+			courseIndexer.reindex(Course.class.getName(), course.getCourseId());
 		} catch (Exception e) {
 			_log.error("Failed to increment view counter for Course, cause: " + e.getMessage());
 		}

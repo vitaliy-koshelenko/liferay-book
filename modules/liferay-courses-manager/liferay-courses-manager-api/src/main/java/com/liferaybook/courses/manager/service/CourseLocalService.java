@@ -14,6 +14,7 @@
 
 package com.liferaybook.courses.manager.service;
 
+import com.liferay.asset.kernel.model.*;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -253,6 +255,10 @@ public interface CourseLocalService
 	public Course getCourseByUuidAndGroupId(String uuid, long groupId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<com.liferay.asset.kernel.model.AssetCategory>
+		getCourseCategories(long groupId);
+
 	/**
 	 * Returns a range of all the courses.
 	 *
@@ -347,6 +353,7 @@ public interface CourseLocalService
 	public int getUserCoursesCount(long groupId, long userId);
 
 	@Indexable(type = IndexableType.DELETE)
+	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public Course removeCourse(Course course) throws PortalException;
 
 	/**
